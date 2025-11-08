@@ -7,6 +7,8 @@ const IdolGreenCity = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   console.log(activeSection);
+  console.log(setActiveSection);
+
 
 
   useEffect(() => {
