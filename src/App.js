@@ -6,6 +6,8 @@ const IdolGreenCity = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  console.log(activeSection);
+
 
   useEffect(() => {
     const handleScroll = () => {
