@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, MapPin, Phone, Mail, Home, Building2, Trees, Droplets, Shield, CheckCircle, ChevronRight, Menu, X } from 'lucide-react';
+import { Globe, MapPin, Phone, Mail, Home, Trees, Droplets, Shield, CheckCircle, ChevronRight, Menu, X } from 'lucide-react';
 
 const IdolGreenCity = () => {
   const [lang, setLang] = useState('bn');
@@ -202,7 +202,7 @@ const IdolGreenCity = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3">
-              <img src='/images/logo.png' className="h-20 w-20 text-blue-600" />
+              <img src='/images/logo.png' alt='none' className="h-20 w-20 text-blue-600" />
               <span className={`font-bold text-xl ${scrolled ? 'text-gray-800' : 'text-white'}`}>
                 Idol Builders Ltd.
               </span>
