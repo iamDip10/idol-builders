@@ -170,8 +170,8 @@ const IdolGreenCity = () => {
       plotRules: {
         title: 'প্লট ক্রয়ের নিয়মাবলি',
         items: [
-          'আইডল গ্রীন সিটি প্রকল্পের প্ল্টের আকার ৩, ৫, ১০ ও ২০ কাঠা।',
-          'প্রট বুকিং প্রাপ্ত বাক্তি না জাতীয় পরিচয় প্রত্রীর পর কপি ৩ কপি।',
+          'আইডল গ্রীন সিটি প্রকল্পের প্লটের আকার ৩, ৫, ১০ ও ২০ কাঠা।',
+          'প্লট বুকিং প্রাপ্ত বাক্তির জাতীয় পরিচয় পত্রের ৩ কপি।',
           'কোন গ্রাহকে যদি তার বধন্চত্র চুক্তি মূল্লের নামের পরিবর্তন করতে হয় ডে কপি পাসপোর্টের ছবি প্রদান করতে হবে।',
           'একজীরীন মূল্য পরিশোধের ক্ষেত্রে ১৫% বিশেষ ছাড় দেওয়া হবে। সেক্ষেত্রে প্লট মূল্যের অবশিষ্ট টাকা ৭৫ দিনের মধ্যে পরিশোধ করতে হবে।',
           'মূল্য পরিশোধের পর ১৫ কার্যদিবসের মধ্যে ক্রেতা রেজিষ্ট্রেশন প্রক্রিয়া সম্পন্ন করা হবে।',
@@ -194,11 +194,15 @@ const IdolGreenCity = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+      <header className={`fixed top-0 w-full z-50 transition-all duration-300 
+    ${scrolled 
+      ? 'bg-white shadow-lg' 
+      : 'bg-black bg-opacity-40 backdrop-blur-md'
+    }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3">
-              <Building2 className="h-8 w-8 text-blue-600" />
+              <img src='/images/logo.png' className="h-20 w-20 text-blue-600" />
               <span className={`font-bold text-xl ${scrolled ? 'text-gray-800' : 'text-white'}`}>
                 Idol Builders Ltd.
               </span>
@@ -267,10 +271,12 @@ const IdolGreenCity = () => {
 
       {/* Hero Section */}
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-500 opacity-90"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
-        }}></div>
+      <div
+  className="absolute inset-0 bg-cover bg-center brightness-50"
+  style={{ backgroundImage: "url('images/cpver.png')" }}
+></div>
+
+
         <div className="relative z-10 text-center px-4 animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">
             {t.hero.title}
