@@ -445,6 +445,45 @@ const IdolGreenCity = () => {
         </div>
       </section>
 
+      {/* Project Map Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+            {lang === 'bn' ? 'প্রকল্পের ম্যাপ' : 'Project Map'}
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            {lang === 'bn' 
+              ? 'আইডল গ্রীন সিটি প্রকল্পের বিস্তারিত লোকেশন ম্যাপ দেখুন'
+              : 'View the detailed location map of Idol Green City project'}
+          </p>
+          
+          {/* Map Container */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white p-4 md:p-8">
+            <div className="relative group">
+              {/* Map Image */}
+              <img 
+                src="/images/map.jpeg" 
+                alt={lang === 'bn' ? 'প্রকল্পের ম্যাপ' : 'Project Map'}
+                className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-500 group-hover:scale-105"
+              />
+              
+              {/* Overlay with zoom hint */}
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-2xl flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-white px-6 py-3 rounded-full shadow-xl">
+                    <span className="text-gray-800 font-semibold">
+                      {lang === 'bn' ? '🔍 বড় করে দেখুন' : '🔍 Click to Zoom'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           
+          </div>
+        </div>
+      </section>
+
       {/* Plot Purchase Rules */}
       <section id="plots" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
