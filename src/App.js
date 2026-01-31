@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Check, Play, Sparkles, TrendingUp, Clock, MessageCircle, Briefcase, BookOpen, Image, Search, Calendar, DollarSign, FileText, Heart } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Calendar, Heart } from 'lucide-react';
 
 
 const IdolBuildersWebsite = () => {
@@ -536,7 +536,7 @@ const IdolBuildersWebsite = () => {
                 {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
                   <a 
                     key={i} 
-                    href="#" 
+                    href="facebook.com" 
                     className="w-10 h-10 liquid-glass-dark hover:bg-white/30 rounded-xl flex items-center justify-center transition-all hover-lift"
                   >
                     <Icon className="w-4 h-4" />
