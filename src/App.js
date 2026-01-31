@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Globe, MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Check, Play, Sparkles, TrendingUp, Clock, MessageCircle, Briefcase, BookOpen, Image, Search, Calendar, DollarSign, FileText, Heart } from 'lucide-react';
 
+
 const IdolBuildersWebsite = () => {
+
+  
   const [lang, setLang] = useState('en');
+
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [currentPage, setCurrentPage] = useState('home');
+  const isHome = currentPage === "home";
+
+
+
+
+  
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 300);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+
 
   const content = {
     en: {
@@ -27,8 +40,6 @@ const IdolBuildersWebsite = () => {
         services: 'Services', 
         contact: 'Contact', 
         gallery: 'Gallery', 
-        career: 'Careers', 
-        blog: 'Blog' 
       },
       hero: { 
         title: 'Idol Builders Ltd', 
@@ -224,6 +235,7 @@ const IdolBuildersWebsite = () => {
     { icon: Home, count: '8+' },
     { icon: Building2, count: '15+' }
   ];
+
 
   const whyChooseFeatures = [
     { icon: Award, title: lang === 'en' ? 'Award-Winning Design' : 'পুরস্কার বিজয়ী ডিজাইন', desc: lang === 'en' ? 'Multiple architectural excellence awards and international recognition' : 'একাধিক স্থাপত্য শ্রেষ্ঠত্ব পুরস্কার এবং আন্তর্জাতিক স্বীকৃতি' },
@@ -446,14 +458,25 @@ const IdolBuildersWebsite = () => {
                 <button 
                   key={key} 
                   onClick={() => navClick(key)}
-                  className={`nav-link text-gray-800 hover:text-purple-600 transition-colors duration-300 font-semibold text-sm ${currentPage === key ? 'text-purple-600' : ''}`}
+                  className={`
+                    nav-link
+                    transition-colors duration-300 font-semibold text-sm
+                    ${
+                      isHome
+                        ? isScrolled
+                          ? "text-gray-800 hover:text-purple-600"
+                          : "text-white hover:text-purple-600"
+                        : "text-gray-800 hover:text-purple-600"
+                    }
+                    ${isHome && currentPage === key ? "text-purple-600" : ""}
+                  `}
                 >
                   {item}
                 </button>
               ))}
               <button 
                 onClick={() => setLang(lang === 'en' ? 'bn' : 'en')} 
-                className="px-5 py-2.5 liquid-glass border-2 border-purple-600 text-purple-600 rounded-xl hover:gradient-primary hover:text-white hover:border-transparent transition-all font-semibold"
+                className={`px-5 py-2.5 liquid-glass border-2 border-purple-600 ${isHome ? isScrolled ? "text-gray-800 hover:text-purple-600" : "text-white hover:text-purple-600" : "text-gray-800 hover:text-purple-600"} rounded-xl hover:gradient-primary hover:border-transparent transition-all font-semibold`}
               >
                 {lang === 'en' ? 'বাংলা' : 'EN'}
               </button>
@@ -594,7 +617,7 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop')",
+          backgroundImage: "url('/images/main gate.png')",
           transform: `translateY(${scrollY * 0.5}px)`,
         }}
       >
@@ -692,23 +715,31 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            {[1, 2, 3, 4].map((i) => (
+            {[ {img: "/images/convention center idol.png", name: "Convention Center"},
+    { img: "/images/hospital.png", name: "Central Hospital"},
+    {img: "/images/idol central park.png", name: "Central Park"},
+    {img: "/images/mosque idol.png", name: "Central Mosque"}].map((i, name) => (
               <div 
                 key={i} 
                 className="relative h-64 rounded-3xl overflow-hidden shadow-2xl card-hover"
               >
                 <img 
-                  src={`https://images.unsplash.com/photo-${1560518880 + i}?w=400&h=400&fit=crop`}
+                  src={`${i.img}?w=400&h=400&fit=crop`}
                   alt={`Project ${i}`}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 liquid-glass-dark p-3 rounded-xl">
-                  <div className="text-white font-bold">{lang === 'en' ? 'Project' : 'প্রকল্প'} {i}</div>
-                  <div className="text-purple-200 text-sm">{lang === 'en' ? 'Completed' : 'সম্পন্ন'} 202{i}</div>
+                  <div className="text-white font-bold">{lang === 'en' ? 'Project' : 'প্রকল্প'} {i.name}</div>
+                  <div className="text-purple-200 text-sm">{lang === 'en' ? 'Ongoing' : 'চলান'}</div>
                 </div>
               </div>
             ))}
+
+
+
+
+
           </div>
         </div>
       </div>
@@ -970,12 +1001,10 @@ const AboutPage = ({ t, lang }) => (
 // ProjectsPage Component
 const ProjectsPage = ({ t, lang }) => {
   const projects = [
-    { name: lang === 'en' ? 'Skyline Tower' : 'স্কাইলাইন টাওয়ার', type: t.properties.types[0], status: lang === 'en' ? 'Completed' : 'সম্পন্ন', year: '2023', img: 1 },
-    { name: lang === 'en' ? 'Ocean View Residency' : 'ওশান ভিউ রেসিডেন্সি', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: 2 },
-    { name: lang === 'en' ? 'Business Hub Complex' : 'বিজনেস হাব কমপ্লেক্স', type: t.properties.types[1], status: lang === 'en' ? 'Completed' : 'সম্পন্ন', year: '2022', img: 3 },
-    { name: lang === 'en' ? 'Green Valley Apartments' : 'গ্রীন ভ্যালি অ্যাপার্টমেন্ট', type: t.properties.types[0], status: lang === 'en' ? 'Completed' : 'সম্পন্ন', year: '2023', img: 4 },
-    { name: lang === 'en' ? 'Elite Plaza' : 'এলিট প্লাজা', type: t.properties.types[2], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2025', img: 5 },
-    { name: lang === 'en' ? 'Marina Heights' : 'মেরিনা হাইটস', type: t.properties.types[4], status: lang === 'en' ? 'Completed' : 'সম্পন্ন', year: '2023', img: 6 }
+    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/convention center idol.png' },
+    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: '/images/idol central park.png' },
+    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: '/images/hospital.png' },
+    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/mosque idol.png' }
   ];
 
   return (
@@ -992,7 +1021,7 @@ const ProjectsPage = ({ t, lang }) => {
             <div key={i} className="liquid-glass rounded-3xl overflow-hidden card-hover cursor-pointer">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src={`https://images.unsplash.com/photo-${1560518880 + project.img}?w=600&h=400&fit=crop`}
+                  src={`${project.img}?w=600&h=400&fit=crop`}
                   alt={project.name}
                   className="w-full h-full object-cover"
                 />
