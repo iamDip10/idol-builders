@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Calendar, Heart } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign, Check } from 'lucide-react';
 
 
 const IdolBuildersWebsite = () => {
-
-  
   const [lang, setLang] = useState('en');
-
-  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [currentPage, setCurrentPage] = useState('home');
   const isHome = currentPage === "home";
-
-
-
-
-  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,8 +20,6 @@ const IdolBuildersWebsite = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-
-
   const content = {
     en: {
       nav: { 
@@ -38,6 +27,7 @@ const IdolBuildersWebsite = () => {
         about: 'About', 
         projects: 'Projects', 
         services: 'Services', 
+        pricing: 'Pricing',
         contact: 'Contact', 
         gallery: 'Gallery', 
       },
@@ -92,7 +82,7 @@ const IdolBuildersWebsite = () => {
         copyright: '© 2024 Idol Builders Ltd | All Rights Reserved', 
         links1: 'Company', 
         links2: 'Resources',
-        address: 'Gulshan Avenue, Dhaka 1212, Bangladesh'
+        address: 'Lilypond Center, Suit No. A-13 3 R.K Mission Road, Dhaka-1203'
       },
       services: {
         title: 'Our Services',
@@ -118,6 +108,14 @@ const IdolBuildersWebsite = () => {
         subtitle: 'NEWS & UPDATES',
         readMore: 'Read More'
       },
+      pricing: {
+        title: 'Our Pricing Plans',
+        subtitle: 'TRANSPARENT PRICING',
+        desc: 'Choose the perfect plan for your construction needs. All plans include our signature quality assurance.',
+        contact: 'Contact for Quote',
+        popular: 'Most Popular',
+        getStarted: 'Get Started',
+      },
       stats: {
         projects: 'Projects Delivered',
         families: 'Happy Families',
@@ -133,10 +131,9 @@ const IdolBuildersWebsite = () => {
         about: 'আমাদের সম্পর্কে', 
         projects: 'প্রকল্প', 
         services: 'সেবা', 
+        pricing: 'মূল্য তালিকা',
         contact: 'যোগাযোগ', 
         gallery: 'গ্যালারি', 
-        career: 'ক্যারিয়ার', 
-        blog: 'ব্লগ' 
       },
       hero: { 
         title: 'আইডল বিল্ডার্স লিমিটেড', 
@@ -215,6 +212,14 @@ const IdolBuildersWebsite = () => {
         subtitle: 'সংবাদ এবং আপডেট',
         readMore: 'আরও পড়ুন'
       },
+      pricing: {
+        title: 'আমাদের মূল্য তালিকা',
+        subtitle: 'স্বচ্ছ মূল্য নির্ধারণ',
+        desc: 'আপনার নির্মাণ প্রয়োজনের জন্য সেরা পরিকল্পনা নির্বাচন করুন। সমস্ত পরিকল্পনায় আমাদের মান নিশ্চয়তা অন্তর্ভুক্ত।',
+        contact: 'উদ্ধৃতির জন্য যোগাযোগ করুন',
+        popular: 'সবচেয়ে জনপ্রিয়',
+        getStarted: 'শুরু করুন',
+      },
       stats: {
         projects: 'প্রকল্প সরবরাহ',
         families: 'সুখী পরিবার',
@@ -235,7 +240,6 @@ const IdolBuildersWebsite = () => {
     { icon: Home, count: '8+' },
     { icon: Building2, count: '15+' }
   ];
-
 
   const whyChooseFeatures = [
     { icon: Award, title: lang === 'en' ? 'Award-Winning Design' : 'পুরস্কার বিজয়ী ডিজাইন', desc: lang === 'en' ? 'Multiple architectural excellence awards and international recognition' : 'একাধিক স্থাপত্য শ্রেষ্ঠত্ব পুরস্কার এবং আন্তর্জাতিক স্বীকৃতি' },
@@ -270,14 +274,12 @@ const IdolBuildersWebsite = () => {
         return <ProjectsPage t={t} lang={lang} />;
       case 'services':
         return <ServicesPage t={t} lang={lang} />;
+      case 'pricing':
+        return <PricingPage t={t} lang={lang} navClick={navClick} />;
       case 'contact':
         return <ContactPage t={t} lang={lang} />;
       case 'gallery':
         return <GalleryPage t={t} lang={lang} />;
-      case 'career':
-        return <CareerPage t={t} lang={lang} />;
-      case 'blog':
-        return <BlogPage t={t} lang={lang} />;
       default:
         return <HomePage t={t} lang={lang} whyChooseFeatures={whyChooseFeatures} propertyTypes={propertyTypes} divisions={divisions} scrollY={scrollY} activeTestimonial={activeTestimonial} setActiveTestimonial={setActiveTestimonial} />;
     }
@@ -445,10 +447,10 @@ const IdolBuildersWebsite = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navClick('home')}>
-              <div className="w-12 h-12 gradient-primary rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
-                <Building2 className="w-6 h-6 text-white" />
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
+                <Building2 className="w-8 h-8 text-white" />
               </div>
-              <div className="text-2xl font-bold text-gradient">
+              <div className={`text-2xl font-bold ${isScrolled ? 'text-gradient' : isHome ? 'text-white' : 'text-gradient'}`}>
                 {lang === 'en' ? 'Idol Builders' : 'আইডল বিল্ডার্স'}
               </div>
             </div>
@@ -468,7 +470,7 @@ const IdolBuildersWebsite = () => {
                           : "text-white hover:text-purple-600"
                         : "text-gray-800 hover:text-purple-600"
                     }
-                    ${isHome && currentPage === key ? "text-purple-600" : ""}
+                    ${currentPage === key ? "text-purple-600" : ""}
                   `}
                 >
                   {item}
@@ -536,7 +538,7 @@ const IdolBuildersWebsite = () => {
                 {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
                   <a 
                     key={i} 
-                    href="facebook.com" 
+                    href="#" 
                     className="w-10 h-10 liquid-glass-dark hover:bg-white/30 rounded-xl flex items-center justify-center transition-all hover-lift"
                   >
                     <Icon className="w-4 h-4" />
@@ -549,7 +551,7 @@ const IdolBuildersWebsite = () => {
               <h3 className="font-bold mb-4">{t.footer.links1}</h3>
               <ul className="space-y-2 text-purple-200 text-sm">
                 <li><button onClick={() => navClick('about')} className="hover:text-white transition-colors">{lang === 'en' ? 'About Us' : 'আমাদের সম্পর্কে'}</button></li>
-                <li><button onClick={() => navClick('career')} className="hover:text-white transition-colors">{lang === 'en' ? 'Careers' : 'ক্যারিয়ার'}</button></li>
+                <li><button onClick={() => navClick('pricing')} className="hover:text-white transition-colors">{lang === 'en' ? 'Pricing' : 'মূল্য তালিকা'}</button></li>
                 <li><button className="hover:text-white transition-colors">{lang === 'en' ? 'Press & Media' : 'প্রেস এবং মিডিয়া'}</button></li>
               </ul>
             </div>
@@ -559,7 +561,7 @@ const IdolBuildersWebsite = () => {
               <ul className="space-y-2 text-purple-200 text-sm">
                 <li><button onClick={() => navClick('projects')} className="hover:text-white transition-colors">{lang === 'en' ? 'Projects' : 'প্রকল্পসমূহ'}</button></li>
                 <li><button onClick={() => navClick('gallery')} className="hover:text-white transition-colors">{lang === 'en' ? 'Gallery' : 'গ্যালারি'}</button></li>
-                <li><button onClick={() => navClick('blog')} className="hover:text-white transition-colors">{lang === 'en' ? 'Blog' : 'ব্লগ'}</button></li>
+                <li><button onClick={() => navClick('services')} className="hover:text-white transition-colors">{lang === 'en' ? 'Services' : 'সেবা'}</button></li>
               </ul>
             </div>
 
@@ -572,13 +574,12 @@ const IdolBuildersWebsite = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 flex-shrink-0" />
-                  <a href="mailto:info@idolbuilders.com" className="hover:text-white">info@idolbuilders.com</a>
+                  <a href="mailto:info@idolbuilders.com" className="hover:text-white">idolbuildersbd@gmail.com</a>
                 </div>
                 <div className="flex items-start gap-2">
                   <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
                   <div>
-                    <p>+880 2 9876543</p>
-                    <p>+880 1712 345678</p>
+                    <p>+880 2-41054321</p>
                   </div>
                 </div>
               </div>
@@ -609,7 +610,7 @@ const IdolBuildersWebsite = () => {
   );
 };
 
-// HomePage Component
+// =================== HomePage ===================
 const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scrollY, activeTestimonial, setActiveTestimonial }) => (
   <>
     {/* Hero Section */}
@@ -621,7 +622,8 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
           transform: `translateY(${scrollY * 0.5}px)`,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/95 via-indigo-900/90 to-blue-900/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 via-indigo-500/30 to-blue-500/40"></div>
+
         <div className="absolute inset-0 water-ripple"></div>
       </div>
 
@@ -715,31 +717,28 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            {[ {img: "/images/convention center idol.png", name: "Convention Center"},
-    { img: "/images/hospital.png", name: "Central Hospital"},
-    {img: "/images/idol central park.png", name: "Central Park"},
-    {img: "/images/mosque idol.png", name: "Central Mosque"}].map((i, name) => (
+            {[
+              { img: '/images/convention center idol.png', name: "Convention Center" },
+              { img: "/images/hospital.png", name: "Central Hospital" },
+              { img: "/images/idol central park.png", name: "Central Park" },
+              { img: "/images/mosque idol.png", name: "Central Mosque" }
+            ].map((item, i) => (
               <div 
                 key={i} 
                 className="relative h-64 rounded-3xl overflow-hidden shadow-2xl card-hover"
               >
                 <img 
-                  src={`${i.img}?w=400&h=400&fit=crop`}
-                  alt={`Project ${i}`}
+                  src={item.img}
+                  alt={item.name}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 liquid-glass-dark p-3 rounded-xl">
-                  <div className="text-white font-bold">{lang === 'en' ? 'Project' : 'প্রকল্প'} {i.name}</div>
-                  <div className="text-purple-200 text-sm">{lang === 'en' ? 'Ongoing' : 'চলান'}</div>
+                  <div className="text-white font-bold">{item.name}</div>
+                  <div className="text-purple-200 text-sm">{lang === 'en' ? 'Ongoing' : 'চলমান'}</div>
                 </div>
               </div>
             ))}
-
-
-
-
-
           </div>
         </div>
       </div>
@@ -864,7 +863,7 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
           <div className="w-32 h-1.5 bg-gradient-to-r from-purple-400 via-pink-400 to-white mx-auto rounded-full shimmer"></div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid gap-16 items-center">
           <div className="liquid-glass-dark p-12 rounded-3xl water-ripple">
             <div className="text-7xl text-purple-300 mb-6">"</div>
             <p className="text-white leading-relaxed mb-8 text-xl">
@@ -878,20 +877,20 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
             </div>
           </div>
 
-          <div className="relative">
+          {/* <div className="relative">
             <div className="absolute -top-8 -right-8 w-full h-full border-4 border-white/20 rounded-3xl liquid-blob"></div>
             <img 
               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop"
               alt="CEO"
               className="relative rounded-3xl shadow-2xl w-full"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
 
     {/* Testimonials */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-purple-50 to-blue-50">
+    {/* <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-purple-50 to-blue-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.testimonials.subtitle}</p>
@@ -928,7 +927,7 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
           </div>
         </div>
       </div>
-    </section>
+    </section> */}
 
     {/* CTA Section */}
     <section 
@@ -952,7 +951,145 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
   </>
 );
 
-// AboutPage Component
+// =================== PricingPage ===================
+const PricingPage = ({ t, lang, navClick }) => {
+  const plans = [
+    {
+      name: lang === 'en' ? 'Starter Home' : 'স্টার্টার হোম',
+      price: lang === 'en' ? '৳ 25 Lac' : '৳ ২৫ লক্ষ',
+      unit: lang === 'en' ? 'Starting from' : 'শুরু',
+      color: 'from-blue-500 to-cyan-500',
+      popular: false,
+      features: lang === 'en' 
+        ? ['1,000 - 1,500 Sq.Ft', 'Standard Finishes', 'Basic Floor Plan', '2 Bedrooms', 'Single Parking', '1 Year Warranty']
+        : ['১,০০০ - ১,৫০০ বর্গফুট', 'স্ট্যান্ডার্ড ফিনিশ', 'বেসিক ফ্লোর প্ল্যান', '২ বেডরুম', 'একক পার্কিং', '১ বছরের ওয়ারেন্টি']
+    },
+    {
+      name: lang === 'en' ? 'Premium Residence' : 'প্রিমিয়াম রেসিডেন্স',
+      price: lang === 'en' ? '৳ 55 Lac' : '৳ ৫৫ লক্ষ',
+      unit: lang === 'en' ? 'Starting from' : 'শুরু',
+      color: 'from-purple-500 to-indigo-500',
+      popular: true,
+      features: lang === 'en'
+        ? ['1,800 - 2,500 Sq.Ft', 'Premium Finishes', 'Custom Floor Plan', '3 Bedrooms', 'Double Parking', 'Smart Home Ready', '3 Year Warranty', 'Gym & Pool Access']
+        : ['১,৮০০ - ২,৫০০ বর্গফুট', 'প্রিমিয়াম ফিনিশ', 'কাস্টম ফ্লোর প্ল্যান', '৩ বেডরুম', 'ডাবল পার্কিং', 'স্মার্ট হোম রেডি', '৩ বছরের ওয়ারেন্টি', 'জিম ও পুল অ্যাক্সেস']
+    },
+    {
+      name: lang === 'en' ? 'Luxury Suite' : 'লাক্সারি স্যুট',
+      price: lang === 'en' ? '৳ 1.2 Cr' : '৳ ১.২ কোটি',
+      unit: lang === 'en' ? 'Starting from' : 'শুরু',
+      color: 'from-orange-500 to-amber-500',
+      popular: false,
+      features: lang === 'en'
+        ? ['3,000 - 5,000 Sq.Ft', 'Ultra-Premium Finishes', 'Architect-Designed', '4+ Bedrooms', 'Private Parking', 'Full Smart Home', '5 Year Warranty', 'Private Rooftop', 'Concierge Service']
+        : ['৩,০০০ - ৫,০০০ বর্গফুট', 'আল্ট্রা-প্রিমিয়াম ফিনিশ', 'আর্কিটেক্ট-ডিজাইন', '৪+ বেডরুম', 'প্রাইভেট পার্কিং', 'ফুল স্মার্ট হোম', '৫ বছরের ওয়ারেন্টি', 'প্রাইভেট রুফটপ', 'কনসিয়ার্জ সার্ভিস']
+    }
+  ];
+
+  return (
+    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16 animate-fadeInUp">
+          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs flex items-center justify-center gap-2">
+            <DollarSign className="w-4 h-4" />
+            {t.pricing.subtitle}
+          </p>
+          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.pricing.title}</h1>
+          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto mb-8 rounded-full shimmer"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">{t.pricing.desc}</p>
+        </div>
+
+        {/* Banner Image */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-20 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+          <img 
+            src={'/images/pricing.jpeg'} 
+            alt="Pricing Plans Overview" 
+            className="w-full md:h-80 object-cover" style={{height:'100rem', objectFit:'contain'}}
+          />
+          
+        </div>
+
+        {/* Pricing Cards */}
+        {/* <div className="grid md:grid-cols-3 gap-8 mb-20">
+          {plans.map((plan, i) => (
+            <div 
+              key={i} 
+              className={`relative liquid-glass rounded-3xl overflow-hidden card-hover ${plan.popular ? 'ring-4 ring-purple-500 scale-105' : ''}`}
+              style={{ animationDelay: `${0.1 * i}s` }}
+            >
+              {plan.popular && (
+                <div className="absolute top-0 left-0 right-0 gradient-primary text-center py-2">
+                  <span className="text-white font-bold text-sm flex items-center justify-center gap-1">
+                    <Star className="w-4 h-4" />
+                    {t.pricing.popular}
+                  </span>
+                </div>
+              )}
+              
+              <div className={`p-10 ${plan.popular ? 'pt-14' : ''}`}>
+                <div className={`w-16 h-16 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center mb-6 glow-pulse`}>
+                  <Building2 className="w-8 h-8 text-white" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                <p className="text-gray-500 text-sm mb-4">{plan.unit}</p>
+                <div className="text-4xl font-bold text-gradient mb-8">{plan.price}</div>
+
+                <ul className="space-y-4 mb-10">
+                  {plan.features.map((feature, j) => (
+                    <li key={j} className="flex items-center gap-3">
+                      <div className={`w-6 h-6 bg-gradient-to-br ${plan.color} rounded-full flex items-center justify-center flex-shrink-0`}>
+                        <Check className="w-3.5 h-3.5 text-white" />
+                      </div>
+                      <span className="text-gray-700 text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button 
+                  onClick={() => navClick('contact')}
+                  className={`w-full py-4 rounded-2xl font-bold transition-all hover:shadow-2xl flex items-center justify-center gap-2 ${
+                    plan.popular 
+                      ? 'gradient-primary text-white glow-pulse' 
+                      : 'liquid-glass border-2 border-purple-600 text-purple-600 hover:text-white hover:gradient-primary'
+                  }`}
+                >
+                  {t.pricing.getStarted}
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div> */}
+
+        {/* Commercial Pricing */}
+        <div className="liquid-glass p-12 rounded-3xl text-center animate-fadeInUp">
+          <div className="w-20 h-20 gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-6 glow-pulse">
+            <Building2 className="w-10 h-10 text-white" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            {lang === 'en' ? 'Commercial & Custom Projects' : 'বাণিজ্যিক ও কাস্টম প্রকল্প'}
+          </h2>
+          <p className="text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+            {lang === 'en' 
+              ? 'For commercial buildings, high-rises, and bespoke projects, we provide tailored pricing based on your specific requirements, scale, and specifications.'
+              : 'বাণিজ্যিক ভবন, উচ্চ-উত্থান এবং বিশেষ প্রকল্পের জন্য, আমরা আপনার নির্দিষ্ট প্রয়োজনীয়তা, স্কেল এবং স্পেসিফিকেশনের উপর ভিত্তি করে কাস্টমাইজড মূল্য প্রদান করি।'}
+          </p>
+          <button 
+            onClick={() => navClick('contact')}
+            className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse inline-flex items-center gap-2"
+          >
+            {t.pricing.contact}
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// =================== AboutPage ===================
 const AboutPage = ({ t, lang }) => (
   <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
     <div className="max-w-7xl mx-auto">
@@ -986,25 +1123,25 @@ const AboutPage = ({ t, lang }) => (
         <p className="text-gray-600 leading-relaxed mb-6">
           {lang === 'en' 
             ? 'Founded in 1985, Idol Builders Ltd has grown from a small construction firm to one of Bangladesh\'s most respected and innovative building companies. Over four decades, we have completed over 250 projects, ranging from residential complexes to commercial high-rises, each one a testament to our commitment to quality and excellence.'
-            : '১৯৮৫ সালে প্রতিষ্ঠিত, আইডল বিল্ডার্স লিমিটেড একটি ছোট নির্মাণ সংস্থা থেকে বাংলাদেশের সবচেয়ে সম্মানিত এবং উদ্ভাবনী নির্মাণ কোম্পানিগুলির একটিতে পরিণত হয়েছে। চার দশক ধরে, আমরা ২৫০টিরও বেশি প্রকল্প সম্পন্ন করেছি, আবাসিক কমপ্লেক্স থেকে বাণিজ্যিক উচ্চ-উত্থান পর্যন্ত, প্রতিটি মান এবং শ্রেষ্ঠত্বের প্রতি আমাদের প্রতিশ্রুতির প্রমাণ।'}
+            : '১৯৮৫ সালে প্রতিষ্ঠিত, আইডল বিল্ডার্স লিমিটেড একটি ছোট নির্মাণ সংস্থা থেকে বাংলাদেশের সবচেয়ে সম্মানিত এবং উদ্ভাবনী নির্মাণ কোম্পানিগুলির একটিতে পরিণত হয়েছে।'}
         </p>
         <p className="text-gray-600 leading-relaxed">
           {lang === 'en'
-            ? 'Today, we continue to push boundaries, incorporating smart technology, sustainable practices, and innovative design into every project we undertake. Our team of over 500 professionals works tirelessly to ensure that every building we create is not just a structure, but a legacy.'
-            : 'আজ, আমরা সীমানা অতিক্রম করে চলেছি, আমাদের প্রতিটি প্রকল্পে স্মার্ট প্রযুক্তি, টেকসই অনুশীলন এবং উদ্ভাবনী ডিজাইন অন্তর্ভুক্ত করছি। আমাদের ৫০০+ পেশাদারদের দল নিরলসভাবে কাজ করে যাচ্ছে যাতে আমরা যে প্রতিটি ভবন তৈরি করি তা শুধু একটি কাঠামো নয়, একটি উত্তরাধিকার।'}
+            ? 'Today, we continue to push boundaries, incorporating smart technology, sustainable practices, and innovative design into every project we undertake.'
+            : 'আজ, আমরা সীমানা অতিক্রম করে চলেছি, আমাদের প্রতিটি প্রকল্পে স্মার্ট প্রযুক্তি, টেকসই অনুশীলন এবং উদ্ভাবনী ডিজাইন অন্তর্ভুক্ত করছি।'}
         </p>
       </div>
     </div>
   </section>
 );
 
-// ProjectsPage Component
+// =================== ProjectsPage ===================
 const ProjectsPage = ({ t, lang }) => {
   const projects = [
-    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/convention center idol.png' },
-    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: '/images/idol central park.png' },
-    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: '/images/hospital.png' },
-    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/mosque idol.png' }
+    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop' },
+    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop' },
+    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop' },
+    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop' }
   ];
 
   return (
@@ -1021,7 +1158,7 @@ const ProjectsPage = ({ t, lang }) => {
             <div key={i} className="liquid-glass rounded-3xl overflow-hidden card-hover cursor-pointer">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src={`${project.img}?w=600&h=400&fit=crop`}
+                  src={project.img}
                   alt={project.name}
                   className="w-full h-full object-cover"
                 />
@@ -1049,33 +1186,13 @@ const ProjectsPage = ({ t, lang }) => {
   );
 };
 
-// ServicesPage Component
+// =================== ServicesPage ===================
 const ServicesPage = ({ t, lang }) => {
   const services = [
-    { 
-      icon: Building2, 
-      title: t.services.construction, 
-      desc: lang === 'en' ? 'Complete construction management from planning to execution, ensuring timely delivery and quality control.' : 'পরিকল্পনা থেকে বাস্তবায়ন পর্যন্ত সম্পূর্ণ নির্মাণ ব্যবস্থাপনা, সময়মত সরবরাহ এবং মান নিয়ন্ত্রণ নিশ্চিত করা।',
-      color: 'from-purple-500 to-indigo-500'
-    },
-    { 
-      icon: Sparkles, 
-      title: t.services.design, 
-      desc: lang === 'en' ? 'Innovative architectural design services that blend aesthetics with functionality and sustainability.' : 'উদ্ভাবনী স্থাপত্য ডিজাইন সেবা যা নান্দনিকতা, কার্যকারিতা এবং টেকসই উন্নয়নের সমন্বয় করে।',
-      color: 'from-blue-500 to-cyan-500'
-    },
-    { 
-      icon: Users, 
-      title: t.services.consulting, 
-      desc: lang === 'en' ? 'Expert project consulting to help you make informed decisions throughout your construction journey.' : 'আপনার নির্মাণ যাত্রা জুড়ে অবহিত সিদ্ধান্ত নিতে সাহায্য করার জন্য বিশেষজ্ঞ প্রকল্প পরামর্শ।',
-      color: 'from-pink-500 to-rose-500'
-    },
-    { 
-      icon: Shield, 
-      title: t.services.facility, 
-      desc: lang === 'en' ? 'Comprehensive facility management services to maintain and optimize your property investment.' : 'আপনার সম্পত্তি বিনিয়োগ রক্ষণাবেক্ষণ এবং অপ্টিমাইজ করার জন্য ব্যাপক সুবিধা ব্যবস্থাপনা সেবা।',
-      color: 'from-orange-500 to-amber-500'
-    }
+    { icon: Building2, title: t.services.construction, desc: lang === 'en' ? 'Complete construction management from planning to execution, ensuring timely delivery and quality control.' : 'পরিকল্পনা থেকে বাস্তবায়ন পর্যন্ত সম্পূর্ণ নির্মাণ ব্যবস্থাপনা।', color: 'from-purple-500 to-indigo-500' },
+    { icon: Sparkles, title: t.services.design, desc: lang === 'en' ? 'Innovative architectural design services that blend aesthetics with functionality and sustainability.' : 'উদ্ভাবনী স্থাপত্য ডিজাইন সেবা।', color: 'from-blue-500 to-cyan-500' },
+    { icon: Users, title: t.services.consulting, desc: lang === 'en' ? 'Expert project consulting to help you make informed decisions throughout your construction journey.' : 'বিশেষজ্ঞ প্রকল্প পরামর্শ।', color: 'from-pink-500 to-rose-500' },
+    { icon: Shield, title: t.services.facility, desc: lang === 'en' ? 'Comprehensive facility management services to maintain and optimize your property investment.' : 'ব্যাপক সুবিধা ব্যবস্থাপনা সেবা।', color: 'from-orange-500 to-amber-500' }
   ];
 
   return (
@@ -1105,26 +1222,12 @@ const ServicesPage = ({ t, lang }) => {
             );
           })}
         </div>
-
-        <div className="liquid-glass p-12 rounded-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {lang === 'en' ? 'Need a Custom Solution?' : 'কাস্টম সমাধান প্রয়োজন?'}
-          </h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            {lang === 'en' 
-              ? 'We offer tailored solutions for unique project requirements. Contact us to discuss your specific needs.'
-              : 'আমরা অনন্য প্রকল্পের প্রয়োজনীয়তার জন্য কাস্টমাইজড সমাধান অফার করি। আপনার নির্দিষ্ট চাহিদা আলোচনা করতে আমাদের সাথে যোগাযোগ করুন।'}
-          </p>
-          <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse">
-            {lang === 'en' ? 'Contact Us' : 'আমাদের সাথে যোগাযোগ করুন'}
-          </button>
-        </div>
       </div>
     </section>
   );
 };
 
-// ContactPage Component
+// =================== ContactPage ===================
 const ContactPage = ({ t, lang }) => (
   <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
     <div className="max-w-7xl mx-auto">
@@ -1139,35 +1242,19 @@ const ContactPage = ({ t, lang }) => (
           <form className="space-y-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-2">{t.contact.name}</label>
-              <input 
-                type="text" 
-                className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all"
-                placeholder={t.contact.name}
-              />
+              <input type="text" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.name} />
             </div>
             <div>
               <label className="block text-gray-700 font-semibold mb-2">{t.contact.email}</label>
-              <input 
-                type="email" 
-                className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all"
-                placeholder={t.contact.email}
-              />
+              <input type="email" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.email} />
             </div>
             <div>
               <label className="block text-gray-700 font-semibold mb-2">{t.contact.phone}</label>
-              <input 
-                type="tel" 
-                className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all"
-                placeholder={t.contact.phone}
-              />
+              <input type="tel" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.phone} />
             </div>
             <div>
               <label className="block text-gray-700 font-semibold mb-2">{t.contact.message}</label>
-              <textarea 
-                rows="5" 
-                className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all resize-none"
-                placeholder={t.contact.message}
-              ></textarea>
+              <textarea rows={5} className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all resize-none" placeholder={t.contact.message}></textarea>
             </div>
             <button className="w-full px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse flex items-center justify-center gap-2">
               {t.contact.send}
@@ -1180,34 +1267,24 @@ const ContactPage = ({ t, lang }) => (
           <div className="liquid-glass p-8 rounded-3xl">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">{lang === 'en' ? 'Contact Information' : 'যোগাযোগের তথ্য'}</h3>
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-1">{lang === 'en' ? 'Address' : 'ঠিকানা'}</h4>
-                  <p className="text-gray-600">{t.footer.address}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse">
-                  <Mail className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-1">{lang === 'en' ? 'Email' : 'ইমেইল'}</h4>
-                  <p className="text-gray-600">info@idolbuilders.com</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse">
-                  <Phone className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-1">{lang === 'en' ? 'Phone' : 'ফোন'}</h4>
-                  <p className="text-gray-600">+880 2 9876543</p>
-                  <p className="text-gray-600">+880 1712 345678</p>
-                </div>
-              </div>
+              {[
+                { icon: MapPin, title: lang === 'en' ? 'Address' : 'ঠিকানা', info: t.footer.address },
+                { icon: Mail, title: lang === 'en' ? 'Email' : 'ইমেইল', info: 'idolbuildersbd@gmail.com' },
+                { icon: Phone, title: lang === 'en' ? 'Phone' : 'ফোন', info: '+880 2-41054321' }
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div key={i} className="flex items-start gap-4">
+                    <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse">
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
+                      <p className="text-gray-600">{item.info}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -1234,13 +1311,14 @@ const ContactPage = ({ t, lang }) => (
   </section>
 );
 
-// GalleryPage Component
+// =================== GalleryPage ===================
 const GalleryPage = ({ t, lang }) => {
-  const images = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    src: `https://images.unsplash.com/photo-${1560518880 + (i % 6) + 1}?w=600&h=600&fit=crop`,
-    title: `${lang === 'en' ? 'Project' : 'প্রকল্প'} ${i + 1}`
-  }));
+  const images = [
+    {src: '/images/convention center idol.png', title: 'Convention Center'},
+    {src: '/images/hospital.png', title: 'Central Hospital'},
+    {src: '/images/idol central park.png', title: 'Central Park'},
+    {src: '/images/mosque idol.png', title: 'Central Mosque'}
+  ]
 
   return (
     <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
@@ -1254,11 +1332,7 @@ const GalleryPage = ({ t, lang }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {images.map((img) => (
             <div key={img.id} className="relative h-64 rounded-3xl overflow-hidden card-hover cursor-pointer group">
-              <img 
-                src={img.src}
-                alt={img.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              <img src={img.src} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <h3 className="text-white font-bold text-lg">{img.title}</h3>
               </div>
@@ -1269,141 +1343,6 @@ const GalleryPage = ({ t, lang }) => {
         <div className="text-center mt-12">
           <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse inline-flex items-center gap-2">
             {t.gallery.viewAll}
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// CareerPage Component
-const CareerPage = ({ t, lang }) => {
-  const positions = [
-    { title: lang === 'en' ? 'Senior Architect' : 'সিনিয়র স্থপতি', dept: lang === 'en' ? 'Design' : 'ডিজাইন', type: lang === 'en' ? 'Full-time' : 'পূর্ণ-সময়' },
-    { title: lang === 'en' ? 'Civil Engineer' : 'সিভিল ইঞ্জিনিয়ার', dept: lang === 'en' ? 'Construction' : 'নির্মাণ', type: lang === 'en' ? 'Full-time' : 'পূর্ণ-সময়' },
-    { title: lang === 'en' ? 'Project Manager' : 'প্রকল্প ব্যবস্থাপক', dept: lang === 'en' ? 'Management' : 'ব্যবস্থাপনা', type: lang === 'en' ? 'Full-time' : 'পূর্ণ-সময়' },
-    { title: lang === 'en' ? 'Interior Designer' : 'ইন্টেরিয়র ডিজাইনার', dept: lang === 'en' ? 'Design' : 'ডিজাইন', type: lang === 'en' ? 'Contract' : 'চুক্তি' }
-  ];
-
-  return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.career.subtitle}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.career.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto mb-8 rounded-full shimmer"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {lang === 'en' 
-              ? 'Join our team of passionate professionals and help shape Bangladesh\'s skyline.'
-              : 'আমাদের উত্সাহী পেশাদারদের দলে যোগ দিন এবং বাংলাদেশের আকাশরেখা তৈরি করতে সাহায্য করুন।'}
-          </p>
-        </div>
-
-        <div className="space-y-6 mb-16">
-          {positions.map((position, i) => (
-            <div key={i} className="liquid-glass p-8 rounded-3xl card-hover flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{position.title}</h3>
-                <div className="flex gap-4 text-sm">
-                  <span className="text-purple-600 font-semibold">{position.dept}</span>
-                  <span className="text-gray-600">•</span>
-                  <span className="text-gray-600">{position.type}</span>
-                </div>
-              </div>
-              <button className="px-8 py-3 gradient-primary text-white rounded-xl font-bold hover:shadow-xl transition-all glow-pulse">
-                {t.career.apply}
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <div className="liquid-glass p-12 rounded-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {lang === 'en' ? 'Don\'t See Your Role?' : 'আপনার ভূমিকা দেখছেন না?'}
-          </h2>
-          <p className="text-gray-600 mb-8">
-            {lang === 'en' 
-              ? 'Send us your resume and we\'ll keep you in mind for future opportunities.'
-              : 'আমাদের আপনার জীবনবৃত্তান্ত পাঠান এবং ভবিষ্যতের সুযোগের জন্য আমরা আপনাকে মনে রাখব।'}
-          </p>
-          <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse">
-            {lang === 'en' ? 'Submit Resume' : 'জীবনবৃত্তান্ত জমা দিন'}
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// BlogPage Component
-const BlogPage = ({ t, lang }) => {
-  const posts = [
-    {
-      title: lang === 'en' ? 'The Future of Sustainable Construction in Bangladesh' : 'বাংলাদেশে টেকসই নির্মাণের ভবিষ্যৎ',
-      date: lang === 'en' ? 'December 15, 2024' : '১৫ ডিসেম্বর, ২০২৪',
-      excerpt: lang === 'en' ? 'Exploring how green building practices are reshaping our industry and creating better living spaces.' : 'কিভাবে সবুজ নির্মাণ অনুশীলন আমাদের শিল্পকে পুনর্গঠন করছে এবং আরও ভাল জীবনযাপনের স্থান তৈরি করছে তা অন্বেষণ করা।',
-      img: 1
-    },
-    {
-      title: lang === 'en' ? 'Smart Home Technology Integration' : 'স্মার্ট হোম প্রযুক্তি একীকরণ',
-      date: lang === 'en' ? 'December 10, 2024' : '১০ ডিসেম্বর, ২০২৪',
-      excerpt: lang === 'en' ? 'How IoT and smart technology are transforming modern residential construction.' : 'কিভাবে IoT এবং স্মার্ট প্রযুক্তি আধুনিক আবাসিক নির্মাণকে রূপান্তরিত করছে।',
-      img: 2
-    },
-    {
-      title: lang === 'en' ? '2024 Construction Trends Report' : '২০২৪ নির্মাণ ট্রেন্ড রিপোর্ট',
-      date: lang === 'en' ? 'December 5, 2024' : '৫ ডিসেম্বর, ২০২৪',
-      excerpt: lang === 'en' ? 'A comprehensive look at the latest trends shaping the construction industry in Bangladesh.' : 'বাংলাদেশে নির্মাণ শিল্পকে গঠন করা সর্বশেষ প্রবণতার একটি ব্যাপক দৃষ্টিভঙ্গি।',
-      img: 3
-    },
-    {
-      title: lang === 'en' ? 'Maximizing Property Investment Returns' : 'সম্পত্তি বিনিয়োগ রিটার্ন সর্বাধিক করা',
-      date: lang === 'en' ? 'November 28, 2024' : '২৮ নভেম্বর, ২০২৪',
-      excerpt: lang === 'en' ? 'Expert tips on choosing the right property and maximizing your investment value.' : 'সঠিক সম্পত্তি নির্বাচন এবং আপনার বিনিয়োগ মূল্য সর্বাধিক করার বিশেষজ্ঞ টিপস।',
-      img: 4
-    }
-  ];
-
-  return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.blog.subtitle}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.blog.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {posts.map((post, i) => (
-            <div key={i} className="liquid-glass rounded-3xl overflow-hidden card-hover cursor-pointer">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={`https://images.unsplash.com/photo-${1560518880 + post.img}?w=800&h=500&fit=crop`}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              </div>
-              <div className="p-8">
-                <div className="flex items-center gap-3 text-sm text-purple-600 font-semibold mb-4">
-                  <Calendar className="w-4 h-4" />
-                  {post.date}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">{post.title}</h3>
-                <p className="text-gray-600 leading-relaxed mb-6">{post.excerpt}</p>
-                <button className="text-purple-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
-                  {t.blog.readMore}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse inline-flex items-center gap-2">
-            {lang === 'en' ? 'View All Posts' : 'সব পোস্ট দেখুন'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
