@@ -1007,7 +1007,7 @@ const PricingPage = ({ t, lang, navClick }) => {
         {/* Banner Image */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-20 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
           <img 
-            src={'/images/pricing.jpeg'} 
+            src={''} 
             alt="Pricing Plans Overview" 
             className="w-full md:h-80 object-cover" style={{height:'100rem', objectFit:'contain'}}
           />
