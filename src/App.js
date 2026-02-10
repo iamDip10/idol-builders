@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign, Building2 } from 'lucide-react';
 
 
 const IdolBuildersWebsite = () => {
