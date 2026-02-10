@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign, Check } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign } from 'lucide-react';
 
 
 const IdolBuildersWebsite = () => {
@@ -953,38 +953,38 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
 
 // =================== PricingPage ===================
 const PricingPage = ({ t, lang, navClick }) => {
-  const plans = [
-    {
-      name: lang === 'en' ? 'Starter Home' : 'স্টার্টার হোম',
-      price: lang === 'en' ? '৳ 25 Lac' : '৳ ২৫ লক্ষ',
-      unit: lang === 'en' ? 'Starting from' : 'শুরু',
-      color: 'from-blue-500 to-cyan-500',
-      popular: false,
-      features: lang === 'en' 
-        ? ['1,000 - 1,500 Sq.Ft', 'Standard Finishes', 'Basic Floor Plan', '2 Bedrooms', 'Single Parking', '1 Year Warranty']
-        : ['১,০০০ - ১,৫০০ বর্গফুট', 'স্ট্যান্ডার্ড ফিনিশ', 'বেসিক ফ্লোর প্ল্যান', '২ বেডরুম', 'একক পার্কিং', '১ বছরের ওয়ারেন্টি']
-    },
-    {
-      name: lang === 'en' ? 'Premium Residence' : 'প্রিমিয়াম রেসিডেন্স',
-      price: lang === 'en' ? '৳ 55 Lac' : '৳ ৫৫ লক্ষ',
-      unit: lang === 'en' ? 'Starting from' : 'শুরু',
-      color: 'from-purple-500 to-indigo-500',
-      popular: true,
-      features: lang === 'en'
-        ? ['1,800 - 2,500 Sq.Ft', 'Premium Finishes', 'Custom Floor Plan', '3 Bedrooms', 'Double Parking', 'Smart Home Ready', '3 Year Warranty', 'Gym & Pool Access']
-        : ['১,৮০০ - ২,৫০০ বর্গফুট', 'প্রিমিয়াম ফিনিশ', 'কাস্টম ফ্লোর প্ল্যান', '৩ বেডরুম', 'ডাবল পার্কিং', 'স্মার্ট হোম রেডি', '৩ বছরের ওয়ারেন্টি', 'জিম ও পুল অ্যাক্সেস']
-    },
-    {
-      name: lang === 'en' ? 'Luxury Suite' : 'লাক্সারি স্যুট',
-      price: lang === 'en' ? '৳ 1.2 Cr' : '৳ ১.২ কোটি',
-      unit: lang === 'en' ? 'Starting from' : 'শুরু',
-      color: 'from-orange-500 to-amber-500',
-      popular: false,
-      features: lang === 'en'
-        ? ['3,000 - 5,000 Sq.Ft', 'Ultra-Premium Finishes', 'Architect-Designed', '4+ Bedrooms', 'Private Parking', 'Full Smart Home', '5 Year Warranty', 'Private Rooftop', 'Concierge Service']
-        : ['৩,০০০ - ৫,০০০ বর্গফুট', 'আল্ট্রা-প্রিমিয়াম ফিনিশ', 'আর্কিটেক্ট-ডিজাইন', '৪+ বেডরুম', 'প্রাইভেট পার্কিং', 'ফুল স্মার্ট হোম', '৫ বছরের ওয়ারেন্টি', 'প্রাইভেট রুফটপ', 'কনসিয়ার্জ সার্ভিস']
-    }
-  ];
+  // const plans = [
+  //   {
+  //     name: lang === 'en' ? 'Starter Home' : 'স্টার্টার হোম',
+  //     price: lang === 'en' ? '৳ 25 Lac' : '৳ ২৫ লক্ষ',
+  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
+  //     color: 'from-blue-500 to-cyan-500',
+  //     popular: false,
+  //     features: lang === 'en' 
+  //       ? ['1,000 - 1,500 Sq.Ft', 'Standard Finishes', 'Basic Floor Plan', '2 Bedrooms', 'Single Parking', '1 Year Warranty']
+  //       : ['১,০০০ - ১,৫০০ বর্গফুট', 'স্ট্যান্ডার্ড ফিনিশ', 'বেসিক ফ্লোর প্ল্যান', '২ বেডরুম', 'একক পার্কিং', '১ বছরের ওয়ারেন্টি']
+  //   },
+  //   {
+  //     name: lang === 'en' ? 'Premium Residence' : 'প্রিমিয়াম রেসিডেন্স',
+  //     price: lang === 'en' ? '৳ 55 Lac' : '৳ ৫৫ লক্ষ',
+  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
+  //     color: 'from-purple-500 to-indigo-500',
+  //     popular: true,
+  //     features: lang === 'en'
+  //       ? ['1,800 - 2,500 Sq.Ft', 'Premium Finishes', 'Custom Floor Plan', '3 Bedrooms', 'Double Parking', 'Smart Home Ready', '3 Year Warranty', 'Gym & Pool Access']
+  //       : ['১,৮০০ - ২,৫০০ বর্গফুট', 'প্রিমিয়াম ফিনিশ', 'কাস্টম ফ্লোর প্ল্যান', '৩ বেডরুম', 'ডাবল পার্কিং', 'স্মার্ট হোম রেডি', '৩ বছরের ওয়ারেন্টি', 'জিম ও পুল অ্যাক্সেস']
+  //   },
+  //   {
+  //     name: lang === 'en' ? 'Luxury Suite' : 'লাক্সারি স্যুট',
+  //     price: lang === 'en' ? '৳ 1.2 Cr' : '৳ ১.২ কোটি',
+  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
+  //     color: 'from-orange-500 to-amber-500',
+  //     popular: false,
+  //     features: lang === 'en'
+  //       ? ['3,000 - 5,000 Sq.Ft', 'Ultra-Premium Finishes', 'Architect-Designed', '4+ Bedrooms', 'Private Parking', 'Full Smart Home', '5 Year Warranty', 'Private Rooftop', 'Concierge Service']
+  //       : ['৩,০০০ - ৫,০০০ বর্গফুট', 'আল্ট্রা-প্রিমিয়াম ফিনিশ', 'আর্কিটেক্ট-ডিজাইন', '৪+ বেডরুম', 'প্রাইভেট পার্কিং', 'ফুল স্মার্ট হোম', '৫ বছরের ওয়ারেন্টি', 'প্রাইভেট রুফটপ', 'কনসিয়ার্জ সার্ভিস']
+  //   }
+  // ];
 
   return (
     <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
