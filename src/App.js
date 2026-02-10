@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Building2, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign } from 'lucide-react';
 
 
 const IdolBuildersWebsite = () => {
@@ -447,8 +447,12 @@ const IdolBuildersWebsite = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navClick('home')}>
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
-                <Building2 className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
+              <img 
+    src="/images/logo.png"   // if file name is sas.img
+    alt="Building"
+    className="w-16 h-16 object-cover"
+  />
               </div>
               <div className={`text-2xl font-bold ${isScrolled ? 'text-gradient' : isHome ? 'text-white' : 'text-gradient'}`}>
                 {lang === 'en' ? 'Idol Builders' : 'আইডল বিল্ডার্স'}
