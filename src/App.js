@@ -1,7 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign, Building2 } from 'lucide-react';
+function ServiceCard({ icon }) {
+
+  let selectedIcon;
+
+if (icon === "construction") {
+  selectedIcon = "construction" ;
+} 
+if (icon === "apartment") {
+  selectedIcon = "apartment" 
+} 
+if (icon === "engineering") {
+  selectedIcon ="engineering" ;
+} 
+if (icon === "house") {
+  selectedIcon = "house" ;
+} 
+if (icon === "manage_accounts") {
+  selectedIcon = "manage_accounts" ;
+} 
+if (icon === "settings") {
+  selectedIcon = "settings" ;
+} 
+if (icon === "eco") {
+  selectedIcon = "eco" ;
+} 
 
 
+  return (
+    <div className="service-card">
+      <span className="material-symbols-outlined icon" style={{color: "white"}} >
+        {selectedIcon}
+      </span>
+    </div>
+  );
+}
 const IdolBuildersWebsite = () => {
   const [lang, setLang] = useState('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +52,9 @@ const IdolBuildersWebsite = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+
+  
 
   const content = {
     en: {
@@ -96,17 +132,6 @@ const IdolBuildersWebsite = () => {
         title: 'Project Gallery',
         subtitle: 'COMPLETED PROJECTS',
         viewAll: 'View All Projects'
-      },
-      career: {
-        title: 'Join Our Team',
-        subtitle: 'BUILD YOUR CAREER',
-        positions: 'Open Positions',
-        apply: 'Apply Now'
-      },
-      blog: {
-        title: 'Latest Insights',
-        subtitle: 'NEWS & UPDATES',
-        readMore: 'Read More'
       },
       pricing: {
         title: 'Our Pricing Plans',
@@ -201,17 +226,6 @@ const IdolBuildersWebsite = () => {
         subtitle: 'সম্পন্ন প্রকল্পসমূহ',
         viewAll: 'সব প্রকল্প দেখুন'
       },
-      career: {
-        title: 'আমাদের দলে যোগ দিন',
-        subtitle: 'আপনার ক্যারিয়ার গড়ুন',
-        positions: 'খোলা পদ',
-        apply: 'এখনই আবেদন করুন'
-      },
-      blog: {
-        title: 'সর্বশেষ অন্তর্দৃষ্টি',
-        subtitle: 'সংবাদ এবং আপডেট',
-        readMore: 'আরও পড়ুন'
-      },
       pricing: {
         title: 'আমাদের মূল্য তালিকা',
         subtitle: 'স্বচ্ছ মূল্য নির্ধারণ',
@@ -230,7 +244,6 @@ const IdolBuildersWebsite = () => {
       }
     }
   };
-
   const t = content[lang];
 
   const propertyTypes = [
@@ -251,13 +264,13 @@ const IdolBuildersWebsite = () => {
   ];
 
   const divisions = [
-    { name: lang === 'en' ? 'Idol Construction' : 'আইডল কনস্ট্রাকশন' },
-    { name: lang === 'en' ? 'Idol Properties & Development' : 'আইডল প্রপার্টিজ এবং ডেভেলপমেন্ট' },
-    { name: lang === 'en' ? 'Idol Infrastructure' : 'আইডল ইনফ্রাস্ট্রাকচার' },
-    { name: lang === 'en' ? 'Idol Real Estate' : 'আইডল রিয়েল এস্টেট' },
-    { name: lang === 'en' ? 'Idol Facility Management' : 'আইডল ফ্যাসিলিটি ম্যানেজমেন্ট' },
-    { name: lang === 'en' ? 'Idol Engineering Solutions' : 'আইডল ইঞ্জিনিয়ারিং সলিউশনস' },
-    { name: lang === 'en' ? 'Idol Green Building' : 'আইডল গ্রীন বিল্ডিং' }
+    { icon: "construction", name: lang === 'en' ? 'Idol Construction' : 'আইডল কনস্ট্রাকশন'},
+    { icon: "apartment", name: lang === 'en' ? 'Idol Properties & Development' : 'আইডল প্রপার্টিজ এবং ডেভেলপমেন্ট'},
+    { icon: "engineering", name: lang === 'en' ? 'Idol Infrastructure' : 'আইডল ইনফ্রাস্ট্রাকচার'},
+    { icon: "house", name: lang === 'en' ? 'Idol Real Estate' : 'আইডল রিয়েল এস্টেট'},
+    { icon: "manage_accounts", name: lang === 'en' ? 'Idol Facility Management' : 'আইডল ফ্যাসিলিটি ম্যানেজমেন্ট'},
+    { icon: "settings", name: lang === 'en' ? 'Idol Engineering Solutions' : 'আইডল ইঞ্জিনিয়ারিং সলিউশনস'},
+    { icon: "eco", name: lang === 'en' ? 'Idol Green Building' : 'আইডল গ্রীন বিল্ডিং'}
   ];
 
   const navClick = (page) => {
@@ -435,6 +448,88 @@ const IdolBuildersWebsite = () => {
           transform: translateY(-15px) rotateX(5deg);
           box-shadow: 0 30px 60px rgba(102, 126, 234, 0.4);
         }
+
+        .pricing-table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        .pricing-table th, .pricing-table td {
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 10px 12px;
+          text-align: center;
+          font-size: 14px;
+        }
+        .pricing-table th {
+          background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+          color: white;
+          font-weight: 700;
+          font-size: 13px;
+        }
+        .pricing-table td {
+          background: rgba(255, 255, 255, 0.85);
+          color: #1a1a2e;
+          font-weight: 500;
+        }
+        .pricing-table tr:nth-child(even) td {
+          background: rgba(240, 248, 255, 0.9);
+        }
+        .pricing-table tr:hover td {
+          background: rgba(102, 126, 234, 0.1);
+        }
+        .pricing-section-label {
+          writing-mode: vertical-lr;
+          text-orientation: mixed;
+          transform: rotate(180deg);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          font-weight: 800;
+          padding: 12px 8px;
+          text-align: center;
+          font-size: 16px;
+          letter-spacing: 2px;
+        }
+
+        .hexagon-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .hexagon {
+          width: 120px;
+          height: 104px;
+          background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          font-size: 12px;
+          text-align: center;
+          padding: 20px 10px;
+          transition: all 0.3s ease;
+        }
+
+        .hexagon:hover {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          transform: scale(1.1);
+        }
+
+        @media (max-width: 640px) {
+          .pricing-table th, .pricing-table td {
+            padding: 6px 4px;
+            font-size: 11px;
+          }
+          .hexagon {
+            width: 90px;
+            height: 78px;
+            font-size: 10px;
+          }
+        }
       `}</style>
 
       {/* Liquid Decorative Blobs */}
@@ -449,9 +544,9 @@ const IdolBuildersWebsite = () => {
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navClick('home')}>
               <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
               <img 
-    src="/images/logo.png"   // if file name is sas.img
-    alt="Building"
-    className="w-16 h-16 object-cover"
+    src="/images/logo.png"   // change path
+    alt="Construction"
+    className="w-14 h-14 object-contain"
   />
               </div>
               <div className={`text-2xl font-bold ${isScrolled ? 'text-gradient' : isHome ? 'text-white' : 'text-gradient'}`}>
@@ -488,7 +583,7 @@ const IdolBuildersWebsite = () => {
               </button>
               <button className="px-6 py-3 gradient-primary text-white rounded-xl hover:shadow-2xl transition-all font-semibold flex items-center gap-2 glow-pulse">
                 <Sparkles className="w-4 h-4" />
-                {lang === 'en' ? 'Book Tour' : 'টুর বুক করুন'}
+                {lang === 'en' ? 'Book Plot' : 'প্লট বুক করুন'}
               </button>
             </div>
 
@@ -542,7 +637,7 @@ const IdolBuildersWebsite = () => {
                 {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
                   <a 
                     key={i} 
-                    href="https://www.facebook.com/Idol.Builders.Ltd?__cft__[0]=AZYBpmLUpDBspgl5kfwFZU7u-mrL5HqJdJMiS9jkoqGJqjEzKVkqSZ10_cmzD1e2B6bowlWy6hvHE0KG0vdvDv_azWXCBDGQmTBeork1PoUYxs7X8aqwpm_ozUw99wqWfpQIUoqQvi1-ihBylUav0dRssDv8SWfrjRONzKXUdOwbDQH9KKvwTlvUY47-oQyDk7HkD-q7X5SEggtnmj6lCBHW&__tn__=-]C%2CP-R" 
+                    href="https://www.facebook.com" 
                     className="w-10 h-10 liquid-glass-dark hover:bg-white/30 rounded-xl flex items-center justify-center transition-all hover-lift"
                   >
                     <Icon className="w-4 h-4" />
@@ -578,7 +673,7 @@ const IdolBuildersWebsite = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 flex-shrink-0" />
-                  <a href="mailto:info@idolbuilders.com" className="hover:text-white">idolbuildersbd@gmail.com</a>
+                  <a href="mailto:idolbuildersbd@gmail.com" className="hover:text-white">idolbuildersbd@gmail.com</a>
                 </div>
                 <div className="flex items-start gap-2">
                   <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
@@ -627,7 +722,6 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 via-indigo-500/30 to-blue-500/40"></div>
-
         <div className="absolute inset-0 water-ripple"></div>
       </div>
 
@@ -722,10 +816,10 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
 
           <div className="grid grid-cols-2 gap-5">
             {[
-              { img: '/images/convention center idol.png', name: "Convention Center" },
-              { img: "/images/hospital.png", name: "Central Hospital" },
-              { img: "/images/idol central park.png", name: "Central Park" },
-              { img: "/images/mosque idol.png", name: "Central Mosque" }
+              { img: 'images/convention center idol.png', name: "Convention Center" },
+              { img: "images/hospital.png", name: "Central Hospital" },
+              { img: "images/idol central park.png", name: "Central Park" },
+              { img: "images/mosque idol.png", name: "Central Mosque" }
             ].map((item, i) => (
               <div 
                 key={i} 
@@ -764,8 +858,8 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
               className="liquid-glass p-8 rounded-3xl card-hover cursor-pointer water-ripple"
             >
               <div className="text-center">
-                <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 glow-pulse liquid-blob">
-                  <Building2 className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 glow-pulse liquid-blob">
+                  <ServiceCard icon={division.icon} />
                 </div>
                 <p className="text-gray-800 font-bold text-sm leading-snug">{division.name}</p>
               </div>
@@ -880,58 +974,9 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
               <p className="text-purple-200 font-medium text-lg">{lang === 'en' ? 'Chief Executive Officer' : 'প্রধান নির্বাহী কর্মকর্তা'}</p>
             </div>
           </div>
-
-          {/* <div className="relative">
-            <div className="absolute -top-8 -right-8 w-full h-full border-4 border-white/20 rounded-3xl liquid-blob"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop"
-              alt="CEO"
-              className="relative rounded-3xl shadow-2xl w-full"
-            />
-          </div> */}
         </div>
       </div>
     </section>
-
-    {/* Testimonials */}
-    {/* <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-purple-50 to-blue-50">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.testimonials.subtitle}</p>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900">{t.testimonials.title}</h2>
-        </div>
-        
-        <div className="liquid-glass p-12 md:p-16 rounded-3xl shadow-2xl max-w-4xl mx-auto card-hover water-ripple">
-          <div className="text-center mb-8">
-            <div className="w-24 h-24 rounded-full mx-auto mb-6 border-4 border-white shadow-xl overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop"
-                alt="Client"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h3 className="font-bold text-2xl text-gray-900 mb-2">{lang === 'en' ? 'Kamal Hossain' : 'কামাল হোসেন'}</h3>
-            <p className="text-purple-600 font-medium">{lang === 'en' ? 'CEO, Tech Solutions Ltd' : 'সিইও, টেক সলিউশনস লিমিটেড'}</p>
-          </div>
-
-          <p className="text-gray-700 text-center leading-relaxed mb-8 italic text-lg">
-            {lang === 'en' 
-              ? '"Working with Idol Builders was transformative. Their attention to detail, commitment to quality, and innovative approach exceeded our expectations. Our new headquarters is not just a building—it\'s a masterpiece that inspires our team daily."' 
-              : '"আইডল বিল্ডার্সের সাথে কাজ করা রূপান্তরকারী ছিল। তাদের বিস্তারিত মনোযোগ, মানের প্রতি প্রতিশ্রুতি এবং উদ্ভাবনী পদ্ধতি আমাদের প্রত্যাশা অতিক্রম করেছে। আমাদের নতুন সদর দপ্তর শুধু একটি ভবন নয়—এটি একটি মাস্টারপিস যা প্রতিদিন আমাদের দলকে অনুপ্রাণিত করে।"'}
-          </p>
-
-          <div className="flex justify-center gap-3">
-            {[0, 1, 2].map(i => (
-              <button 
-                key={i}
-                onClick={() => setActiveTestimonial(i)}
-                className={`h-3 rounded-full transition-all ${i === activeTestimonial ? 'bg-purple-600 w-12' : 'bg-gray-300 w-3'}`}
-              ></button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section> */}
 
     {/* CTA Section */}
     <section 
@@ -957,38 +1002,48 @@ const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scroll
 
 // =================== PricingPage ===================
 const PricingPage = ({ t, lang, navClick }) => {
-  // const plans = [
-  //   {
-  //     name: lang === 'en' ? 'Starter Home' : 'স্টার্টার হোম',
-  //     price: lang === 'en' ? '৳ 25 Lac' : '৳ ২৫ লক্ষ',
-  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
-  //     color: 'from-blue-500 to-cyan-500',
-  //     popular: false,
-  //     features: lang === 'en' 
-  //       ? ['1,000 - 1,500 Sq.Ft', 'Standard Finishes', 'Basic Floor Plan', '2 Bedrooms', 'Single Parking', '1 Year Warranty']
-  //       : ['১,০০০ - ১,৫০০ বর্গফুট', 'স্ট্যান্ডার্ড ফিনিশ', 'বেসিক ফ্লোর প্ল্যান', '২ বেডরুম', 'একক পার্কিং', '১ বছরের ওয়ারেন্টি']
-  //   },
-  //   {
-  //     name: lang === 'en' ? 'Premium Residence' : 'প্রিমিয়াম রেসিডেন্স',
-  //     price: lang === 'en' ? '৳ 55 Lac' : '৳ ৫৫ লক্ষ',
-  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
-  //     color: 'from-purple-500 to-indigo-500',
-  //     popular: true,
-  //     features: lang === 'en'
-  //       ? ['1,800 - 2,500 Sq.Ft', 'Premium Finishes', 'Custom Floor Plan', '3 Bedrooms', 'Double Parking', 'Smart Home Ready', '3 Year Warranty', 'Gym & Pool Access']
-  //       : ['১,৮০০ - ২,৫০০ বর্গফুট', 'প্রিমিয়াম ফিনিশ', 'কাস্টম ফ্লোর প্ল্যান', '৩ বেডরুম', 'ডাবল পার্কিং', 'স্মার্ট হোম রেডি', '৩ বছরের ওয়ারেন্টি', 'জিম ও পুল অ্যাক্সেস']
-  //   },
-  //   {
-  //     name: lang === 'en' ? 'Luxury Suite' : 'লাক্সারি স্যুট',
-  //     price: lang === 'en' ? '৳ 1.2 Cr' : '৳ ১.২ কোটি',
-  //     unit: lang === 'en' ? 'Starting from' : 'শুরু',
-  //     color: 'from-orange-500 to-amber-500',
-  //     popular: false,
-  //     features: lang === 'en'
-  //       ? ['3,000 - 5,000 Sq.Ft', 'Ultra-Premium Finishes', 'Architect-Designed', '4+ Bedrooms', 'Private Parking', 'Full Smart Home', '5 Year Warranty', 'Private Rooftop', 'Concierge Service']
-  //       : ['৩,০০০ - ৫,০০০ বর্গফুট', 'আল্ট্রা-প্রিমিয়াম ফিনিশ', 'আর্কিটেক্ট-ডিজাইন', '৪+ বেডরুম', 'প্রাইভেট পার্কিং', 'ফুল স্মার্ট হোম', '৫ বছরের ওয়ারেন্টি', 'প্রাইভেট রুফটপ', 'কনসিয়ার্জ সার্ভিস']
-  //   }
-  // ];
+  const amenities = [
+    lang === 'en' ? 'Apartment Zone' : 'এপার্টমেন্ট জোন',
+    lang === 'en' ? 'Shopping Complex' : 'শপিং কমপ্লেক্স',
+    lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার',
+    lang === 'en' ? 'Club House' : 'ক্লাব হাউজ',
+    lang === 'en' ? 'Duplex Zone' : 'ডুপ্লেক্স জোন',
+    lang === 'en' ? 'Hospital' : 'হাসপাতাল',
+    lang === 'en' ? 'Super Shop' : 'সুপার শপ',
+    lang === 'en' ? 'University' : 'বিশ্ববিদ্যালয়',
+    lang === 'en' ? 'Central Car Parking' : 'সেন্ট্রাল কার পার্কিং জোন',
+    lang === 'en' ? 'Old & Day Care' : 'ওল্ড এ্যান্ড ডে কেয়ার',
+    lang === 'en' ? 'Playground' : 'খেলার মাঠ',
+    lang === 'en' ? 'Amusement Park' : 'এমিউজমেন্ট পার্ক',
+  ];
+
+  // 5-Katha pricing data
+  const fiveKathaPricing = [
+    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '১০,০০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১৩,০০,০০০' },
+    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '১১,০০,০০০', y1: '১১,৫০,০০০', y2: '১২,০০,০০০', y3: '১২,৫০,০০০', y4: '১৩,০০,০০০', y5: '১৪,০০,০০০' },
+    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '১২,০০,০০০', y1: '১২,৫০,০০০', y2: '১৩,০০,০০০', y3: '১৩,৫০,০০০', y4: '১৪,০০,০০০', y5: '১৫,০০,০০০' },
+    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১৩,০০,০০০', y1: '১৩,৫০,০০০', y2: '১৪,০০,০০০', y3: '১৪,৫০,০০০', y4: '১৫,০০,০০০', y5: '১৬,০০,০০০' },
+    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১৪,০০,০০০', y1: '১৪,৫০,০০০', y2: '১৫,০০,০০০', y3: '১৫,৫০,০০০', y4: '১৬,০০,০০০', y5: '১৭,০০,০০০' },
+    { location: lang === 'en' ? 'Restricted' : 'এরিস্ট্রিক্টেড', lumpsum: '১৫,০০,০০০', y1: '১৫,৫০,০০০', y2: '১৬,০০,০০০', y3: '১৬,৫০,০০০', y4: '১৭,০০,০০০', y5: '১৮,০০,০০০' },
+  ];
+
+  // 7-Katha pricing data
+  const sevenKathaPricing = [
+    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '৮,৫০,০০০', y1: '৯,০০,০০০', y2: '৯,৫০,০০০', y3: '১০,০০,০০০', y4: '১০,৫০,০০০', y5: '১১,০০,০০০', y6: '১১,৫০,০০০', y7: '১২,০০,০০০' },
+    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '৯,০০,০০০', y1: '৯,৫০,০০০', y2: '১০,০০,০০০', y3: '১০,৫০,০০০', y4: '১১,০০,০০০', y5: '১১,৫০,০০০', y6: '১২,০০,০০০', y7: '১৩,০০,০০০' },
+    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '১০,০০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১২,৫০,০০০', y6: '১৩,০০,০০০', y7: '১৪,০০,০০০' },
+    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১১,০০,০০০', y1: '১১,৫০,০০০', y2: '১২,০০,০০০', y3: '১২,৫০,০০০', y4: '১৩,০০,০০০', y5: '১৩,৫০,০০০', y6: '১৪,০০,০০০', y7: '১৫,০০,০০০' },
+    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১২,০০,০০০', y1: '১২,৫০,০০০', y2: '১৩,০০,০০০', y3: '১৩,৫০,০০০', y4: '১৪,০০,০০০', y5: '১৪,৫০,০০০', y6: '১৫,০০,০০০', y7: '১৬,০০,০০০' },
+  ];
+
+  // 3-Katha pricing data  
+  const threeKathaPricing = [
+    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '৭,০০,০০০', y1: '৭,৫০,০০০', y2: '৯,০০,০০০', y3: '৯,৫০,০০০', y4: '১০,০০,০০০', y5: '১০,৫০,০০০', y6: '১১,০০,০০০', y7: '১১,৫০,০০০', y8: '১২,০০,০০০' },
+    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '৭,৫০,০০০', y1: '৯,০০,০০০', y2: '৯,৫০,০০০', y3: '১০,০০,০০০', y4: '১০,৫০,০০০', y5: '১১,০০,০০০', y6: '১১,৫০,০০০', y7: '১২,০০,০০০', y8: '১৩,০০,০০০' },
+    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '৯,৫০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১২,৫০,০০০', y6: '১২,৫০,০০০', y7: '১৪,৫০,০০০', y8: '১৪,০০,০০০' },
+    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১০,০০,০০০', y1: '১১,০০,০০০', y2: '১১,৫০,০০০', y3: '১২,০০,০০০', y4: '১২,৫০,০০০', y5: '১৩,০০,০০০', y6: '১৫,৫০,০০০', y7: '১৪,০০,০০০', y8: '১৫,৫০,০০০' },
+    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১১,০০,০০০', y1: '১২,০০,০০০', y2: '১২,৫০,০০০', y3: '১৩,০০,০০০', y4: '১৩,৫০,০০০', y5: '১৪,০০,০০০', y6: '১৫,০০,০০০', y7: '১৫,০০,০০০', y8: '১৬,০০,০০০' },
+  ];
 
   return (
     <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
@@ -1004,71 +1059,180 @@ const PricingPage = ({ t, lang, navClick }) => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">{t.pricing.desc}</p>
         </div>
 
-        {/* Banner Image */}
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-20 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-          <img 
-            src={''} 
-            alt="Pricing Plans Overview" 
-            className="w-full md:h-80 object-cover" style={{height:'100rem', objectFit:'contain'}}
-          />
-          
-        </div>
-
-        {/* Pricing Cards */}
-        {/* <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {plans.map((plan, i) => (
-            <div 
-              key={i} 
-              className={`relative liquid-glass rounded-3xl overflow-hidden card-hover ${plan.popular ? 'ring-4 ring-purple-500 scale-105' : ''}`}
-              style={{ animationDelay: `${0.1 * i}s` }}
-            >
-              {plan.popular && (
-                <div className="absolute top-0 left-0 right-0 gradient-primary text-center py-2">
-                  <span className="text-white font-bold text-sm flex items-center justify-center gap-1">
-                    <Star className="w-4 h-4" />
-                    {t.pricing.popular}
-                  </span>
-                </div>
-              )}
-              
-              <div className={`p-10 ${plan.popular ? 'pt-14' : ''}`}>
-                <div className={`w-16 h-16 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center mb-6 glow-pulse`}>
-                  <Building2 className="w-8 h-8 text-white" />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-gray-500 text-sm mb-4">{plan.unit}</p>
-                <div className="text-4xl font-bold text-gradient mb-8">{plan.price}</div>
-
-                <ul className="space-y-4 mb-10">
-                  {plan.features.map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <div className={`w-6 h-6 bg-gradient-to-br ${plan.color} rounded-full flex items-center justify-center flex-shrink-0`}>
-                        <Check className="w-3.5 h-3.5 text-white" />
-                      </div>
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button 
-                  onClick={() => navClick('contact')}
-                  className={`w-full py-4 rounded-2xl font-bold transition-all hover:shadow-2xl flex items-center justify-center gap-2 ${
-                    plan.popular 
-                      ? 'gradient-primary text-white glow-pulse' 
-                      : 'liquid-glass border-2 border-purple-600 text-purple-600 hover:text-white hover:gradient-primary'
-                  }`}
-                >
-                  {t.pricing.getStarted}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+        {/* Amenities Section - Idol Builders City */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-16 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 md:p-12">
+            <div className="text-center mb-10">
+              <div className="inline-block px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl mb-6">
+                <h2 className="text-white text-2xl md:text-3xl font-bold">
+                  {lang === 'en' ? 'Amenities Available for Citizens at Idol Builders City' : 'আইডল বিল্ডার্স সিটিতে নাগরিকদের সুযোগ সুবিধা সমূহ'}
+                </h2>
               </div>
             </div>
-          ))}
-        </div> */}
 
-        {/* Commercial Pricing */}
-        <div className="liquid-glass p-12 rounded-3xl text-center animate-fadeInUp">
+            {/* Hexagon Grid */}
+            <div className="hexagon-container mb-10">
+              {amenities.map((amenity, i) => (
+                <div key={i} className="hexagon">
+                  <span className="px-2">{amenity}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center text-blue-100 text-sm md:text-base leading-relaxed max-w-4xl mx-auto">
+              <p>
+                {lang === 'en' 
+                  ? 'Additionally, the project includes offices & commercial spaces, raw bazaar, mosque, temple, church, graveyard, food court, car parking zone, school, college, madrasa, water purification & waste management systems with all smart city amenities.'
+                  : 'এছাড়াও একপ্লেক্সে থাকছে অফিস ও বাণিজ্যিক স্থান, কাঁচা বাজার, মসজিদ, মন্দির, গির্জা, কবরস্থান, ফুড কোর্ট, কার পার্কিং জোন, স্কুল, কলেজ, মাদ্রাসা, পানি পরিশোধন ও বর্জ্য নিষ্কাশন ব্যবস্থাসহ স্মার্ট সিটির সকল নাগরিক সুযোগ সুবিধা।'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing Title */}
+        <div className="text-center mb-12 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+          <div className="inline-block px-8 py-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 rounded-2xl shadow-lg">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
+              {lang === 'en' ? 'Price Per Katha Plot' : 'কাঠা প্রতি প্লটের মূল্য'}
+            </h2>
+          </div>
+        </div>
+
+        {/* 5-Katha Pricing Table */}
+        <div className="mb-12 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
+          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
+            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
+              {lang === 'en' ? 'SECTOR-1' : 'সেক্টর-১'}
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              <table className="pricing-table">
+                <thead>
+                  <tr>
+                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
+                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
+                    <th>{lang === 'en' ? '1 Year (12 inst.)' : '১ বছর ১২ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fiveKathaPricing.map((row, i) => (
+                    <tr key={i}>
+                      <td className="font-semibold text-left">{row.location}</td>
+                      <td>{row.lumpsum}</td>
+                      <td>{row.y1}</td>
+                      <td>{row.y2}</td>
+                      <td>{row.y3}</td>
+                      <td>{row.y4}</td>
+                      <td>{row.y5}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* 7-Katha Pricing Table */}
+        <div className="mb-12 animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
+          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
+            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
+              {lang === 'en' ? 'SECTOR-2' : 'সেক্টর-২'}
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              <table className="pricing-table">
+                <thead>
+                  <tr>
+                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
+                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
+                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '6 Year (72 inst.)' : '৬ বছর ৭২ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '7 Year (84 inst.)' : '৭ বছর ৮৪ কিস্তি'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sevenKathaPricing.map((row, i) => (
+                    <tr key={i}>
+                      <td className="font-semibold text-left">{row.location}</td>
+                      <td>{row.lumpsum}</td>
+                      <td>{row.y1}</td>
+                      <td>{row.y2}</td>
+                      <td>{row.y3}</td>
+                      <td>{row.y4}</td>
+                      <td>{row.y5}</td>
+                      <td>{row.y7}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* 3-Katha Pricing Table */}
+        <div className="mb-16 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
+          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
+            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
+              {lang === 'en' ? 'SECTOR-3' : 'সেক্টর-৩'}
+            </div>
+            <div className="flex-1 overflow-x-auto">
+              <table className="pricing-table">
+                <thead>
+                  <tr>
+                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
+                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
+                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '6 Year (72 inst.)' : '৬ বছর ৭২ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '7 Year (84 inst.)' : '৭ বছর ৮৪ কিস্তি'}</th>
+                    <th>{lang === 'en' ? '8 Year (96 inst.)' : '৮ বছর ৯৬ কিস্তি'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {threeKathaPricing.map((row, i) => (
+                    <tr key={i}>
+                      <td className="font-semibold text-left">{row.location}</td>
+                      <td>{row.lumpsum}</td>
+                      <td>{row.y1}</td>
+                      <td>{row.y2}</td>
+                      <td>{row.y3}</td>
+                      <td>{row.y4}</td>
+                      <td>{row.y5}</td>
+                      <td>{row.y7}</td>
+                      <td>{row.y8}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Notes */}
+        <div className="text-center space-y-4 animate-fadeInUp" style={{ animationDelay: '0.7s' }}>
+          <div className="inline-block px-8 py-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 rounded-2xl shadow-lg mb-4">
+            <p className="text-lg md:text-xl font-bold text-gray-900">
+              {lang === 'en' ? 'Booking Money Per Katha: ৳30,000/- | Down Payment: 30% of Total Price' : 'কাঠা প্রতি বুকিং মানি ৩০,০০০/- | ডাউন পেমেন্ট মোট মূল্যের ৩০%'}
+            </p>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+              {lang === 'en' 
+                ? '40 feet road side plots will have an additional ৳1,00,000/- per katha. 60 feet road, park, playground side plots will have an additional ৳2,00,000/- per katha.'
+                : '৪০ ফুট রোড এর সাথে কাঠা প্রতি ১,০০,০০০/- টাকা এবং ৬০ ফুট রোড, পার্ক, খেলার মাঠের সাথে কাঠা প্রতি ২,০০,০০০/- টাকা বৃদ্ধি পাবে।'}
+            </p>
+          </div>
+        </div>
+
+        {/* Contact CTA */}
+        <div className="mt-16 liquid-glass p-12 rounded-3xl text-center animate-fadeInUp">
           <div className="w-20 h-20 gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-6 glow-pulse">
             <Building2 className="w-10 h-10 text-white" />
           </div>
@@ -1142,10 +1306,10 @@ const AboutPage = ({ t, lang }) => (
 // =================== ProjectsPage ===================
 const ProjectsPage = ({ t, lang }) => {
   const projects = [
-    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop' },
-    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop' },
-    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop' },
-    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop' }
+    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/convention center idol.png' },
+    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: '/images/idol central park.png' },
+    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: '/images/hospital.png' },
+    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/mosque idol.png' }
   ];
 
   return (
@@ -1318,11 +1482,11 @@ const ContactPage = ({ t, lang }) => (
 // =================== GalleryPage ===================
 const GalleryPage = ({ t, lang }) => {
   const images = [
-    {src: '/images/convention center idol.png', title: 'Convention Center'},
-    {src: '/images/hospital.png', title: 'Central Hospital'},
-    {src: '/images/idol central park.png', title: 'Central Park'},
-    {src: '/images/mosque idol.png', title: 'Central Mosque'}
-  ]
+    { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop', title: 'Convention Center' },
+    { src: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop', title: 'Central Hospital' },
+    { src: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop', title: 'Central Park' },
+    { src: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop', title: 'Central Mosque' }
+  ];
 
   return (
     <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
@@ -1334,8 +1498,8 @@ const GalleryPage = ({ t, lang }) => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {images.map((img) => (
-            <div key={img.id} className="relative h-64 rounded-3xl overflow-hidden card-hover cursor-pointer group">
+          {images.map((img, i) => (
+            <div key={i} className="relative h-64 rounded-3xl overflow-hidden card-hover cursor-pointer group">
               <img src={img.src} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <h3 className="text-white font-bold text-lg">{img.title}</h3>
