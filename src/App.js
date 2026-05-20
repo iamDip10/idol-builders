@@ -1,1517 +1,1978 @@
-import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, ArrowRight, ChevronDown, Menu, X, Star, Facebook, Instagram, Linkedin, Youtube, Home, Zap, Shield, Award, Users, Play, Sparkles, TrendingUp, Clock, MessageCircle, Heart, DollarSign, Building2 } from 'lucide-react';
-function ServiceCard({ icon }) {
+import { useState, useEffect, useRef } from "react";
+import {
+  MapPin, Phone, Mail, ArrowRight, Menu, X, Star, Facebook,
+  Instagram, Linkedin, Youtube, Home, Zap, Shield, Award,
+  Users, Sparkles, TrendingUp, Clock, MessageCircle, Heart,
+  DollarSign, Building2, ChevronDown, ChevronRight, Play,
+  CheckCircle, Eye, Grid, List
+} from "lucide-react";
 
-  let selectedIcon;
+/* ─── GLOBAL STYLES ─── */
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 
-if (icon === "construction") {
-  selectedIcon = "construction" ;
-} 
-if (icon === "apartment") {
-  selectedIcon = "apartment" 
-} 
-if (icon === "engineering") {
-  selectedIcon ="engineering" ;
-} 
-if (icon === "house") {
-  selectedIcon = "house" ;
-} 
-if (icon === "manage_accounts") {
-  selectedIcon = "manage_accounts" ;
-} 
-if (icon === "settings") {
-  selectedIcon = "settings" ;
-} 
-if (icon === "eco") {
-  selectedIcon = "eco" ;
-} 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F8FAFC;
+      color: #0F172A;
+      overflow-x: hidden;
+    }
 
-  return (
-    <div className="service-card">
-      <span className="material-symbols-outlined icon" style={{color: "white"}} >
-        {selectedIcon}
-      </span>
-    </div>
-  );
-}
-const IdolBuildersWebsite = () => {
-  const [lang, setLang] = useState('en');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [currentPage, setCurrentPage] = useState('home');
+    :root {
+      --blue: #2563EB;
+      --blue-light: #3B82F6;
+      --blue-dim: #1D4ED8;
+      --blue-glow: rgba(37,99,235,0.18);
+      --blue-subtle: rgba(37,99,235,0.08);
+      --white: #F8FAFC;
+      --gray: #E5E7EB;
+      --mint: #DDF5E8;
+      --navy: #0F172A;
+      --navy-2: #1E293B;
+      --navy-3: #334155;
+      --text-muted: #64748B;
+      --glass: rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.9);
+      --glass-dark: rgba(15,23,42,0.6);
+      --border: rgba(37,99,235,0.12);
+      --shadow: 0 8px 32px rgba(37,99,235,0.10);
+      --shadow-lg: 0 24px 64px rgba(37,99,235,0.16);
+    }
+
+    .display { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .body-font { font-family: 'DM Sans', sans-serif; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--white); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 4px; }
+
+    /* ── Glass card ── */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .glass-card-dark {
+      background: var(--glass-dark);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* ── Blue gradient text ── */
+    .blue-text {
+      background: linear-gradient(135deg, #2563EB 0%, #60A5FA 60%, #2563EB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mint-text {
+      background: linear-gradient(135deg, #059669, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Accent line ── */
+    .blue-line {
+      display: block;
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-light), transparent);
+      border-radius: 2px;
+    }
+
+    /* ── Hover lift ── */
+    .lift {
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.4s ease;
+    }
+    .lift:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* ── Nav link ── */
+    .nav-link {
+      position: relative;
+      padding-bottom: 4px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--navy-3);
+      transition: color 0.25s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--blue);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--blue); }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.84rem;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #3B82F6, #2563EB);
+      transition: left 0.3s ease;
+    }
+    .btn-primary:hover::before { left: 0; }
+    .btn-primary:hover { box-shadow: 0 8px 32px rgba(37,99,235,0.4); transform: translateY(-1px); }
+    .btn-primary > * { position: relative; z-index: 1; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 32px;
+      background: transparent;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 0.84rem;
+      letter-spacing: 0.04em;
+      border: 1.5px solid var(--blue);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-outline:hover {
+      background: var(--blue-subtle);
+      box-shadow: 0 4px 20px rgba(37,99,235,0.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--glass);
+      color: var(--navy);
+      font-weight: 600;
+      font-size: 0.82rem;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+    .btn-ghost:hover {
+      background: white;
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* ── Input ── */
+    .input-field {
+      width: 100%;
+      padding: 14px 18px;
+      background: white;
+      border: 1.5px solid var(--gray);
+      border-radius: 8px;
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .input-field::placeholder { color: #94A3B8; }
+    .input-field:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    /* ── Tag badge ── */
+    .tag {
+      display: inline-block;
+      padding: 5px 14px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      background: var(--blue-subtle);
+      color: var(--blue);
+      border: 1px solid rgba(37,99,235,0.2);
+    }
+
+    .tag-mint {
+      background: rgba(5,150,105,0.08);
+      color: #059669;
+      border-color: rgba(5,150,105,0.2);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .fade-up-2 { animation: fadeUp 0.8s 0.12s cubic-bezier(0.16,1,0.3,1) both; }
+    .fade-up-3 { animation: fadeUp 0.8s 0.24s cubic-bezier(0.16,1,0.3,1) both; }
+    .fade-up-4 { animation: fadeUp 0.8s 0.36s cubic-bezier(0.16,1,0.3,1) both; }
+
+    @keyframes slowPan {
+      0%   { transform: scale(1.06) translateX(0); }
+      100% { transform: scale(1.12) translateX(-1.5%); }
+    }
+    .hero-img { animation: slowPan 20s ease-in-out alternate infinite; }
+
+    @keyframes pulse-blue {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); }
+      50%       { box-shadow: 0 0 0 16px rgba(37,99,235,0); }
+    }
+    .pulse-blue { animation: pulse-blue 2.5s ease-in-out infinite; }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+    .float { animation: floatY 5s ease-in-out infinite; }
+    .float-2 { animation: floatY 5s 1.5s ease-in-out infinite; }
+    .float-3 { animation: floatY 5s 3s ease-in-out infinite; }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-inner { animation: marquee 24s linear infinite; display: flex; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .menu-open { animation: slideDown 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* ── Table ── */
+    .pricing-table th {
+      background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(37,99,235,0.05));
+      color: var(--blue);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px 14px;
+      text-align: left;
+      border-bottom: 2px solid rgba(37,99,235,0.1);
+      white-space: nowrap;
+      font-family: 'Syne', sans-serif;
+    }
+    .pricing-table td {
+      padding: 14px;
+      font-size: 0.86rem;
+      border-bottom: 1px solid var(--gray);
+      color: var(--text-muted);
+    }
+    .pricing-table tr:hover td { background: rgba(37,99,235,0.03); }
+    .pricing-table td:first-child { color: var(--navy); font-weight: 500; }
+    .pricing-table td.highlight { color: var(--blue); font-weight: 600; }
+
+    /* ── Hex grid ── */
+    .hex-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .hex-item {
+      padding: 10px 20px;
+      background: var(--blue-subtle);
+      border: 1px solid rgba(37,99,235,0.2);
+      color: var(--blue);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: all 0.25s;
+      clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+      text-align: center;
+      min-width: 140px;
+    }
+    .hex-item:hover {
+      background: rgba(37,99,235,0.15);
+      color: var(--blue-dim);
+      transform: scale(1.04);
+    }
+
+    /* ── Card variants ── */
+    .card-blue-glow {
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(37,99,235,0.06);
+      transition: all 0.35s;
+    }
+    .card-blue-glow:hover {
+      border-color: rgba(37,99,235,0.3);
+      box-shadow: 0 12px 48px rgba(37,99,235,0.14);
+      transform: translateY(-4px);
+    }
+
+    /* ── Bento grid ── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+    .bento-wide { grid-column: span 4; }
+    .bento-slim { grid-column: span 2; }
+    .bento-full { grid-column: span 6; }
+    .bento-half { grid-column: span 3; }
+
+    /* ── Stat glow ── */
+    @keyframes countGlow {
+      from { text-shadow: 0 0 0 rgba(37,99,235,0); }
+      to   { text-shadow: 0 0 40px rgba(37,99,235,0.3); }
+    }
+    .stat-number { animation: countGlow 2s ease-in-out infinite alternate; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hide-mobile { display: none !important; }
+      .show-mobile { display: flex !important; }
+    }
+    @media (min-width: 1025px) {
+      .show-mobile { display: none !important; }
+    }
+    @media (max-width: 768px) {
+      .hex-item { min-width: 100px; font-size: 0.72rem; padding: 8px 14px; }
+      .pricing-table { font-size: 0.75rem; }
+      .pricing-table th, .pricing-table td { padding: 10px 8px; }
+      .bento-wide, .bento-slim, .bento-full, .bento-half { grid-column: span 6 !important; }
+    }
+
+    /* ── Nav bg on scroll ── */
+    .nav-scrolled {
+      background: rgba(248,250,252,0.96) !important;
+      backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid var(--gray) !important;
+      box-shadow: 0 4px 24px rgba(37,99,235,0.06) !important;
+    }
+
+    /* ── Gradient mesh bg ── */
+    .mesh-bg {
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(37,99,235,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(221,245,232,0.8) 0%, transparent 60%),
+        #F8FAFC;
+    }
+
+    .mesh-bg-dark {
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 30%, rgba(37,99,235,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 90% 70%, rgba(30,41,59,0.95) 0%, transparent 60%),
+        var(--navy);
+    }
+
+    /* ── Section transition ── */
+    .section-enter {
+      animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    /* ── Property filter pill ── */
+    .filter-pill {
+      padding: 9px 22px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: 1.5px solid var(--gray);
+      background: white;
+      color: var(--text-muted);
+    }
+    .filter-pill:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .filter-pill.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+    }
+
+    /* ── Ornament ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gray), transparent);
+    }
+
+    /* ── Gradient border ── */
+    .gradient-border {
+      background: linear-gradient(white, white) padding-box,
+                  linear-gradient(135deg, var(--blue), #60A5FA, var(--blue)) border-box;
+      border: 1.5px solid transparent;
+      border-radius: 16px;
+    }
+
+    /* ── Glowing input focus ring ── */
+    .input-glow:focus {
+      border-color: var(--blue) !important;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.12) !important;
+    }
+
+    /* ── Submit button neon ── */
+    .btn-neon {
+      background: linear-gradient(135deg, var(--blue), #60A5FA);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 16px 36px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 0 4px 24px rgba(37,99,235,0.35);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .btn-neon:hover {
+      box-shadow: 0 8px 40px rgba(37,99,235,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-neon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    }
+  `}</style>
+);
+
+/* ─── NAV ─── */
+// const Nav = ({ lang, setLang, currentPage, navClick, isScrolled }) => {
+//   const [open, setOpen] = useState(false);
+//   const t = lang === 'en';
+
+//   const links = [
+//     { key: 'home',     en: 'Home',     bn: 'হোম' },
+//     { key: 'about',    en: 'About',    bn: 'সম্পর্কে' },
+//     { key: 'projects', en: 'Projects', bn: 'প্রকল্প' },
+//     { key: 'services', en: 'Services', bn: 'সেবা' },
+//     { key: 'pricing',  en: 'Pricing',  bn: 'মূল্য' },
+//     { key: 'gallery',  en: 'Gallery',  bn: 'গ্যালারি' },
+//     { key: 'contact',  en: 'Contact',  bn: 'যোগাযোগ' },
+//   ];
+
+//   const go = (key) => { navClick(key); setOpen(false); };
+
+//   return (
+//     <nav style={{
+//       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+//       padding: '0 5%',
+//       transition: 'all 0.4s ease',
+//       background: isScrolled ? 'rgba(248,250,252,0.96)' : 'transparent',
+//       backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+//       borderBottom: isScrolled ? '1px solid var(--gray)' : 'none',
+//       boxShadow: isScrolled ? '0 4px 24px rgba(37,99,235,0.06)' : 'none',
+//     }}>
+//       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 74 }}>
+
+//         {/* Logo */}
+//         <button onClick={() => go('home')} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'none', border: 'none', cursor: 'pointer' }}>
+//           <div style={{
+//             width: 44, height: 44, borderRadius: 10,
+//             background: 'linear-gradient(135deg, #b5cbfa, #dfecff)',
+//             display: 'flex', alignItems: 'center', justifyContent: 'center',
+//             boxShadow: '0 4px 16px rgba(37,99,235,0.3)',
+//           }}>
+//              <img
+//     src="images/logo.png"
+//     alt="Company Logo"
+//     style={{
+//       width: "100%",
+//       height: "100%",
+//       objectFit: "cover",
+//     }}
+//   />
+//           </div>
+//           <div style={{ textAlign: 'left' }}>
+//             <div className="display" style={{ fontSize: '1.15rem', color: 'var(--navy)', fontWeight: 700, lineHeight: 1.1 }}>
+//               {t ? 'Idol Builders' : 'আইডল বিল্ডার্স'}
+//             </div>
+//             <div style={{ fontSize: '0.58rem', letterSpacing: '0.22em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+//               Est. 1985
+//             </div>
+//           </div>
+//         </button>
+
+//         {/* Desktop links */}
+//         <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
+//           {links.map(l => (
+//             <button key={l.key} onClick={() => go(l.key)} className={`nav-link${currentPage === l.key ? ' active' : ''}`} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+//               {t ? l.en : l.bn}
+//             </button>
+//           ))}
+//         </div>
+
+//         <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+//           <button onClick={() => setLang(lang === 'en' ? 'bn' : 'en')} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '0.72rem' }}>
+//             {t ? 'বাংলা' : 'EN'}
+//           </button>
+//           <button onClick={() => go('contact')} className="btn-primary" style={{ padding: '10px 22px', fontSize: '0.8rem' }}>
+//             <Sparkles size={14} /> {t ? 'Book Plot' : 'বুক করুন'}
+//           </button>
+//         </div>
+
+//         {/* Hamburger */}
+//         <button onClick={() => setOpen(!open)} className="show-mobile" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--navy)', padding: 8, display: 'none' }}>
+//           {open ? <X size={24} /> : <Menu size={24} />}
+//         </button>
+//       </div>
+
+//       {/* Mobile menu */}
+//       {open && (
+//         <div className="menu-open" style={{ padding: '20px 5%', borderTop: '1px solid var(--gray)', background: 'rgba(248,250,252,0.98)', backdropFilter: 'blur(20px)' }}>
+//           {links.map(l => (
+//             <button key={l.key} onClick={() => go(l.key)} style={{
+//               display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none',
+//               color: currentPage === l.key ? 'var(--blue)' : 'var(--navy-2)',
+//               padding: '13px 0', fontSize: '0.92rem',
+//               fontWeight: 500, cursor: 'pointer', borderBottom: '1px solid var(--gray)'
+//             }}>
+//               {t ? l.en : l.bn}
+//             </button>
+//           ))}
+//           <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
+//             <button onClick={() => setLang(lang === 'en' ? 'bn' : 'en')} className="btn-ghost" style={{ flex: 1, justifyContent: 'center' }}>
+//               {t ? 'বাংলা' : 'EN'}
+//             </button>
+//             <button onClick={() => go('contact')} className="btn-primary" style={{ flex: 2, justifyContent: 'center' }}>
+//               {t ? 'Book Plot' : 'বুক করুন'}
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </nav>
+//   );
+// };
+
+const Nav = ({ lang, setLang, currentPage, navClick, isScrolled }) => {
+  const [open, setOpen] = useState(false);
+  const t = lang === "en";
+
+  // ONLY HOME PAGE HAS TRANSPARENT NAVBAR
   const isHome = currentPage === "home";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-      setIsScrolled(window.scrollY > 300);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-
-  
-
-  const content = {
-    en: {
-      nav: { 
-        home: 'Home', 
-        about: 'About', 
-        projects: 'Projects', 
-        services: 'Services', 
-        pricing: 'Pricing',
-        contact: 'Contact', 
-        gallery: 'Gallery', 
-      },
-      hero: { 
-        title: 'Idol Builders Ltd', 
-        subtitle: 'Crafting Architectural Excellence Since 1985', 
-        cta: 'Explore Projects', 
-        cta2: 'Get in Touch',
-        trusted: 'Trusted Since 1985',
-        years: '40 Years of Excellence'
-      },
-      about: { 
-        title: 'About Idol Builders', 
-        subtitle: 'Excellence in Construction', 
-        desc: 'Idol Builders Ltd stands at the forefront of Bangladesh\'s construction industry, delivering world-class residential and commercial projects with unmatched quality, innovation, and craftsmanship.',
-        vision: 'Our Vision',
-        mission: 'Our Mission',
-        values: 'Core Values'
-      },
-      concern: { 
-        title: 'OUR DIVISIONS', 
-        companies: 'Core Business Units' 
-      },
-      properties: { 
-        title: 'Project Portfolio', 
-        subtitle: 'BUILDING CATEGORIES', 
-        types: ['Residential', 'Commercial', 'Premium Towers', 'Waterfront', 'High-Rise'] 
-      },
-      why: { 
-        title: 'Engineering Excellence in Every Detail', 
-        subtitle: 'WHY CHOOSE IDOL BUILDERS' 
-      },
-      md: { 
-        title: "CEO's Vision", 
-        subtitle: 'LEADERSHIP MESSAGE' 
-      },
-      testimonials: { 
-        title: 'Client Testimonials',
-        subtitle: 'What Our Clients Say'
-      },
-      contact: { 
-        title: 'Ready to Build Your Dream?', 
-        button: 'Schedule Consultation',
-        getInTouch: 'Get In Touch',
-        name: 'Your Name',
-        email: 'Email Address',
-        phone: 'Phone Number',
-        message: 'Your Message',
-        send: 'Send Message'
-      },
-      footer: { 
-        copyright: '© 2024 Idol Builders Ltd | All Rights Reserved', 
-        links1: 'Company', 
-        links2: 'Resources',
-        address: 'Lilypond Center, Suit No. A-13 3 R.K Mission Road, Dhaka-1203'
-      },
-      services: {
-        title: 'Our Services',
-        subtitle: 'COMPREHENSIVE SOLUTIONS',
-        construction: 'Construction Management',
-        design: 'Architectural Design',
-        consulting: 'Project Consulting',
-        facility: 'Facility Management'
-      },
-      gallery: {
-        title: 'Project Gallery',
-        subtitle: 'COMPLETED PROJECTS',
-        viewAll: 'View All Projects'
-      },
-      pricing: {
-        title: 'Our Pricing Plans',
-        subtitle: 'TRANSPARENT PRICING',
-        desc: 'Choose the perfect plan for your construction needs. All plans include our signature quality assurance.',
-        contact: 'Contact for Quote',
-        popular: 'Most Popular',
-        getStarted: 'Get Started',
-      },
-      stats: {
-        projects: 'Projects Delivered',
-        families: 'Happy Families',
-        sqft: 'Sq.Ft Built',
-        years: 'Years Experience',
-        professionals: 'Professionals',
-        satisfaction: 'Satisfaction'
-      }
-    },
-    bn: {
-      nav: { 
-        home: 'হোম', 
-        about: 'আমাদের সম্পর্কে', 
-        projects: 'প্রকল্প', 
-        services: 'সেবা', 
-        pricing: 'মূল্য তালিকা',
-        contact: 'যোগাযোগ', 
-        gallery: 'গ্যালারি', 
-      },
-      hero: { 
-        title: 'আইডল বিল্ডার্স লিমিটেড', 
-        subtitle: '১৯৮৫ সাল থেকে স্থাপত্য শ্রেষ্ঠত্ব নির্মাণ', 
-        cta: 'প্রজেক্ট দেখুন', 
-        cta2: 'যোগাযোগ করুন',
-        trusted: '১৯৮৫ থেকে বিশ্বস্ত',
-        years: '৪০ বছরের শ্রেষ্ঠত্ব'
-      },
-      about: { 
-        title: 'আইডল বিল্ডার্স সম্পর্কে', 
-        subtitle: 'নির্মাণে শ্রেষ্ঠত্ব', 
-        desc: 'আইডল বিল্ডার্স লিমিটেড বাংলাদেশের নির্মাণ শিল্পের শীর্ষে অবস্থান করছে, অতুলনীয় মান, উদ্ভাবন এবং কারুশিল্পের সাথে বিশ্বমানের আবাসিক ও বাণিজ্যিক প্রকল্প সরবরাহ করছে।',
-        vision: 'আমাদের দৃষ্টিভঙ্গি',
-        mission: 'আমাদের লক্ষ্য',
-        values: 'মূল মূল্যবোধ'
-      },
-      concern: { 
-        title: 'আমাদের বিভাগ', 
-        companies: 'মূল ব্যবসায়িক ইউনিট' 
-      },
-      properties: { 
-        title: 'প্রকল্প পোর্টফোলিও', 
-        subtitle: 'নির্মাণ বিভাগ', 
-        types: ['আবাসিক', 'বাণিজ্যিক', 'প্রিমিয়াম টাওয়ার', 'ওয়াটারফ্রন্ট', 'উচ্চ-উত্থান'] 
-      },
-      why: { 
-        title: 'প্রতিটি বিস্তারিত প্রকৌশল শ্রেষ্ঠত্ব', 
-        subtitle: 'কেন আইডল বিল্ডার্স নির্বাচন করবেন' 
-      },
-      md: { 
-        title: 'সিইও এর দৃষ্টিভঙ্গি', 
-        subtitle: 'নেতৃত্বের বার্তা' 
-      },
-      testimonials: { 
-        title: 'ক্লায়েন্ট প্রশংসাপত্র',
-        subtitle: 'আমাদের ক্লায়েন্টরা যা বলেন'
-      },
-      contact: { 
-        title: 'আপনার স্বপ্ন নির্মাণের জন্য প্রস্তুত?', 
-        button: 'পরামর্শ সময়সূচী',
-        getInTouch: 'যোগাযোগ করুন',
-        name: 'আপনার নাম',
-        email: 'ইমেইল ঠিকানা',
-        phone: 'ফোন নম্বর',
-        message: 'আপনার বার্তা',
-        send: 'বার্তা পাঠান'
-      },
-      footer: { 
-        copyright: '© ২০২৪ আইডল বিল্ডার্স লিমিটেড | সর্বস্বত্ব সংরক্ষিত', 
-        links1: 'কোম্পানি', 
-        links2: 'সম্পদ',
-        address: 'গুলশান এভিনিউ, ঢাকা ১২১২, বাংলাদেশ'
-      },
-      services: {
-        title: 'আমাদের সেবাসমূহ',
-        subtitle: 'ব্যাপক সমাধান',
-        construction: 'নির্মাণ ব্যবস্থাপনা',
-        design: 'স্থাপত্য ডিজাইন',
-        consulting: 'প্রকল্প পরামর্শ',
-        facility: 'সুবিধা ব্যবস্থাপনা'
-      },
-      gallery: {
-        title: 'প্রকল্প গ্যালারি',
-        subtitle: 'সম্পন্ন প্রকল্পসমূহ',
-        viewAll: 'সব প্রকল্প দেখুন'
-      },
-      pricing: {
-        title: 'আমাদের মূল্য তালিকা',
-        subtitle: 'স্বচ্ছ মূল্য নির্ধারণ',
-        desc: 'আপনার নির্মাণ প্রয়োজনের জন্য সেরা পরিকল্পনা নির্বাচন করুন। সমস্ত পরিকল্পনায় আমাদের মান নিশ্চয়তা অন্তর্ভুক্ত।',
-        contact: 'উদ্ধৃতির জন্য যোগাযোগ করুন',
-        popular: 'সবচেয়ে জনপ্রিয়',
-        getStarted: 'শুরু করুন',
-      },
-      stats: {
-        projects: 'প্রকল্প সরবরাহ',
-        families: 'সুখী পরিবার',
-        sqft: 'বর্গফুট নির্মিত',
-        years: 'বছরের অভিজ্ঞতা',
-        professionals: 'পেশাদার',
-        satisfaction: 'সন্তুষ্টি'
-      }
-    }
-  };
-  const t = content[lang];
-
-  const propertyTypes = [
-    { icon: Building2, count: '45+' },
-    { icon: Building2, count: '28+' },
-    { icon: Building2, count: '12+' },
-    { icon: Home, count: '8+' },
-    { icon: Building2, count: '15+' }
+  const links = [
+    { key: "home", en: "Home", bn: "হোম" },
+    { key: "about", en: "About", bn: "সম্পর্কে" },
+    { key: "projects", en: "Projects", bn: "প্রকল্প" },
+    { key: "services", en: "Services", bn: "সেবা" },
+    { key: "pricing", en: "Pricing", bn: "মূল্য" },
+    { key: "gallery", en: "Gallery", bn: "গ্যালারি" },
+    { key: "contact", en: "Contact", bn: "যোগাযোগ" },
   ];
 
-  const whyChooseFeatures = [
-    { icon: Award, title: lang === 'en' ? 'Award-Winning Design' : 'পুরস্কার বিজয়ী ডিজাইন', desc: lang === 'en' ? 'Multiple architectural excellence awards and international recognition' : 'একাধিক স্থাপত্য শ্রেষ্ঠত্ব পুরস্কার এবং আন্তর্জাতিক স্বীকৃতি' },
-    { icon: Shield, title: lang === 'en' ? 'Quality Assurance' : 'মান নিশ্চয়তা', desc: lang === 'en' ? 'ISO certified construction with rigorous quality control at every stage' : 'প্রতিটি পর্যায়ে কঠোর মান নিয়ন্ত্রণ সহ ISO প্রত্যয়িত নির্মাণ' },
-    { icon: Zap, title: lang === 'en' ? 'Smart Technology' : 'স্মার্ট প্রযুক্তি', desc: lang === 'en' ? 'IoT-enabled smart buildings with sustainable energy solutions' : 'টেকসই শক্তি সমাধান সহ IoT-সক্ষম স্মার্ট বিল্ডিং' },
-    { icon: Users, title: lang === 'en' ? 'Expert Team' : 'বিশেষজ্ঞ দল', desc: lang === 'en' ? '500+ skilled professionals including engineers and architects' : 'প্রকৌশলী এবং স্থপতি সহ ৫০০+ দক্ষ পেশাদার' },
-    { icon: TrendingUp, title: lang === 'en' ? 'Investment Value' : 'বিনিয়োগ মূল্য', desc: lang === 'en' ? 'Proven track record of properties appreciating 20-30% annually' : 'বার্ষিক ২০-৩০% সম্পত্তি মূল্য বৃদ্ধির প্রমাণিত ট্র্যাক রেকর্ড' },
-    { icon: Clock, title: lang === 'en' ? 'Timely Delivery' : 'সময়মত সরবরাহ', desc: lang === 'en' ? '98% on-time project completion rate over 4 decades' : '৪ দশক ধরে ৯৮% সময়মত প্রকল্প সমাপ্তির হার' }
-  ];
-
-  const divisions = [
-    { icon: "construction", name: lang === 'en' ? 'Idol Construction' : 'আইডল কনস্ট্রাকশন'},
-    { icon: "apartment", name: lang === 'en' ? 'Idol Properties & Development' : 'আইডল প্রপার্টিজ এবং ডেভেলপমেন্ট'},
-    { icon: "engineering", name: lang === 'en' ? 'Idol Infrastructure' : 'আইডল ইনফ্রাস্ট্রাকচার'},
-    { icon: "house", name: lang === 'en' ? 'Idol Real Estate' : 'আইডল রিয়েল এস্টেট'},
-    { icon: "manage_accounts", name: lang === 'en' ? 'Idol Facility Management' : 'আইডল ফ্যাসিলিটি ম্যানেজমেন্ট'},
-    { icon: "settings", name: lang === 'en' ? 'Idol Engineering Solutions' : 'আইডল ইঞ্জিনিয়ারিং সলিউশনস'},
-    { icon: "eco", name: lang === 'en' ? 'Idol Green Building' : 'আইডল গ্রীন বিল্ডিং'}
-  ];
-
-  const navClick = (page) => {
-    setCurrentPage(page);
-    setIsMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const renderPage = () => {
-    switch(currentPage) {
-      case 'about':
-        return <AboutPage t={t} lang={lang} />;
-      case 'projects':
-        return <ProjectsPage t={t} lang={lang} />;
-      case 'services':
-        return <ServicesPage t={t} lang={lang} />;
-      case 'pricing':
-        return <PricingPage t={t} lang={lang} navClick={navClick} />;
-      case 'contact':
-        return <ContactPage t={t} lang={lang} />;
-      case 'gallery':
-        return <GalleryPage t={t} lang={lang} />;
-      default:
-        return <HomePage t={t} lang={lang} whyChooseFeatures={whyChooseFeatures} propertyTypes={propertyTypes} divisions={divisions} scrollY={scrollY} activeTestimonial={activeTestimonial} setActiveTestimonial={setActiveTestimonial} />;
-    }
+  const go = (key) => {
+    navClick(key);
+    setOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 text-gray-900 overflow-hidden font-sans">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
-        
-        * { 
-          font-family: 'Inter', sans-serif;
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
-        
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes liquidFlow {
-          0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-          50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-        }
-        
-        @keyframes ripple {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.5); opacity: 0; }
-        }
-        
-        @keyframes shimmer {
-          0% { background-position: -1000px 0; }
-          100% { background-position: 1000px 0; }
-        }
-        
-        .animate-fadeInUp { animation: fadeInUp 1s ease-out forwards; }
-        .float { animation: float 4s ease-in-out infinite; }
-        .liquid-blob { animation: liquidFlow 8s ease-in-out infinite; }
-        
-        .liquid-glass {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 
-            0 8px 32px 0 rgba(31, 38, 135, 0.2),
-            inset 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-        
-        .liquid-glass-dark {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 
-            0 8px 32px 0 rgba(0, 0, 0, 0.3),
-            inset 0 0 20px rgba(255, 255, 255, 0.05);
-        }
-        
-        .water-ripple {
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .water-ripple::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at center, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
-          animation: ripple 3s ease-out infinite;
-        }
-        
-        .shimmer {
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-          background-size: 1000px 100%;
-          animation: shimmer 3s infinite;
-        }
-        
-        .gradient-primary {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .text-gradient {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        
-        .hover-lift {
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .hover-lift:hover {
-          transform: translateY(-12px) scale(1.02);
-          box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
-        }
-        
-        .nav-link {
-          position: relative;
-        }
-        
-        .nav-link::before {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 50%;
-          width: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #667eea, #764ba2);
-          transition: all 0.3s ease;
-          transform: translateX(-50%);
-          border-radius: 2px;
-        }
-        
-        .nav-link:hover::before {
-          width: 100%;
-        }
-        
-        .glow-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 1; box-shadow: 0 0 30px rgba(102, 126, 234, 0.5); }
-          50% { opacity: .8; box-shadow: 0 0 50px rgba(102, 126, 234, 0.8); }
-        }
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        padding: "0 5%",
+        transition: "all 0.4s ease",
 
-        .hero-title {
-          line-height: 1.1;
-          letter-spacing: -0.02em;
-        }
+        // ONLY TRANSPARENT ON HOME BEFORE SCROLL
+        background:
+          isScrolled || !isHome
+            ? "rgba(248,250,252,0.96)"
+            : "transparent",
 
-        @media (max-width: 768px) {
-          .hero-title {
-            font-size: 2.5rem !important;
-          }
-        }
-        
-        .card-hover {
-          transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-        }
-        
-        .card-hover:hover {
-          transform: translateY(-15px) rotateX(5deg);
-          box-shadow: 0 30px 60px rgba(102, 126, 234, 0.4);
-        }
+        backdropFilter:
+          isScrolled || !isHome
+            ? "blur(20px)"
+            : "none",
 
-        .pricing-table {
-          border-collapse: collapse;
-          width: 100%;
-        }
-        .pricing-table th, .pricing-table td {
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          padding: 10px 12px;
-          text-align: center;
-          font-size: 14px;
-        }
-        .pricing-table th {
-          background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-          color: white;
-          font-weight: 700;
-          font-size: 13px;
-        }
-        .pricing-table td {
-          background: rgba(255, 255, 255, 0.85);
-          color: #1a1a2e;
-          font-weight: 500;
-        }
-        .pricing-table tr:nth-child(even) td {
-          background: rgba(240, 248, 255, 0.9);
-        }
-        .pricing-table tr:hover td {
-          background: rgba(102, 126, 234, 0.1);
-        }
-        .pricing-section-label {
-          writing-mode: vertical-lr;
-          text-orientation: mixed;
-          transform: rotate(180deg);
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          font-weight: 800;
-          padding: 12px 8px;
-          text-align: center;
-          font-size: 16px;
-          letter-spacing: 2px;
-        }
+        borderBottom:
+          isScrolled || !isHome
+            ? "1px solid var(--gray)"
+            : "none",
 
-        .hexagon-container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 8px;
-          max-width: 600px;
-          margin: 0 auto;
-        }
+        boxShadow:
+          isScrolled || !isHome
+            ? "0 4px 24px rgba(37,99,235,0.06)"
+            : "none",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1320,
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 74,
+        }}
+      >
+        {/* LOGO */}
+        <button
+          onClick={() => go("home")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          {/* LOGO IMAGE */}
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 10,
+              background:
+                "linear-gradient(135deg, #b5cbfa, #dfecff)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow:
+                "0 4px 16px rgba(37,99,235,0.3)",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src="images/logo.png"
+              alt="Company Logo"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          </div>
 
-        .hexagon {
-          width: 120px;
-          height: 104px;
-          background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-weight: 600;
-          font-size: 12px;
-          text-align: center;
-          padding: 20px 10px;
-          transition: all 0.3s ease;
-        }
+          {/* TEXT */}
+          <div style={{ textAlign: "left" }}>
+            <div
+              className="display"
+              style={{
+                fontSize: "1.15rem",
+                fontWeight: 700,
+                lineHeight: 1.1,
+                transition: "0.3s ease",
 
-        .hexagon:hover {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          transform: scale(1.1);
-        }
-
-        @media (max-width: 640px) {
-          .pricing-table th, .pricing-table td {
-            padding: 6px 4px;
-            font-size: 11px;
-          }
-          .hexagon {
-            width: 90px;
-            height: 78px;
-            font-size: 10px;
-          }
-        }
-      `}</style>
-
-      {/* Liquid Decorative Blobs */}
-      <div className="fixed top-20 right-10 w-96 h-96 bg-gradient-to-br from-purple-400 to-blue-400 opacity-15 blur-3xl liquid-blob pointer-events-none"></div>
-      <div className="fixed bottom-20 left-10 w-[500px] h-[500px] bg-gradient-to-br from-pink-400 to-orange-400 opacity-15 blur-3xl liquid-blob pointer-events-none" style={{ animationDelay: '4s' }}></div>
-      <div className="fixed top-1/2 left-1/2 w-80 h-80 bg-gradient-to-br from-cyan-400 to-blue-400 opacity-10 blur-3xl liquid-blob pointer-events-none" style={{ animationDelay: '2s' }}></div>
-
-      {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'liquid-glass shadow-2xl' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navClick('home')}>
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center glow-pulse liquid-blob">
-              <img 
-    src="/images/logo.png"   // change path
-    alt="Construction"
-    className="w-14 h-14 object-contain"
-  />
-              </div>
-              <div className={`text-2xl font-bold ${isScrolled ? 'text-gradient' : isHome ? 'text-white' : 'text-gradient'}`}>
-                {lang === 'en' ? 'Idol Builders' : 'আইডল বিল্ডার্স'}
-              </div>
+                // WHITE ONLY ON HOME HERO
+                color:
+                  isScrolled || !isHome
+                    ? "var(--navy)"
+                    : "#ffffff",
+              }}
+            >
+              {t ? "Idol Builders" : "আইডল বিল্ডার্স"}
             </div>
 
-            <div className="hidden lg:flex items-center space-x-8">
-              {Object.entries(t.nav).map(([key, item]) => (
-                <button 
-                  key={key} 
-                  onClick={() => navClick(key)}
-                  className={`
-                    nav-link
-                    transition-colors duration-300 font-semibold text-sm
-                    ${
-                      isHome
-                        ? isScrolled
-                          ? "text-gray-800 hover:text-purple-600"
-                          : "text-white hover:text-purple-600"
-                        : "text-gray-800 hover:text-purple-600"
-                    }
-                    ${currentPage === key ? "text-purple-600" : ""}
-                  `}
-                >
-                  {item}
-                </button>
-              ))}
-              <button 
-                onClick={() => setLang(lang === 'en' ? 'bn' : 'en')} 
-                className={`px-5 py-2.5 liquid-glass border-2 border-purple-600 ${isHome ? isScrolled ? "text-gray-800 hover:text-purple-600" : "text-white hover:text-purple-600" : "text-gray-800 hover:text-purple-600"} rounded-xl hover:gradient-primary hover:border-transparent transition-all font-semibold`}
-              >
-                {lang === 'en' ? 'বাংলা' : 'EN'}
-              </button>
-              <button className="px-6 py-3 gradient-primary text-white rounded-xl hover:shadow-2xl transition-all font-semibold flex items-center gap-2 glow-pulse">
-                <Sparkles className="w-4 h-4" />
-                {lang === 'en' ? 'Book Plot' : 'প্লট বুক করুন'}
-              </button>
-            </div>
+            <div
+              style={{
+                fontSize: "0.58rem",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                transition: "0.3s ease",
 
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-gray-900 liquid-glass p-3 rounded-xl">
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                color:
+                  isScrolled || !isHome
+                    ? "var(--text-muted)"
+                    : "rgba(255,255,255,0.7)",
+              }}
+            >
+              Est. 1985
+            </div>
+          </div>
+        </button>
+
+        {/* DESKTOP LINKS */}
+        <div
+          className="hide-mobile"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 36,
+          }}
+        >
+          {links.map((l) => (
+            <button
+              key={l.key}
+              onClick={() => go(l.key)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.95rem",
+                fontWeight: 500,
+                transition: "0.3s ease",
+
+                color:
+                  currentPage === l.key
+                    ? "var(--blue)"
+                    : isScrolled || !isHome
+                    ? "var(--navy-2)"
+                    : "rgba(255,255,255,0.88)",
+              }}
+            >
+              {t ? l.en : l.bn}
+            </button>
+          ))}
+        </div>
+
+        {/* RIGHT BUTTONS */}
+        <div
+          className="hide-mobile"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          {/* LANGUAGE */}
+          <button
+            onClick={() =>
+              setLang(lang === "en" ? "bn" : "en")
+            }
+            className="btn-ghost"
+            style={{
+              padding: "8px 16px",
+              fontSize: "0.72rem",
+              transition: "0.3s ease",
+
+              color:
+                isScrolled || !isHome
+                  ? "var(--navy)"
+                  : "#fff",
+
+              border:
+                isScrolled || !isHome
+                  ? "1px solid var(--gray)"
+                  : "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            {t ? "বাংলা" : "EN"}
+          </button>
+
+          {/* CTA */}
+          <button
+            onClick={() => go("contact")}
+            className="btn-primary"
+            style={{
+              padding: "10px 22px",
+              fontSize: "0.8rem",
+            }}
+          >
+            <Sparkles size={14} />{" "}
+            {t ? "Book Plot" : "বুক করুন"}
+          </button>
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="show-mobile"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 8,
+            display: "none",
+            transition: "0.3s ease",
+
+            color:
+              isScrolled || !isHome
+                ? "var(--navy)"
+                : "#fff",
+          }}
+        >
+          {open ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* MOBILE MENU */}
+      {open && (
+        <div
+          className="menu-open"
+          style={{
+            padding: "20px 5%",
+            borderTop: "1px solid var(--gray)",
+            background: "rgba(248,250,252,0.98)",
+            backdropFilter: "blur(20px)",
+          }}
+        >
+          {links.map((l) => (
+            <button
+              key={l.key}
+              onClick={() => go(l.key)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                background: "none",
+                border: "none",
+
+                color:
+                  currentPage === l.key
+                    ? "var(--blue)"
+                    : "var(--navy-2)",
+
+                padding: "13px 0",
+                fontSize: "0.92rem",
+                fontWeight: 500,
+                cursor: "pointer",
+                borderBottom:
+                  "1px solid var(--gray)",
+              }}
+            >
+              {t ? l.en : l.bn}
+            </button>
+          ))}
+
+          {/* MOBILE BUTTONS */}
+          <div
+            style={{
+              marginTop: 20,
+              display: "flex",
+              gap: 12,
+            }}
+          >
+            <button
+              onClick={() =>
+                setLang(lang === "en" ? "bn" : "en")
+              }
+              className="btn-ghost"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            >
+              {t ? "বাংলা" : "EN"}
+            </button>
+
+            <button
+              onClick={() => go("contact")}
+              className="btn-primary"
+              style={{
+                flex: 2,
+                justifyContent: "center",
+              }}
+            >
+              {t ? "Book Plot" : "বুক করুন"}
             </button>
           </div>
         </div>
+      )}
+    </nav>
+  );
+};
 
-        {isMenuOpen && (
-          <div className="lg:hidden liquid-glass border-t border-white/30 animate-fadeInUp">
-            <div className="px-6 py-6 space-y-3">
-              {Object.entries(t.nav).map(([key, item]) => (
-                <button 
-                  key={key} 
-                  onClick={() => navClick(key)}
-                  className="block w-full text-left text-gray-700 hover:text-purple-600 transition-colors font-semibold py-2"
-                >
-                  {item}
-                </button>
-              ))}
-              <button 
-                onClick={() => setLang(lang === 'en' ? 'bn' : 'en')} 
-                className="w-full px-4 py-2.5 liquid-glass border-2 border-purple-600 text-purple-600 rounded-xl hover:gradient-primary hover:text-white transition-all font-semibold"
-              >
-                {lang === 'en' ? 'বাংলা' : 'EN'}
-              </button>
-            </div>
-          </div>
-        )}
-      </nav>
 
-      {/* Page Content */}
-      {renderPage()}
+/* ─── TICKER ─── */
+const Ticker = ({ lang }) => {
+  const items = lang === 'en'
+    ? ['Idol Green City — Your Dream Housing Project', 'RAJUK Megacity Master Plan NOC Approved', 'Clear Title Land at Affordable Price', 'The Best Investment Guarantee', 'Safe, Modern & Planned Housing for All', 'Idol Builders Ltd — Trusted Real Estate']
+    : ['আইডল গ্রীন সিটি — আপনার স্বপ্নের আবাসন প্রকল্প', 'রাজউক মেগাসিটি মাস্টার প্ল্যানের NOC প্রাপ্ত', 'সাশ্রয়ী মূল্যে নিষ্কণ্টক ভূমি', 'দ্য বেস্ট ইনভেস্টমেন্ট গ্যারান্টি', 'সবার জন্য নিরাপদ, আধুনিক ও পরিকল্পিত আবাসন', 'আইডল বিল্ডার্স লিঃ — বিশ্বস্ত রিয়েল এস্টেট'];
+  const doubled = [...items, ...items];
 
-      {/* Footer */}
-      <footer className="relative gradient-primary py-16 px-4 sm:px-6 lg:px-12 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-10 mb-12">
-            <div>
-              <div className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <div className="w-10 h-10 liquid-glass-dark rounded-xl flex items-center justify-center">
-                  <Building2 className="w-5 h-5" />
-                </div>
-                {lang === 'en' ? 'Idol Builders' : 'আইডল বিল্ডার্স'}
-              </div>
-              <p className="text-purple-200 text-sm leading-relaxed mb-4">
-                {lang === 'en' ? 'Building tomorrow\'s landmarks today. Excellence in every detail, innovation in every project.' : 'আজ আগামীর ল্যান্ডমার্ক নির্মাণ। প্রতিটি বিবরণে শ্রেষ্ঠত্ব, প্রতিটি প্রকল্পে উদ্ভাবন।'}
-              </p>
-              <div className="flex gap-3">
-                {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                  <a 
-                    key={i} 
-                    href="https://www.facebook.com" 
-                    className="w-10 h-10 liquid-glass-dark hover:bg-white/30 rounded-xl flex items-center justify-center transition-all hover-lift"
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold mb-4">{t.footer.links1}</h3>
-              <ul className="space-y-2 text-purple-200 text-sm">
-                <li><button onClick={() => navClick('about')} className="hover:text-white transition-colors">{lang === 'en' ? 'About Us' : 'আমাদের সম্পর্কে'}</button></li>
-                <li><button onClick={() => navClick('pricing')} className="hover:text-white transition-colors">{lang === 'en' ? 'Pricing' : 'মূল্য তালিকা'}</button></li>
-                <li><button className="hover:text-white transition-colors">{lang === 'en' ? 'Press & Media' : 'প্রেস এবং মিডিয়া'}</button></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold mb-4">{t.footer.links2}</h3>
-              <ul className="space-y-2 text-purple-200 text-sm">
-                <li><button onClick={() => navClick('projects')} className="hover:text-white transition-colors">{lang === 'en' ? 'Projects' : 'প্রকল্পসমূহ'}</button></li>
-                <li><button onClick={() => navClick('gallery')} className="hover:text-white transition-colors">{lang === 'en' ? 'Gallery' : 'গ্যালারি'}</button></li>
-                <li><button onClick={() => navClick('services')} className="hover:text-white transition-colors">{lang === 'en' ? 'Services' : 'সেবা'}</button></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold mb-4">{lang === 'en' ? 'Contact' : 'যোগাযোগ'}</h3>
-              <div className="space-y-3 text-purple-200 text-sm">
-                <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <p>{t.footer.address}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 flex-shrink-0" />
-                  <a href="mailto:idolbuildersbd@gmail.com" className="hover:text-white">idolbuildersbd@gmail.com</a>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <div>
-                    <p>+880 2-41054321</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-white/20 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-purple-200 text-sm">{t.footer.copyright}</p>
-              <div className="flex gap-6 text-sm text-purple-200">
-                <button className="hover:text-white">{lang === 'en' ? 'Privacy Policy' : 'গোপনীয়তা নীতি'}</button>
-                <button className="hover:text-white">{lang === 'en' ? 'Terms of Service' : 'সেবার শর্তাবলী'}</button>
-                <button className="hover:text-white">{lang === 'en' ? 'Sitemap' : 'সাইটম্যাপ'}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {/* Floating Action Button */}
-      <button className="fixed bottom-6 right-6 w-16 h-16 gradient-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50 group glow-pulse">
-        <MessageCircle className="w-7 h-7 text-white" />
-        <span className="absolute right-full mr-4 liquid-glass text-gray-900 px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-2xl">
-          {lang === 'en' ? 'Chat with us' : 'আমাদের সাথে চ্যাট করুন'}
-        </span>
-      </button>
+  return (
+    <div style={{ background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)', padding: '11px 0', overflow: 'hidden' }}>
+      <div className="marquee-inner" style={{ whiteSpace: 'nowrap', display: 'flex' }}>
+        {doubled.map((item, i) => (
+          <span key={i} style={{ padding: '0 40px', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', gap: 18 }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.6)', display: 'inline-block', flexShrink: 0 }}></span>
+            {item}
+          </span>
+        ))}
+      </div>
     </div>
   );
 };
 
-// =================== HomePage ===================
-const HomePage = ({ t, lang, whyChooseFeatures, propertyTypes, divisions, scrollY, activeTestimonial, setActiveTestimonial }) => (
-  <>
-    {/* Hero Section */}
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/images/main gate.png')",
-          transform: `translateY(${scrollY * 0.5}px)`,
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 via-indigo-500/30 to-blue-500/40"></div>
-        <div className="absolute inset-0 water-ripple"></div>
+/* ─── HERO ─── */
+const Hero = ({ lang, navClick }) => {
+  const t = lang === 'en';
+
+  return (
+    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: '#0F172A' }}>
+      {/* BG Image */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+        <img
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop"
+          alt=""
+          className="hero-img"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center center', opacity: 0.35 }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(110deg, rgba(15,23,42,0.97) 45%, rgba(15,23,42,0.6) 100%)' }}></div>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, transparent 55%)' }}></div>
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        <div className="animate-fadeInUp">
-          <div className="inline-block px-6 py-3 liquid-glass-dark rounded-full mb-8">
-            <p className="text-purple-200 font-semibold text-sm flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
-              {t.hero.trusted} • {t.hero.years}
+      {/* Grid overlay */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+        backgroundImage: 'linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px)',
+        backgroundSize: '72px 72px', pointerEvents: 'none'
+      }}></div>
+
+      {/* Glow orbs */}
+      <div style={{ position: 'absolute', top: '20%', right: '8%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+      <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 300, height: 300, background: 'radial-gradient(circle, rgba(221,245,232,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+
+      <div style={{ position: 'relative', zIndex: 10, padding: '110px 5% 80px', maxWidth: 1320, margin: '0 auto', width: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
+
+          {/* Left content */}
+          <div>
+            <div className="fade-up" style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 }}>
+              <span className="tag" style={{ background: 'rgba(37,99,235,0.2)', borderColor: 'rgba(37,99,235,0.4)', color: '#93C5FD' }}>The Best Investment Guarantee</span>
+              <span style={{ width: 36, height: 1, background: 'rgba(255,255,255,0.2)' }}></span>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '0.14em', color: '#93C5FD', textTransform: 'uppercase' }}>
+                {t ? "RAJUK Megacity NOC Approved" : 'রাজউক মেগাসিটি NOC প্রাপ্ত'}
+              </span>
+            </div>
+
+            <h1 className="display fade-up-2" style={{ fontSize: 'clamp(2.8rem, 7vw, 5.2rem)', lineHeight: 1.08, fontWeight: 800, color: 'white', marginBottom: 28 }}>
+              {t ? <>Your Dream<br /><span className="blue-text">Idol Green</span><br />City Awaits</> : <>আপনার স্বপ্নের<br /><span className="blue-text">আইডল গ্রীন</span><br />সিটি</>}
+            </h1>
+
+            <p className="fade-up-3" style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: 40, maxWidth: 500 }}>
+              {t
+                ? 'Idol Builders Ltd is committed to ensuring safe, beautiful, and modern housing for everyone. We advance on the path shown by Almighty Allah — with sincerity, transparency and responsibility.'
+                : 'সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের মূল অঙ্গীকার। সততা, স্বচ্ছতা ও দায়িত্বশীলতার মাধ্যমে আমরা এগিয়ে যাচ্ছি।'}
             </p>
-          </div>
-          <h1 className="hero-title text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white drop-shadow-2xl">
-            {t.hero.title}
-          </h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mx-auto mb-8 rounded-full shimmer"></div>
-          <p className="text-xl md:text-2xl lg:text-3xl text-purple-100 mb-14 font-light max-w-4xl mx-auto drop-shadow-lg">
-            {t.hero.subtitle}
-          </p>
-        </div>
-        
-        <div className="flex flex-col sm:flex-row gap-5 justify-center animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-          <button className="px-10 py-5 gradient-primary text-white rounded-2xl font-bold text-base hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 glow-pulse">
-            {t.hero.cta}
-            <ArrowRight className="w-5 h-5" />
-          </button>
-          <button className="px-10 py-5 liquid-glass-dark text-white rounded-2xl font-bold text-base hover:shadow-2xl transition-all duration-300 border-2 border-white/30 hover:border-white/50">
-            {t.hero.cta2}
-          </button>
-        </div>
 
-        <div className="mt-20 grid grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { num: '250+', label: t.stats.projects },
-            { num: '50K+', label: t.stats.families },
-            { num: '15M+', label: t.stats.sqft }
-          ].map((stat, i) => (
-            <div key={i} className="liquid-glass-dark p-6 rounded-2xl card-hover water-ripple">
-              <div className="text-4xl font-bold text-white mb-2">{stat.num}</div>
-              <div className="text-purple-200 text-xs font-medium">{stat.label}</div>
+            <div className="fade-up-4" style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+              <button onClick={() => navClick('projects')} className="btn-primary">
+                {t ? 'Explore Projects' : 'প্রকল্প দেখুন'} <ArrowRight size={16} />
+              </button>
+              <button onClick={() => navClick('contact')} className="btn-outline" style={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}>
+                <Play size={14} /> {t ? 'Book Consultation' : 'পরামর্শ করুন'}
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ChevronDown className="w-10 h-10 text-white opacity-75" />
-      </div>
-    </section>
-
-    {/* About Section */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs flex items-center justify-center gap-2">
-            <Star className="w-4 h-4" />
-            {t.about.subtitle}
-          </p>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">{t.about.title}</h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 mx-auto mb-8 rounded-full shimmer"></div>
-          <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            {t.about.desc}
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <div className="grid grid-cols-2 gap-5">
-              {[
-                { icon: Award, num: '40+', label: t.stats.years, color: 'from-purple-500 to-indigo-500' },
-                { icon: Building2, num: '250+', label: t.stats.projects, color: 'from-blue-500 to-cyan-500' },
-                { icon: Users, num: '500+', label: t.stats.professionals, color: 'from-pink-500 to-rose-500' },
-                { icon: TrendingUp, num: '98%', label: t.stats.satisfaction, color: 'from-orange-500 to-amber-500' }
-              ].map((stat, i) => {
-                const Icon = stat.icon;
-                return (
-                  <div key={i} className="liquid-glass p-7 rounded-3xl card-hover water-ripple">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center mb-4 glow-pulse`}>
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="text-4xl font-bold text-gray-900 mb-2">{stat.num}</div>
-                    <div className="text-gray-600 font-medium text-sm">{stat.label}</div>
-                  </div>
-                );
-              })}
-            </div>
-            
-            <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all flex items-center gap-2 glow-pulse">
-              <Play className="w-5 h-5" />
-              {lang === 'en' ? 'Watch Company Story' : 'কোম্পানির গল্প দেখুন'}
-            </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
+          {/* Right: Floating stat cards */}
+          <div className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', paddingLeft: 24 }}>
             {[
-              { img: 'images/convention center idol.png', name: "Convention Center" },
-              { img: "images/hospital.png", name: "Central Hospital" },
-              { img: "images/idol central park.png", name: "Central Park" },
-              { img: "images/mosque idol.png", name: "Central Mosque" }
-            ].map((item, i) => (
-              <div 
-                key={i} 
-                className="relative h-64 rounded-3xl overflow-hidden shadow-2xl card-hover"
-              >
-                <img 
-                  src={item.img}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4 liquid-glass-dark p-3 rounded-xl">
-                  <div className="text-white font-bold">{item.name}</div>
-                  <div className="text-purple-200 text-sm">{lang === 'en' ? 'Ongoing' : 'চলমান'}</div>
+              { num: '3,5,10,20', label: t ? 'Plot Sizes (Katha)' : 'প্লটের আকার (কাঠা)', icon: Building2, color: '#2563EB' },
+              { num: '25-60ft', label: t ? 'Wide Roads in Project' : 'প্রকল্পে প্রশস্ত রাস্তা', icon: Home, color: '#059669' },
+              { num: 'RAJUK', label: t ? 'NOC & DAPP Approved' : 'NOC ও ড্যাপ অনুমোদিত', icon: Shield, color: '#7C3AED' },
+              { num: 'CCTV', label: t ? 'Full Security System' : 'সার্বক্ষণিক নিরাপত্তা', icon: Award, color: '#D97706' },
+            ].map((s, i) => (
+              <div key={i}
+                className={`glass-card-dark float${i > 0 ? `-${i}` : ''}`}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 18,
+                  padding: '18px 24px', borderRadius: 14,
+                  transform: i % 2 === 1 ? 'translateX(32px)' : 'none',
+                  animationDelay: `${i * 0.8}s`
+                }}>
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: `${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <s.icon size={20} color={s.color} />
+                </div>
+                <div>
+                  <div className="display stat-number" style={{ fontSize: '1.7rem', fontWeight: 800, color: 'white', lineHeight: 1 }}>{s.num}</div>
+                  <div style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.5)', marginTop: 3 }}>{s.label}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
 
-    {/* Divisions Section */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-purple-50 to-blue-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.concern.title}</p>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">{t.concern.companies}</h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
+        {/* Mobile stats row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginTop: 60, borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40 }}>
+          {[
+            { num: '3-20', label: t ? 'Katha Plots' : 'কাঠা প্লট' },
+            { num: 'NOC', label: t ? 'RAJUK Approved' : 'রাজউক অনুমোদিত' },
+            { num: '25ft+', label: t ? 'Wide Roads' : 'প্রশস্ত রাস্তা' },
+            { num: '100%', label: t ? 'Clear Title' : 'নিষ্কণ্টক দলিল' },
+          ].map((s, i) => (
+            <div key={i} style={{ padding: '0 36px 0 0', marginRight: 0, borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: 36, marginRight: 36 }}>
+              <div className="display" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#60A5FA', lineHeight: 1 }}>{s.num}</div>
+              <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scroll cue */}
+      <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+        <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(37,99,235,0.5), transparent)' }}></div>
+        <ChevronDown size={16} color="rgba(255,255,255,0.3)" />
+      </div>
+
+      <style>{`@media(max-width:900px){section>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;}}`}</style>
+    </section>
+  );
+};
+
+/* ─── SECTION HEADER ─── */
+const SectionHeader = ({ tag, title, sub, centered = true, light = false }) => (
+  <div style={{ textAlign: centered ? 'center' : 'left', marginBottom: 64 }}>
+    {tag && <div className={`tag${light ? '' : ''}`} style={{ marginBottom: 18 }}>{tag}</div>}
+    <h2 className="display" style={{ fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', fontWeight: 800, color: light ? 'white' : 'var(--navy)', lineHeight: 1.15, marginBottom: 16 }}>
+      {title}
+    </h2>
+    {sub && <p style={{ fontSize: '1rem', color: light ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)', maxWidth: 560, margin: centered ? '0 auto' : 0, lineHeight: 1.75 }}>{sub}</p>}
+    <span className="blue-line" style={{ margin: centered ? '22px auto 0' : '22px 0 0' }}></span>
+  </div>
+);
+
+/* ─── ABOUT ─── */
+const AboutSection = ({ lang }) => {
+  const t = lang === 'en';
+  const features = [
+    { icon: Award, title: t ? 'Clear Title Land' : 'নিষ্কণ্টক ভূমি', desc: t ? 'Dispute-free, clear-title plots at affordable prices.' : 'সাশ্রয়ী মূল্যে নিষ্কণ্টক প্লট।' },
+    { icon: Shield, title: t ? 'RAJUK NOC Approved' : 'রাজউক NOC প্রাপ্ত', desc: t ? 'Fully RAJUK Megacity Master Plan approved.' : 'রাজউক মেগাসিটি মাস্টার প্ল্যানের আওতাভুক্ত।' },
+    { icon: Zap, title: t ? 'All Modern Utilities' : 'সকল আধুনিক সুবিধা', desc: t ? 'Water, gas, electricity, internet and more.' : 'পানি, গ্যাস, বিদ্যুৎ, ইন্টারনেট সহ সকল সুবিধা।' },
+    { icon: TrendingUp, title: t ? 'Best Investment Value' : 'সর্বোচ্চ বিনিয়োগ মূল্য', desc: t ? 'Proven appreciation and the best investment guarantee.' : 'প্রমাণিত মূল্য বৃদ্ধি ও সর্বোত্তম বিনিয়োগ।' },
+  ];
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+
+        {/* Left */}
+        <div>
+          <SectionHeader
+            tag={t ? 'About Us' : 'আমাদের সম্পর্কে'}
+            title={t ? <>Ensuring Safe & <span className="blue-text">Modern Housing</span> for All</> : <>সবার জন্য <span className="blue-text">নিরাপদ ও আধুনিক</span> আবাসন</>}
+            sub={t ? "Idol Builders Ltd advances with sincere trust and love for you — making your long-cherished dream a reality through Idol Green City, a modern, eco-friendly, and safe housing project." : "পরম করুণাময় আল্লাহর অপার রহমত ও কৃপায়, আপনাদের প্রতি অগাধ বিশ্বাস ও ভালোবাসা নিয়ে আমরা 'আইডল বিল্ডার্স লিমিটেড'-এর পথচলাকে এগিয়ে নিয়ে যাচ্ছি।"}
+            centered={false}
+          />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 36 }}>
+            {features.map(({ icon: Icon, title, desc }, i) => (
+              <div key={i} className="card-blue-glow" style={{ padding: '22px 20px' }}>
+                <div style={{ width: 40, height: 40, borderRadius: 9, background: 'var(--blue-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                  <Icon size={18} color="var(--blue)" />
+                </div>
+                <div className="display" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 5 }}>{title}</div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+
+          <button className="btn-primary">
+            {t ? 'Learn About Idol Green City' : 'আইডল গ্রীন সিটি সম্পর্কে জানুন'} <ArrowRight size={16} />
+          </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {divisions.map((division, i) => (
-            <div 
-              key={i} 
-              className="liquid-glass p-8 rounded-3xl card-hover cursor-pointer water-ripple"
+        {/* Right: image collage */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '240px 240px', gap: 12 }}>
+          {[
+            'images/psetu.png',
+            'images/stadium.png',
+            'images/hitech.png',
+            'images/nimtoli.png',
+          ].map((src, i) => (
+            <div key={i} style={{ overflow: 'hidden', position: 'relative', borderRadius: 14 }}>
+              <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease', display: 'block' }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.07)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.4) 0%, transparent 60%)', borderRadius: 14 }}></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;gap:48px!important;}}`}</style>
+    </section>
+  );
+};
+
+/* ─── DIVISIONS ─── */
+const DivisionsSection = ({ lang }) => {
+  const t = lang === 'en';
+  const divisions = [
+    { icon: Building2, name: t ? 'Idol Green City' : 'আইডল গ্রীন সিটি', desc: t ? 'Modern planned residential city project with RAJUK NOC approval.' : 'রাজউক NOC প্রাপ্ত আধুনিক পরিকল্পিত আবাসিক শহর প্রকল্প।' },
+    { icon: Home, name: t ? 'Residential Plots' : 'আবাসিক প্লট', desc: t ? 'Plots of 3, 5, 10 and 20 Katha with clear title documents.' : '৩, ৫, ১০ ও ২০ কাঠা নিষ্কণ্টক প্লট।' },
+    { icon: Zap, name: t ? 'Modern Infrastructure' : 'আধুনিক অবকাঠামো', desc: t ? '25 to 60 ft wide roads with full civic infrastructure.' : '২৫ থেকে ৬০ ফুট প্রশস্ত রাস্তাসহ পূর্ণ নাগরিক সুবিধা।' },
+    { icon: Shield, name: t ? 'Security & Safety' : 'নিরাপত্তা ব্যবস্থা', desc: t ? 'CCTV surveillance with govt. welfare foundation joint cooperation.' : 'সরকারি ওয়েলফেয়ার ফাউন্ডেনশনের যৌথ সহযোগিতায় সিসি ক্যামেরা।' },
+    { icon: Users, name: t ? 'Community Welfare' : 'সামাজিক উন্নয়ন', desc: t ? 'Welfare Society and fund managed by plot owners jointly.' : 'প্লট মালিকগণের সমন্বয়ে ওয়েলফেয়ার সোসাইটি ও ফান্ড।' },
+    { icon: Award, name: t ? 'Education & Health' : 'শিক্ষা ও স্বাস্থ্য', desc: t ? 'Schools, colleges, madrasa, hospital and healthcare facilities.' : 'স্কুল, কলেজ, মাদ্রাসা, হাসপাতাল ও স্বাস্থ্যসেবা।' },
+    { icon: Sparkles, name: t ? 'Green & Recreation' : 'সবুজ ও বিনোদন', desc: t ? 'Lake, cinema, food court, swimming pool and walkway.' : 'লেক, সিনেপ্লেক্স, ফুডকোর্ট, সুইমিংপুল ও ওয়াকওয়ে।' },
+  ];
+
+  return (
+    <section style={{ padding: '120px 5%', background: 'var(--navy)' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Project Highlights' : 'প্রকল্পের বিশেষত্ব'}
+          title={t ? 'Seven Pillars of Idol Green City' : 'আইডল গ্রীন সিটির সাত বিশেষত্ব'}
+          sub={t ? 'A thoughtfully planned modern township with all civic amenities, security and a green environment for your ideal life.' : 'আধুনিক নগর পরিকল্পনাবিদের তত্ত্বাবধানে সুপরিকল্পিত নগরায়নসহ সকল নাগরিক সুবিধা।'}
+          light
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          {divisions.map(({ icon: Icon, name, desc }, i) => (
+            <div key={i} style={{
+              padding: '32px 26px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 16,
+              cursor: 'pointer',
+              transition: 'all 0.35s',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(37,99,235,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(37,99,235,0.4)';
+                e.currentTarget.style.transform = 'translateY(-4px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
-              <div className="text-center">
-                <div className="w-14 h-14 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 glow-pulse liquid-blob">
-                  <ServiceCard icon={division.icon} />
-                </div>
-                <p className="text-gray-800 font-bold text-sm leading-snug">{division.name}</p>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, rgba(37,99,235,0.4), transparent)`, opacity: 0, transition: 'opacity 0.3s' }}></div>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--blue-subtle)', border: '1px solid rgba(37,99,235,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
+                <Icon size={20} color="var(--blue)" />
+              </div>
+              <div style={{ fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 8 }}>
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <h3 className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'white', marginBottom: 8 }}>{name}</h3>
+              <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{desc}</p>
+              <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6, color: '#60A5FA', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                {t ? 'Learn more' : 'আরও জানুন'} <ChevronRight size={12} />
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
+  );
+};
 
-    {/* Project Categories */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.properties.subtitle}</p>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">{t.properties.title}</h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
+/* ─── WHY CHOOSE ─── */
+const WhyChoose = ({ lang }) => {
+  const t = lang === 'en';
+  const items = [
+    { icon: Award, title: t ? 'Clear Title & Affordable Price' : 'নিষ্কণ্টক ভূমি ও সাশ্রয়ী মূল্য', desc: t ? 'Dispute-free, green and serene surroundings with plots at affordable prices.' : 'সবুজ শ্যামলে ঘেরা নিজস্ব নিষ্কণ্টক ভূমি ও সাশ্রয়ী মূল্য।' },
+    { icon: Shield, title: t ? 'RAJUK NOC & DAPP Approved' : 'রাজউক NOC ও ড্যাপ অনুমোদিত', desc: t ? 'Fully under RAJUK Megacity Master Plan with NOC approval and complete DAPP coverage.' : 'রাজউক মেগাসিটির মাস্টার প্ল্যানের আওতাভুক্ত NOC প্রাপ্ত ও সম্পূর্ণ ড্যাপের আওতামুক্ত।' },
+    { icon: Zap, title: t ? 'Wide Well-Planned Roads' : 'প্রশস্ত সু-বিন্যস্ত রাস্তা', desc: t ? '25 ft to 40 ft and 60 ft wide well-planned roads throughout the project.' : 'প্রকল্পে থাকছে ২৫ ফুট থেকে ৪০ ও ৬০ ফুট প্রশস্ত সু-বিন্যস্ত রাস্তা।' },
+    { icon: Users, title: t ? 'Complete Civic Amenities' : 'সম্পূর্ণ নাগরিক সুবিধা', desc: t ? 'Mosque, temple, school, college, hospital, shopping mall, graveyard, Eidgah, playground, madrasa, helipad, lake, cinema, food court, swimming pool, walkway and more.' : 'মসজিদ, মন্দির, স্কুল, কলেজ, হাসপাতাল, শপিংমল, কবরস্থান, ঈদগাহ, খেলার মাঠ, মাদ্রাসা, হেলিপ্যাড, লেক, সিনেপ্লেক্স, ফুডকোর্ট, সুইমিংপুল, ওয়াকওয়ে।' },
+    { icon: TrendingUp, title: t ? 'Full Security System' : 'সার্বক্ষণিক নিরাপত্তা', desc: t ? 'CCTV surveillance system with government administration and welfare foundation joint cooperation.' : 'সরকারি প্রশাসন ও ওয়েলফেয়ার ফাউন্ডেশনের যৌথ সহযোগিতায় সি.সি ক্যামেরার মাধ্যমে সার্বিক নিরাপত্তা।' },
+    { icon: Clock, title: t ? 'All Modern Utilities' : 'সকল প্রযুক্তিগত সুযোগ সুবিধা', desc: t ? 'Water, electricity, gas, telephone and internet services provided.' : 'পানি, বিদ্যুৎ, গ্যাস, টেলিফোন, ইন্টারনেটসহ সকল প্রযুক্তিগত সুযোগ সুবিধা প্রদান।' },
+  ];
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: -200, right: -200, width: 600, height: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
+
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Why Choose Us' : 'কেন আইডল গ্রীন সিটি পছন্দ করবেন'}
+          title={t ? <>Why Choose <span className="blue-text">Idol Green City</span></> : <>কেন <span className="blue-text">আইডল গ্রীন সিটি</span> পছন্দ করবেন</>}
+        />
+
+        {/* Bento grid layout */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          {items.map(({ icon: Icon, title, desc }, i) => (
+            <div key={i} className="card-blue-glow"
+              style={{
+                padding: '36px 30px',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'default',
+                ...(i === 0 ? { gridColumn: 'span 2', background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%)', borderColor: 'transparent' } : {}),
+              }}
+            >
+              {i === 0 && (
+                <div style={{ position: 'absolute', top: 0, right: 0, width: 200, height: 200, background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)' }}></div>
+              )}
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: i === 0 ? 'rgba(255,255,255,0.06)' : 'rgba(37,99,235,0.06)', position: 'absolute', top: 16, right: 22, fontFamily: 'Syne, sans-serif' }}>
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: i === 0 ? 'rgba(37,99,235,0.25)' : 'var(--blue-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                <Icon size={20} color={i === 0 ? '#93C5FD' : 'var(--blue)'} />
+              </div>
+              <h3 className="display" style={{ fontSize: '1.05rem', fontWeight: 700, color: i === 0 ? 'white' : 'var(--navy)', marginBottom: 10 }}>{title}</h3>
+              <p style={{ fontSize: '0.85rem', color: i === 0 ? 'rgba(255,255,255,0.55)' : 'var(--text-muted)', lineHeight: 1.75 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @media(max-width:900px){
+          section.mesh-bg > div > div[style*="grid-template-columns: repeat(3, 1fr)"] {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          section.mesh-bg > div > div > div[style*="span 2"] {
+            grid-column: span 2 !important;
+          }
+        }
+        @media(max-width:600px){
+          section.mesh-bg > div > div[style*="grid-template-columns: repeat(3, 1fr)"] {
+            grid-template-columns: 1fr !important;
+          }
+          section.mesh-bg > div > div > div[style*="span 2"] {
+            grid-column: span 1 !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+};
+
+/* ─── CEO QUOTE ─── */
+const CEOSection = ({ lang }) => {
+  const t = lang === 'en';
+  return (
+    <section style={{ padding: '120px 5%', background: 'var(--navy)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=600&fit=crop" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.06 }} />
+      </div>
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 600, height: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+
+      <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
+        <div className="display" style={{ fontSize: '5rem', color: 'rgba(37,99,235,0.4)', lineHeight: 0.5, marginBottom: 24 }}>"</div>
+        <blockquote style={{ fontSize: 'clamp(1.2rem, 2.8vw, 2rem)', fontWeight: 300, color: 'rgba(255,255,255,0.85)', lineHeight: 1.65, fontStyle: 'italic', marginBottom: 40, fontFamily: 'Outfit, sans-serif' }}>
+          {t
+            ? "Our vision is to build safe, beautiful and modern housing for all — not just providing land and homes, but creating a planned, eco-friendly city where every family can fulfill their dream with peace, dignity and modern civic life."
+            : "সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের মূল অঙ্গীকার। শুধু জমি বা ঘর নয়, আমরা একটি পরিকল্পিত, পরিবেশবান্ধব শহর গড়ে তুলছি যেখানে প্রতিটি পরিবার তাদের স্বপ্ন পূরণ করতে পারবে।"}
+        </blockquote>
+        <div style={{ width: 48, height: 2, background: 'var(--blue)', margin: '0 auto 24px', borderRadius: 2 }}></div>
+        <div className="display" style={{ fontSize: '1rem', fontWeight: 700, color: '#60A5FA' }}>
+          {t ? 'M. Haydar Ali' : 'এম. হায়দার আলী'}
+        </div>
+        <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 6 }}>
+          {t ? 'Chairman, Idol Builders Ltd' : 'চেয়ারম্যান, আইডল বিল্ডার্স লিঃ'}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── TESTIMONIALS ─── */
+const Testimonials = ({ lang }) => {
+  const t = lang === 'en';
+  const [active, setActive] = useState(0);
+  const testimonials = [
+    { name: t ? 'Nur Mohammad' : 'নূর মোহাম্মদ', role: t ? 'Managing Director, Idol Builders Ltd' : 'ব্যবস্থাপনা পরিচালক, আইডল বিল্ডার্স লিঃ', rating: 5, text: t ? "We advance with your sincere trust and love. With sincerity, transparency and responsibility — we are committed to making your long-cherished dream a reality. Your satisfaction is our greatest success." : "আপনাদের প্রতি অগাধ বিশ্বাস ও ভালোবাসা নিয়ে আমরা এগিয়ে যাচ্ছি। সততা, স্বচ্ছতা ও দায়িত্বশীলতার মাধ্যমে আপনার দীর্ঘদিনের লালিত স্বপ্নকে বাস্তবে রূপ দিতে দৃঢ় প্রতিজ্ঞ।" },
+    { name: t ? 'A Satisfied Plot Owner' : 'একজন সন্তুষ্ট গ্রাহক', role: t ? 'Plot Owner, Idol Green City' : 'প্লট মালিক, আইডল গ্রীন সিটি', rating: 5, text: t ? "Idol Green City has already become a trusted housing project for our customers. The clear title land, wide roads, RAJUK approval and modern amenities make it truly the best investment guarantee." : "আইডল গ্রীন সিটি আবাসন প্রকল্পটি ইতিমধ্যে গ্রাহকদের আস্থার পরিণত হয়েছে। নিষ্কণ্টক ভূমি, প্রশস্ত রাস্তা, রাজউক অনুমোদন ও আধুনিক সুবিধা এটিকে সত্যিকারের সেরা বিনিয়োগ করে তুলেছে।" },
+    { name: t ? 'M. Haydar Ali' : 'এম. হায়দার আলী', role: t ? 'Chairman, Idol Builders Ltd' : 'চেয়ারম্যান, আইডল বিল্ডার্স লিঃ', rating: 5, text: t ? "I sincerely thank our esteemed customers for their unwavering trust in Idol Green City. We are always committed to providing all modern housing facilities with top-quality connectivity and civic life." : "আইডল গ্রীন সিটির প্রতি অবিচল আস্থা এবং সহযোগিতা বজায় রাখার জন্য আমি সম্মানিত গ্রাহক শুভানুধ্যায়ীদের আন্তরিক ধন্যবাদ জানাই।" },
+  ];
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Testimonials' : 'প্রশংসাপত্র'}
+          title={t ? 'What Our Clients Say' : 'আমাদের ক্লায়েন্টরা বলেন'}
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20 }}>
+          {testimonials.map((tst, i) => (
+            <div key={i} className="gradient-border lift" style={{ padding: '36px 30px', position: 'relative', cursor: 'default' }}>
+              <div style={{ display: 'flex', gap: 4, marginBottom: 18 }}>
+                {[...Array(tst.rating)].map((_, j) => <Star key={j} size={14} fill="#2563EB" color="#2563EB" />)}
+              </div>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: 26, fontStyle: 'italic' }}>"{tst.text}"</p>
+              <div style={{ borderTop: '1px solid var(--gray)', paddingTop: 20, display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'linear-gradient(135deg, var(--blue), #60A5FA)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span className="display" style={{ color: 'white', fontSize: '1rem', fontWeight: 700 }}>{tst.name[0]}</span>
+                </div>
+                <div>
+                  <div className="display" style={{ fontWeight: 700, color: 'var(--navy)', fontSize: '0.9rem' }}>{tst.name}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--blue)', marginTop: 2 }}>{tst.role}</div>
+                </div>
+              </div>
+              <div className="display" style={{ position: 'absolute', top: 20, right: 28, fontSize: '4rem', color: 'rgba(37,99,235,0.07)', lineHeight: 1 }}>"</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr 1fr"]{grid-template-columns:1fr!important;}}`}</style>
+    </section>
+  );
+};
+
+/* ─── CTA BANNER ─── */
+const CTABanner = ({ lang, navClick }) => {
+  const t = lang === 'en';
+  return (
+    <section style={{ padding: '100px 5%', background: 'linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+      <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%)', borderRadius: '50%' }}></div>
+      <div style={{ position: 'relative', maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
+        <h2 className="display" style={{ fontSize: 'clamp(2rem, 4.5vw, 3.4rem)', fontWeight: 800, color: 'white', marginBottom: 16, lineHeight: 1.15 }}>
+          {t ? "Book Your Plot in Idol Green City Today!" : "আজই আইডল গ্রীন সিটিতে আপনার প্লট বুক করুন!"}
+        </h2>
+        <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.75)', marginBottom: 40, lineHeight: 1.7 }}>
+          {t ? "First-come-first-served basis. Secure your dream plot in RAJUK Megacity NOC approved Idol Green City — your best investment guarantee." : "আগে আসলে আগে পাবেন। রাজউক মেগাসিটি NOC প্রাপ্ত আইডল গ্রীন সিটিতে আপনার স্বপ্নের প্লট বুক করুন — দ্য বেস্ট ইনভেস্টমেন্ট গ্যারান্টি।"}
+        </p>
+        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button onClick={() => navClick('contact')} style={{
+            padding: '14px 36px', background: 'white', color: 'var(--blue)',
+            border: 'none', borderRadius: 8, fontSize: '0.86rem', fontWeight: 700,
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, transition: 'all 0.3s',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.2)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)'; }}>
+            {t ? 'Schedule Consultation' : 'পরামর্শ নিন'} <ArrowRight size={16} />
+          </button>
+          <button onClick={() => navClick('pricing')} style={{
+            padding: '14px 36px', background: 'rgba(255,255,255,0.1)', color: 'white',
+            border: '2px solid rgba(255,255,255,0.35)', borderRadius: 8, fontSize: '0.86rem', fontWeight: 700,
+            cursor: 'pointer', transition: 'all 0.3s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+            {t ? 'View Pricing' : 'মূল্য দেখুন'}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── FOOTER ─── */
+const Footer = ({ lang, navClick }) => {
+  const t = lang === 'en';
+  return (
+    <footer style={{ background: 'var(--navy)', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '80px 5% 40px' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 60, marginBottom: 60 }}>
+
+          {/* Brand */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 10, background: 'linear-gradient(135deg, #2563EB, #3B82F6)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}>
+                <Building2 size={20} color="white" />
+              </div>
+              <div>
+                <div className="display" style={{ fontSize: '1.1rem', color: 'white', fontWeight: 700 }}>
+                  {t ? 'Idol Builders Ltd' : 'আইডল বিল্ডার্স লিমিটেড'}
+                </div>
+                <div style={{ fontSize: '0.58rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>The Best Investment Guarantee</div>
+              </div>
+            </div>
+            <p style={{ fontSize: '0.84rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.8, marginBottom: 24 }}>
+              {t ? "Your dream home is our commitment. Ensuring safe, beautiful and modern housing for all — through Idol Green City, Bangladesh's best investment guarantee." : "আপনার স্বপ্নের আবাসন আমাদের অঙ্গীকার। সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের লক্ষ্য।"}
+            </p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
+                <a key={i} href="https://www.facebook.com" style={{
+                  width: 38, height: 38, borderRadius: 8,
+                  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'rgba(255,255,255,0.35)', transition: 'all 0.25s', textDecoration: 'none'
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(37,99,235,0.25)'; e.currentTarget.style.borderColor = 'rgba(37,99,235,0.4)'; e.currentTarget.style.color = '#93C5FD'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.35)'; }}>
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Links 1 */}
+          <div>
+            <h4 className="display" style={{ fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#60A5FA', marginBottom: 20 }}>
+              {t ? 'Company' : 'কোম্পানি'}
+            </h4>
+            {[
+              { key: 'about', en: 'About Us', bn: 'আমাদের সম্পর্কে' },
+              { key: 'projects', en: 'Projects', bn: 'প্রকল্পসমূহ' },
+              { key: 'gallery', en: 'Gallery', bn: 'গ্যালারি' },
+            ].map(l => (
+              <button key={l.key} onClick={() => navClick(l.key)} style={{ display: 'block', background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.84rem', padding: '7px 0', cursor: 'pointer', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}>
+                {t ? l.en : l.bn}
+              </button>
+            ))}
+          </div>
+
+          {/* Links 2 */}
+          <div>
+            <h4 className="display" style={{ fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#60A5FA', marginBottom: 20 }}>
+              {t ? 'Resources' : 'সম্পদ'}
+            </h4>
+            {[
+              { key: 'services', en: 'Services', bn: 'সেবা' },
+              { key: 'pricing', en: 'Pricing', bn: 'মূল্য তালিকা' },
+              { key: 'contact', en: 'Contact', bn: 'যোগাযোগ' },
+            ].map(l => (
+              <button key={l.key} onClick={() => navClick(l.key)} style={{ display: 'block', background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.84rem', padding: '7px 0', cursor: 'pointer', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}>
+                {t ? l.en : l.bn}
+              </button>
+            ))}
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="display" style={{ fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#60A5FA', marginBottom: 20 }}>
+              {t ? 'Contact' : 'যোগাযোগ'}
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {[
+                { Icon: MapPin, info: 'Lilypond Center, Suit A-13\n3 R.K Mission Road, Dhaka-1203' },
+                { Icon: Mail, info: 'idolbuildersbd@gmail.com' },
+                { Icon: Phone, info: '+880 2-41054321' },
+              ].map(({ Icon, info }, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 7, background: 'rgba(37,99,235,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                    <Icon size={14} color="#60A5FA" />
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, whiteSpace: 'pre-line' }}>{info}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-          {propertyTypes.map((prop, i) => {
-            const Icon = prop.icon;
-            const gradients = ['from-purple-500 to-indigo-500', 'from-blue-500 to-cyan-500', 'from-pink-500 to-rose-500', 'from-orange-500 to-amber-500', 'from-green-500 to-emerald-500'];
-            return (
-              <div 
-                key={i}
-                className="liquid-glass p-10 rounded-3xl card-hover cursor-pointer water-ripple"
-              >
-                <div className="text-center">
-                  <div className={`w-20 h-20 bg-gradient-to-br ${gradients[i]} rounded-3xl flex items-center justify-center mx-auto mb-5 glow-pulse liquid-blob`}>
-                    <Icon className="w-10 h-10 text-white" />
+        {/* Bottom */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.25)' }}>
+            © 2025 Idol Builders Ltd. {t ? 'All rights reserved.' : 'সর্বস্বত্ব সংরক্ষিত।'} | {t ? 'The Best Investment Guarantee' : 'দ্য বেস্ট ইনভেস্টমেন্ট গ্যারান্টি'}
+          </p>
+          <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.2)' }}>
+            {t ? 'Privacy Policy · Terms of Service' : 'গোপনীয়তা নীতি · সেবার শর্তাবলী'}
+          </p>
+        </div>
+      </div>
+      <style>{`@media(max-width:900px){footer>div>div[style*="grid-template-columns: 2fr"]{grid-template-columns:1fr 1fr!important;}}@media(max-width:600px){footer>div>div[style*="grid-template-columns: 2fr"]{grid-template-columns:1fr!important;}}`}</style>
+    </footer>
+  );
+};
+
+/* ─── HOME PAGE ─── */
+const HomePage = ({ lang, navClick }) => (
+  <>
+    <Hero lang={lang} navClick={navClick} />
+    <Ticker lang={lang} />
+    <AboutSection lang={lang} />
+    <DivisionsSection lang={lang} />
+    <WhyChoose lang={lang} />
+    <CEOSection lang={lang} />
+    <Testimonials lang={lang} />
+    <CTABanner lang={lang} navClick={navClick} />
+  </>
+);
+
+/* ─── PAGE: ABOUT ─── */
+const AboutPage = ({ lang }) => {
+  const t = lang === 'en';
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Our Story' : 'আমাদের গল্প'}
+          title={t ? <>Idol Builders Ltd — <span className="blue-text">Your Trusted</span> Real Estate Partner</> : <>আইডল বিল্ডার্স লিঃ — আপনার <span className="blue-text">বিশ্বস্ত</span> রিয়েল এস্টেট অংশীদার</>}
+          sub={t ? "Idol Builders Ltd advances with sincere trust and love, ensuring safe, beautiful and modern housing for all. Through Idol Green City, we are turning your long-cherished dream into reality." : "পরম করুণাময় আল্লাহর উপর অগাধ বিশ্বাস ও আস্থা রেখে কৃতজ্ঞতা প্রকাশ করছি যে, আমাদের দীর্ঘ দিনের লালিত স্বপ্নের 'আইডল বিল্ডার্স লিমিটেড' মানুষের কল্যাণে ও স্বপ্ন পূরণে এগিয়ে যাচ্ছে।"}
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, marginBottom: 80, alignItems: 'start' }}>
+          <div>
+            <h3 className="display" style={{ fontSize: '1.6rem', color: 'var(--navy)', marginBottom: 14, fontWeight: 700 }}>{t ? 'Our Vision' : 'ভিশন'}</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.85, marginBottom: 28, fontSize: '0.96rem' }}>
+              {t
+                ? "To fulfill people's dreams within affordability and capability is the core principle of our organization. We aim to earn a distinguished reputation in the real estate sector through maximum transparency, sincerity and commitment in all land transactions."
+                : "সাদ ও সাধ্যের মধ্যে জনমানুষের স্বপ্ন পূরণ আমাদের প্রতিষ্ঠানের মূলনীতি। ভূমি সংক্রান্ত সকল লেনদেন সর্বোচ্চ স্বচ্ছতা, সততা এবং কর্মনিষ্ঠার মাধ্যমে সুনাম অর্জন করা।"}
+            </p>
+            <h3 className="display" style={{ fontSize: '1.6rem', color: 'var(--navy)', marginBottom: 14, fontWeight: 700 }}>{t ? 'Our Mission' : 'মিশন'}</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.85, fontSize: '0.96rem' }}>
+              {t
+                ? "To individually collect and preserve customer data efficiently. To provide smooth solutions for customers to acquire ownership matching their overall financial and social position. To ensure accountability to customers at all times. To provide professional assistance in home construction loans at the customer level. To deploy skilled manpower to provide services based on the highest priority of customers."
+                : "ব্যক্তি গ্রাহক ভিত্তিতে সুচারু ভাবে তথ্যের সংগ্রহ এবং সংরক্ষণ করা। গ্রাহকের সর্বাঙ্গীন আর্থিক ও সামাজিক অবস্থানের মালিকানা অর্জনে সুচারু সমাধান প্রদান করা। গ্রাহকের কাছে সর্বময় অবস্থায় জবাবদিহতা নিশ্চিত করা। গ্রাহক পর্যায়ে বাড়ি নির্মান কাজে ঋণ গ্রহণের ক্ষেত্রে পেশাগত সহযোগিতা করা। গ্রাহকদের সর্বোচ্চ অগ্রাধিকারের ভিত্তিতে সেবা প্রদানের মানসে প্রয়োজনীয় দক্ষ জনশক্তি নিয়োজিত করা।"}
+            </p>
+          </div>
+          <div>
+            <div style={{ position: 'relative', overflow: 'hidden', height: 360, borderRadius: 16 }}>
+              <img src="images/yoobabess.png" alt="About" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.7) 0%, transparent 55%)' }}></div>
+              <div className="glass-card-dark" style={{ position: 'absolute', bottom: 24, left: 24, padding: '14px 22px', borderRadius: 12 }}>
+                <div className="display" style={{ fontSize: '1.8rem', color: '#60A5FA', fontWeight: 800 }}>NOC</div>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{t ? 'RAJUK Approved' : 'রাজউক অনুমোদিত'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Core values */}
+        <div style={{ borderTop: '2px solid var(--gray)', paddingTop: 60 }}>
+          <h3 className="display" style={{ fontSize: '1.9rem', color: 'var(--navy)', marginBottom: 32, textAlign: 'center', fontWeight: 800 }}>
+            {t ? 'Core Values' : 'মূল মূল্যবোধ'}
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+            {[
+              { title: t ? 'Integrity' : 'সততা', desc: t ? 'Transparent in every land transaction and dealing.' : 'প্রতিটি ভূমি লেনদেনে স্বচ্ছতা ও সততা।', color: '#2563EB' },
+              { title: t ? 'Accountability' : 'জবাবদিহিতা', desc: t ? 'Always accountable to customers in all circumstances.' : 'সর্বময় অবস্থায় গ্রাহকের কাছে জবাবদিহিতা।', color: '#059669' },
+              { title: t ? 'Customer First' : 'গ্রাহক প্রথম', desc: t ? 'Services based on highest priority of customers.' : 'গ্রাহকদের সর্বোচ্চ অগ্রাধিকারের ভিত্তিতে সেবা।', color: '#7C3AED' },
+              { title: t ? 'Community' : 'সমাজ', desc: t ? 'Building planned communities, not just selling land.' : 'শুধু জমি নয়, পরিকল্পিত সমাজ গড়া।', color: '#D97706' },
+            ].map((v, i) => (
+              <div key={i} className="card-blue-glow" style={{ padding: '32px 24px', textAlign: 'center', borderRadius: 16 }}>
+                <div className="display" style={{ fontSize: '2rem', color: `${v.color}22`, marginBottom: 12, fontWeight: 800 }}>{String(i + 1).padStart(2, '0')}</div>
+                <div style={{ width: 36, height: 3, background: v.color, borderRadius: 2, margin: '0 auto 16px', opacity: 0.8 }}></div>
+                <h4 className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 8 }}>{v.title}</h4>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @media(max-width:900px){
+          section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;}
+          section.mesh-bg>div>div>div[style*="grid-template-columns: repeat(4"]{grid-template-columns:repeat(2,1fr)!important;}
+        }
+      `}</style>
+    </section>
+  );
+};
+
+/* ─── PAGE: PROJECTS ─── */
+const ProjectsPage = ({ lang }) => {
+  const t = lang === 'en';
+  const [filter, setFilter] = useState('All');
+  const categories = t
+    ? ['All', 'Residential', 'Commercial', 'High-Rise', 'Waterfront']
+    : ['সব', 'আবাসিক', 'বাণিজ্যিক', 'উচ্চ-উত্থান', 'ওয়াটারফ্রন্ট'];
+
+  const projects = [
+    { img: 'images/main gate.png', name: t ? 'Idol Green City' : 'আইডল গ্রীন সিটি', loc: t ? 'Dhaka Megacity Area' : 'ঢাকা মেগাসিটি এলাকা', cat: t ? 'Residential' : 'আবাসিক', size: t ? '3, 5, 10 & 20 Katha' : '৩, ৫, ১০ ও ২০ কাঠা' },
+    { img: 'images/idol central park.png', name: t ? 'Idol Central Park' : 'আইডল সেন্ট্রাল পার্ক', loc: t ? 'Dhaka Megacity Area' : 'ঢাকা মেগাসিটি এলাকা', cat: t ? 'Commercial' : 'বাণিজ্যিক', size: t ? 'Commercial Zone' : 'বাণিজ্যিক জোন' },
+    { img: 'images/mosque idol.png', name: t ? 'Idol Central Mosque' : 'আইডল সেন্ট্রাল মসজিদ', loc: t ? 'Idol Green City' : 'আইডল গ্রীন সিটি', cat: t ? 'High-Rise' : 'উচ্চ-উত্থান', size: t ? 'Multi-storey' : 'বহুতল' },
+    { img: 'images/convention.png', name: t ? 'Idol Convention Center' : 'আইডল কনভেনশন সেন্টার', loc: t ? 'Idol Green City' : 'আইডল গ্রীন সিটি', cat: t ? 'Waterfront' : 'ওয়াটারফ্রন্ট', size: t ? 'Lakeside' : 'লেকসাইড' },
+];
+
+  const filtered = filter === 'All' || filter === 'সব' ? projects : projects.filter(p => p.cat === filter);
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Portfolio' : 'পোর্টফোলিও'}
+          title={t ? 'Idol Green City — Our Flagship Project' : 'আইডল গ্রীন সিটি — আমাদের প্রধান প্রকল্প'}
+          sub={t ? 'A modern, eco-friendly and safe housing project with RAJUK Megacity Master Plan NOC approval — your best investment guarantee.' : 'রাজউক মেগাসিটি মাস্টার প্ল্যানের NOC প্রাপ্ত আধুনিক, পরিবেশবান্ধব ও নিরাপদ আবাসন প্রকল্প — আপনার সেরা বিনিয়োগ গ্যারান্টি।'}
+        />
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 48 }}>
+          {categories.map(c => (
+            <button key={c} onClick={() => setFilter(c)} className={`filter-pill${filter === c ? ' active' : ''}`}>{c}</button>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          {filtered.map((p, i) => (
+            <div key={i} className="card-blue-glow" style={{ overflow: 'hidden', cursor: 'pointer', borderRadius: 16 }}>
+              <div style={{ height: 240, overflow: 'hidden', position: 'relative' }}>
+                <img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.07)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.5) 0%, transparent 55%)' }}></div>
+                <div style={{ position: 'absolute', top: 16, left: 16 }}>
+                  <span className="tag" style={{ background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(8px)', color: 'white', borderColor: 'rgba(255,255,255,0.2)' }}>{p.cat}</span>
+                </div>
+              </div>
+              <div style={{ padding: '22px 24px' }}>
+                <h3 className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 8 }}>{p.name}</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    <MapPin size={12} /> {p.loc}
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-2 text-base">{t.properties.types[i]}</h3>
-                  <p className="text-purple-600 font-bold text-sm">{prop.count} {lang === 'en' ? 'Projects' : 'প্রকল্প'}</p>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 500 }}>{p.size}</div>
+                </div>
+                {/* <button style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--blue)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, padding: 0, transition: 'gap 0.2s', letterSpacing: '0.06em' }}
+                  onMouseEnter={e => e.currentTarget.style.gap = '10px'}
+                  onMouseLeave={e => e.currentTarget.style.gap = '6px'}>
+                  {t ? 'View Details' : 'বিস্তারিত'} <ArrowRight size={14} />
+                </button> */}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(3, 1fr)"]{grid-template-columns:repeat(2,1fr)!important;}}@media(max-width:600px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(3, 1fr)"]{grid-template-columns:1fr!important;}}`}</style>
+    </section>
+  );
+};
+
+/* ─── PAGE: SERVICES ─── */
+const ServicesPage = ({ lang }) => {
+  const t = lang === 'en';
+  const services = [
+    { icon: Building2, title: t ? 'Plot Booking & Registration' : 'প্লট বুকিং ও রেজিস্ট্রেশন', desc: t ? 'First-come-first-served plot booking with official company application form, NID and passport-size photos. Primary allocation letter provided after payment.' : 'গ্রাহক বা তার প্রতিনিধি প্লট বরাদ্দের জন্য কোম্পানীর নির্ধারিত ফরমে আবেদন করতে হবে। প্লট বুকিং এর পরিমাণ অর্থ পরিশোধের পর প্রাথমিক বরাদ্পত্র প্রদান করা হবে।', color: '#2563EB' },
+    { icon: Sparkles, title: t ? 'Name Transfer Service' : 'নাম পরিবর্তন সেবা', desc: t ? 'If a customer wants to transfer their plot to another name, the company\'s prescribed name-change fee must be paid.' : 'কোন গ্রাহক যদি তার বরাদ্দকৃত প্লটটি অন্য নামে হস্তান্তর বা নাম পরিবর্তন করতে চান, সেক্ষেত্রে কোম্পানীর নির্ধারিত নাম পরিবর্তন ফি প্রদান করতে হবে।', color: '#7C3AED' },
+    { icon: Users, title: t ? 'Home Loan Assistance' : 'হোম লোন সহযোগিতা', desc: t ? 'Professional assistance to customers for home construction loan from relevant government-approved institutions.' : 'গ্রাহক পর্যায়ে বাড়ি নির্মান কাজে ঋণ গ্রহণের ক্ষেত্রে পেশাগত সহযোগিতা করা হয়।', color: '#059669' },
+    { icon: Shield, title: t ? 'Utilities & Infrastructure' : 'ইউটিলিটি ও অবকাঠামো', desc: t ? 'Electricity, water, gas and sanitation arranged through connected organizations. Plot owners bear proportional ownership costs; main connection setup is owner\'s responsibility.' : 'সংশ্লিষ্ট সংস্থাসমূহের সহযোগিতায় প্রকল্পে বিদ্যুৎ, পানি, গ্যাস ও পয়ঃনিষ্কাশন ব্যবস্থা কোম্পানীর উদ্যোগে ব্যবস্থা করা হবে।', color: '#D97706' },
+    { icon: Zap, title: t ? 'Welfare Society & Fund' : 'ওয়েলফেয়ার সোসাইটি ও ফান্ড', desc: t ? 'A Welfare Society will be formed among plot owners for managing the project\'s social development. A welfare fund will be formed for associated expenses.' : 'প্রকল্পের সামাজিক উন্নয়ন কার্যক্রম পরিচালনার জন্য মালিকদের সমন্বয়ে ওয়েলফেয়ার সোসাইটি গঠন করা হবে। সোসাইটির সিদ্ধান্ত অনুযায়ী ফান্ডে টাকা জমা দিতে হবে।', color: '#0891B2' },
+    { icon: TrendingUp, title: t ? 'Registration & Handover' : 'রেজিস্ট্রেশন ও হস্তান্তর', desc: t ? 'Registration and handover process completed within 15 working days after full payment. All registration fees and applicable charges are borne by the plot owner.' : 'মূল্য পরিশোধের পর ১৫ কার্যদিবসের মধ্যে প্লট রেজিস্ট্রেশন প্রক্রিয়া সম্পন্ন করা হবে। রেজিস্ট্রি এবং হস্তান্তরের জন্য রেজিস্ট্রেশন ফি ভ্যাটসহ আনুষঙ্গিক যাবতীয়খরচাদি গ্রহীতা বহন করবেন।', color: '#DC2626' },
+  ];
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Services' : 'সেবাসমূহ'}
+          title={t ? 'Plot Purchase Rules & Services' : 'প্লট ক্রয়ের নিয়মাবলি ও সেবা'}
+          sub={t ? 'Transparent rules and professional services from plot booking to registration and handover — we are always by your side.' : 'প্লট বুকিং থেকে রেজিস্ট্রেশন ও হস্তান্তর পর্যন্ত স্বচ্ছ নিয়মাবলি ও পেশাদার সেবা — আমরা সবসময় পাশে আছি।'}
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
+          {services.map(({ icon: Icon, title, desc, color }, i) => (
+            <div key={i} className="card-blue-glow" style={{ padding: '40px 32px', cursor: 'default', borderRadius: 16, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${color}, ${color}88, transparent)`, opacity: 0.7, borderRadius: '16px 16px 0 0' }}></div>
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: `${color}14`, border: `1px solid ${color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+                <Icon size={22} color={color} />
+              </div>
+              <h3 className="display" style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 12 }}>{title}</h3>
+              <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: 18 }}>{desc}</p>
+              {/* <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: color, fontSize: '0.74rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                {t ? 'Learn More' : 'আরও জানুন'} <ChevronRight size={12} />
+              </div> */}
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(3, 1fr)"]{grid-template-columns:repeat(2,1fr)!important;}}@media(max-width:600px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(3, 1fr)"]{grid-template-columns:1fr!important;}}`}</style>
+    </section>
+  );
+};
+
+/* ─── PAGE: GALLERY ─── */
+const GalleryPage = ({ lang }) => {
+  const t = lang === 'en';
+  const images = [
+    { src: 'images/pic1.png', title: t ? 'Idol Green City' : 'আইডল গ্রীন সিটি' },
+    { src: 'images/pic2.png', title: t ? 'Current Situation' : 'বর্তমান অবস্থা' },
+    { src: 'images/hitech.png', title: t ? 'Lake & Recreation Area' : 'লেক ও বিনোদন এলাকা' },
+    { src: 'images/convention.png', title: t ? 'Convention Center' : 'কনভেনশন সেন্টার' },
+    { src: 'images/mosque idol.png', title: t ? 'Idol Mosque' : 'মসজিদ' },
+    { src: 'images/nimtoli.png', title: t ? 'Dhaka Nimtola, Padma Setu' : 'ঢাকা নিমতলা, পদ্মাসেতু- খুলনা রেললাইন ' },
+  ];
+
+  const [hovered, setHovered] = useState(null);
+
+  return (
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Gallery' : 'গ্যালারি'}
+          title={t ? 'Idol Green City Gallery' : 'আইডল গ্রীন সিটি গ্যালারি'}
+          sub={t ? 'A visual showcase of Idol Green City — modern planned roads, amenities, lake, and a green environment for your ideal life.' : 'আইডল গ্রীন সিটির ভিজ্যুয়াল শোকেস — আধুনিক পরিকল্পিত রাস্তা, সুবিধাসমূহ, লেক ও সবুজ পরিবেশ।'}
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 14 }}>
+          {images.map((img, i) => {
+            const spans = i === 0 ? 'span 7' : i === 4 ? 'span 7' : 'span 5';
+            return (
+              <div key={i} style={{ gridColumn: spans, overflow: 'hidden', position: 'relative', height: 340, borderRadius: 16, cursor: 'pointer' }}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}>
+                <img src={img.src} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)', transform: hovered === i ? 'scale(1.07)' : 'scale(1)' }} />
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.1) 50%, transparent 100%)',
+                  borderRadius: 16,
+                  opacity: hovered === i ? 1 : 0.4,
+                  transition: 'opacity 0.4s'
+                }}>
+                  <div style={{ position: 'absolute', bottom: 24, left: 24 }}>
+                    <div className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'white', transform: hovered === i ? 'translateY(0)' : 'translateY(8px)', transition: 'transform 0.4s' }}>{img.title}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.72rem', color: '#60A5FA', marginTop: 6, letterSpacing: '0.08em', textTransform: 'uppercase', opacity: hovered === i ? 1 : 0, transition: 'opacity 0.4s 0.1s' }}>
+                      <Eye size={12} /> {t ? 'View Project' : 'প্রকল্প দেখুন'}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(12"]{display:grid!important;grid-template-columns:1fr 1fr!important;}section.mesh-bg>div>div[style*="grid-template-columns: repeat(12"] > div{grid-column:span 1!important;height:220px!important;}}@media(max-width:600px){section.mesh-bg>div>div[style*="grid-template-columns: repeat(12"] > div{height:180px!important;}}`}</style>
     </section>
+  );
+};
 
-    {/* Why Choose Section */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-slate-50 to-purple-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-20 items-center">
-          <div className="relative">
-            <div className="rounded-3xl overflow-hidden shadow-2xl water-ripple">
-              <img 
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=700&h=900&fit=crop"
-                alt="Building"
-                className="w-full"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent"></div>
-              <div className="absolute top-8 left-8 liquid-glass-dark px-6 py-3 rounded-2xl flex items-center gap-2">
-                <Play className="w-5 h-5 text-white" />
-                <span className="text-white font-bold text-sm">{lang === 'en' ? 'Virtual Tour' : 'ভার্চুয়াল ট্যুর'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.why.subtitle}</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">{t.why.title}</h2>
-            <p className="text-gray-600 mb-10 leading-relaxed text-lg">
-              {lang === 'en' 
-                ? 'Combining cutting-edge technology with timeless craftsmanship, Idol Builders delivers projects that exceed expectations and stand the test of time.' 
-                : 'অত্যাধুনিক প্রযুক্তির সাথে কালজয়ী কারুশিল্পের সমন্বয়, আইডল বিল্ডার্স এমন প্রকল্প সরবরাহ করে যা প্রত্যাশা অতিক্রম করে এবং সময়ের পরীক্ষায় টিকে থাকে।'}
-            </p>
-
-            <div className="space-y-5">
-              {whyChooseFeatures.map((feature, i) => {
-                const Icon = feature.icon;
-                const colors = ['from-purple-500 to-indigo-500', 'from-blue-500 to-cyan-500', 'from-pink-500 to-rose-500', 'from-orange-500 to-amber-500', 'from-green-500 to-emerald-500', 'from-red-500 to-orange-500'];
-                return (
-                  <div key={i} className="flex items-start gap-5 liquid-glass p-6 rounded-2xl card-hover water-ripple">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${colors[i]} rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse`}>
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 mb-2 text-lg">{feature.title}</h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* CEO Section */}
-    <section className="relative py-28 px-4 sm:px-6 lg:px-12 gradient-primary overflow-hidden">
-      <div className="absolute inset-0 water-ripple opacity-30"></div>
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <p className="text-purple-200 font-bold mb-3 tracking-wider uppercase text-xs">{t.md.subtitle}</p>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">{t.md.title}</h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-400 via-pink-400 to-white mx-auto rounded-full shimmer"></div>
-        </div>
-
-        <div className="grid gap-16 items-center">
-          <div className="liquid-glass-dark p-12 rounded-3xl water-ripple">
-            <div className="text-7xl text-purple-300 mb-6">"</div>
-            <p className="text-white leading-relaxed mb-8 text-xl">
-              {lang === 'en' 
-                ? 'Our vision is to revolutionize Bangladesh\'s skyline with sustainable, innovative structures that not only provide homes and workspaces but create vibrant communities. We\'re not just building structures; we\'re crafting legacies that will stand for generations.' 
-                : 'আমাদের দৃষ্টিভঙ্গি হল টেকসই, উদ্ভাবনী কাঠামোর সাথে বাংলাদেশের আকাশরেখা বিপ্লব করা যা কেবল বাড়ি এবং কর্মক্ষেত্র প্রদান করে না বরং প্রাণবন্ত সম্প্রদায় তৈরি করে। আমরা শুধু কাঠামো তৈরি করছি না; আমরা উত্তরাধিকার তৈরি করছি যা প্রজন্মের জন্য দাঁড়িয়ে থাকবে।'}
-            </p>
-            <div className="border-t border-white/20 pt-6">
-              <p className="text-white font-bold text-2xl mb-2">{lang === 'en' ? 'Arif Rahman' : 'আরিফ রহমান'}</p>
-              <p className="text-purple-200 font-medium text-lg">{lang === 'en' ? 'Chief Executive Officer' : 'প্রধান নির্বাহী কর্মকর্তা'}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* CTA Section */}
-    <section 
-      className="relative py-36 px-4 sm:px-6 lg:px-12 bg-cover bg-center overflow-hidden"
-      style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&h=700&fit=crop')"
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/95 via-indigo-900/90 to-blue-900/95"></div>
-      <div className="absolute inset-0 water-ripple opacity-30"></div>
-      
-      <div className="relative z-10 max-w-5xl mx-auto text-center">
-        <h2 className="text-4xl md:text-7xl font-bold text-white mb-10 leading-tight">{t.contact.title}</h2>
-        <p className="text-2xl text-purple-200 mb-12">{lang === 'en' ? 'Let\'s discuss your vision and bring it to life' : 'আসুন আপনার দৃষ্টিভঙ্গি আলোচনা করি এবং এটিকে জীবন্ত করি'}</p>
-        <button className="px-12 py-5 liquid-glass-dark text-white rounded-2xl font-bold hover:shadow-2xl transition-all transform hover:scale-105 border-2 border-white/30 inline-flex items-center gap-3 text-lg">
-          {t.contact.button}
-          <ArrowRight className="w-6 h-6" />
-        </button>
-      </div>
-    </section>
-  </>
-);
-
-// =================== PricingPage ===================
-const PricingPage = ({ t, lang, navClick }) => {
-  const amenities = [
-    lang === 'en' ? 'Apartment Zone' : 'এপার্টমেন্ট জোন',
-    lang === 'en' ? 'Shopping Complex' : 'শপিং কমপ্লেক্স',
-    lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার',
-    lang === 'en' ? 'Club House' : 'ক্লাব হাউজ',
-    lang === 'en' ? 'Duplex Zone' : 'ডুপ্লেক্স জোন',
-    lang === 'en' ? 'Hospital' : 'হাসপাতাল',
-    lang === 'en' ? 'Super Shop' : 'সুপার শপ',
-    lang === 'en' ? 'University' : 'বিশ্ববিদ্যালয়',
-    lang === 'en' ? 'Central Car Parking' : 'সেন্ট্রাল কার পার্কিং জোন',
-    lang === 'en' ? 'Old & Day Care' : 'ওল্ড এ্যান্ড ডে কেয়ার',
-    lang === 'en' ? 'Playground' : 'খেলার মাঠ',
-    lang === 'en' ? 'Amusement Park' : 'এমিউজমেন্ট পার্ক',
-  ];
-
-  // 5-Katha pricing data
-  const fiveKathaPricing = [
-    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '১০,০০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১৩,০০,০০০' },
-    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '১১,০০,০০০', y1: '১১,৫০,০০০', y2: '১২,০০,০০০', y3: '১২,৫০,০০০', y4: '১৩,০০,০০০', y5: '১৪,০০,০০০' },
-    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '১২,০০,০০০', y1: '১২,৫০,০০০', y2: '১৩,০০,০০০', y3: '১৩,৫০,০০০', y4: '১৪,০০,০০০', y5: '১৫,০০,০০০' },
-    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১৩,০০,০০০', y1: '১৩,৫০,০০০', y2: '১৪,০০,০০০', y3: '১৪,৫০,০০০', y4: '১৫,০০,০০০', y5: '১৬,০০,০০০' },
-    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১৪,০০,০০০', y1: '১৪,৫০,০০০', y2: '১৫,০০,০০০', y3: '১৫,৫০,০০০', y4: '১৬,০০,০০০', y5: '১৭,০০,০০০' },
-    { location: lang === 'en' ? 'Restricted' : 'এরিস্ট্রিক্টেড', lumpsum: '১৫,০০,০০০', y1: '১৫,৫০,০০০', y2: '১৬,০০,০০০', y3: '১৬,৫০,০০০', y4: '১৭,০০,০০০', y5: '১৮,০০,০০০' },
-  ];
-
-  // 7-Katha pricing data
-  const sevenKathaPricing = [
-    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '৮,৫০,০০০', y1: '৯,০০,০০০', y2: '৯,৫০,০০০', y3: '১০,০০,০০০', y4: '১০,৫০,০০০', y5: '১১,০০,০০০', y6: '১১,৫০,০০০', y7: '১২,০০,০০০' },
-    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '৯,০০,০০০', y1: '৯,৫০,০০০', y2: '১০,০০,০০০', y3: '১০,৫০,০০০', y4: '১১,০০,০০০', y5: '১১,৫০,০০০', y6: '১২,০০,০০০', y7: '১৩,০০,০০০' },
-    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '১০,০০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১২,৫০,০০০', y6: '১৩,০০,০০০', y7: '১৪,০০,০০০' },
-    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১১,০০,০০০', y1: '১১,৫০,০০০', y2: '১২,০০,০০০', y3: '১২,৫০,০০০', y4: '১৩,০০,০০০', y5: '১৩,৫০,০০০', y6: '১৪,০০,০০০', y7: '১৫,০০,০০০' },
-    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১২,০০,০০০', y1: '১২,৫০,০০০', y2: '১৩,০০,০০০', y3: '১৩,৫০,০০০', y4: '১৪,০০,০০০', y5: '১৪,৫০,০০০', y6: '১৫,০০,০০০', y7: '১৬,০০,০০০' },
-  ];
-
-  // 3-Katha pricing data  
-  const threeKathaPricing = [
-    { location: lang === 'en' ? 'North Facing' : 'উত্তরমুখী', lumpsum: '৭,০০,০০০', y1: '৭,৫০,০০০', y2: '৯,০০,০০০', y3: '৯,৫০,০০০', y4: '১০,০০,০০০', y5: '১০,৫০,০০০', y6: '১১,০০,০০০', y7: '১১,৫০,০০০', y8: '১২,০০,০০০' },
-    { location: lang === 'en' ? 'South Facing' : 'দক্ষিণমুখী', lumpsum: '৭,৫০,০০০', y1: '৯,০০,০০০', y2: '৯,৫০,০০০', y3: '১০,০০,০০০', y4: '১০,৫০,০০০', y5: '১১,০০,০০০', y6: '১১,৫০,০০০', y7: '১২,০০,০০০', y8: '১৩,০০,০০০' },
-    { location: lang === 'en' ? 'North-West Corner' : 'উত্তরমুখী কর্ণার', lumpsum: '৯,৫০,০০০', y1: '১০,৫০,০০০', y2: '১১,০০,০০০', y3: '১১,৫০,০০০', y4: '১২,০০,০০০', y5: '১২,৫০,০০০', y6: '১২,৫০,০০০', y7: '১৪,৫০,০০০', y8: '১৪,০০,০০০' },
-    { location: lang === 'en' ? 'South-West Corner' : 'দক্ষিণমুখী কর্ণার', lumpsum: '১০,০০,০০০', y1: '১১,০০,০০০', y2: '১১,৫০,০০০', y3: '১২,০০,০০০', y4: '১২,৫০,০০০', y5: '১৩,০০,০০০', y6: '১৫,৫০,০০০', y7: '১৪,০০,০০০', y8: '১৫,৫০,০০০' },
-    { location: lang === 'en' ? 'Commercial Plot' : 'বাণিজ্যিক প্লট', lumpsum: '১১,০০,০০০', y1: '১২,০০,০০০', y2: '১২,৫০,০০০', y3: '১৩,০০,০০০', y4: '১৩,৫০,০০০', y5: '১৪,০০,০০০', y6: '১৫,০০,০০০', y7: '১৫,০০,০০০', y8: '১৬,০০,০০০' },
-  ];
+/* ─── PAGE: CONTACT ─── */
+const ContactPage = ({ lang }) => {
+  const t = lang === 'en';
+  const [focused, setFocused] = useState(null);
 
   return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16 animate-fadeInUp">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs flex items-center justify-center gap-2">
-            <DollarSign className="w-4 h-4" />
-            {t.pricing.subtitle}
-          </p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.pricing.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto mb-8 rounded-full shimmer"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">{t.pricing.desc}</p>
-        </div>
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Contact' : 'যোগাযোগ'}
+          title={t ? 'Get In Touch' : 'যোগাযোগ করুন'}
+          sub={t ? "Have a project in mind or want to explore your options? Our team is ready to help you take the first step towards your dream property." : "আপনার স্বপ্নের সম্পত্তির দিকে প্রথম পদক্ষেপ নিতে আমাদের দল প্রস্তুত।"}
+        />
 
-        {/* Amenities Section - Idol Builders City */}
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-16 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 md:p-12">
-            <div className="text-center mb-10">
-              <div className="inline-block px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl mb-6">
-                <h2 className="text-white text-2xl md:text-3xl font-bold">
-                  {lang === 'en' ? 'Amenities Available for Citizens at Idol Builders City' : 'আইডল বিল্ডার্স সিটিতে নাগরিকদের সুযোগ সুবিধা সমূহ'}
-                </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+
+          {/* Form */}
+          <div className="card-blue-glow" style={{ padding: '48px 40px', borderRadius: 20 }}>
+            <h3 className="display" style={{ fontSize: '1.6rem', color: 'var(--navy)', marginBottom: 32, fontWeight: 800 }}>
+              {t ? 'Send a Message' : 'বার্তা পাঠান'}
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {[
+                { label: t ? 'Full Name' : 'পূর্ণ নাম', type: 'text', ph: t ? 'Your name' : 'আপনার নাম' },
+                { label: t ? 'Email Address' : 'ইমেইল ঠিকানা', type: 'email', ph: 'email@example.com' },
+                { label: t ? 'Phone Number' : 'ফোন নম্বর', type: 'tel', ph: '+880 1X-XXXXXXXX' },
+              ].map((f, i) => (
+                <div key={i}>
+                  <label style={{ display: 'block', fontSize: '0.76rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600 }}>{f.label}</label>
+                  <input type={f.type} placeholder={f.ph} className="input-field input-glow" />
+                </div>
+              ))}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.76rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600 }}>
+                  {t ? 'Message' : 'বার্তা'}
+                </label>
+                <textarea rows={5} placeholder={t ? 'Tell us about your project...' : 'আপনার প্রকল্প সম্পর্কে বলুন...'} className="input-field input-glow" style={{ resize: 'none' }}></textarea>
               </div>
+              <button className="btn-neon">
+                {t ? 'Send Message' : 'বার্তা পাঠান'} <ArrowRight size={18} style={{ position: 'relative', zIndex: 1 }} />
+              </button>
             </div>
+          </div>
 
-            {/* Hexagon Grid */}
-            <div className="hexagon-container mb-10">
-              {amenities.map((amenity, i) => (
-                <div key={i} className="hexagon">
-                  <span className="px-2">{amenity}</span>
+          {/* Info */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div className="card-blue-glow" style={{ padding: '36px 32px', borderRadius: 18 }}>
+              <h3 className="display" style={{ fontSize: '0.72rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--blue)', marginBottom: 24, fontWeight: 700 }}>
+                {t ? 'Contact Information' : 'যোগাযোগের তথ্য'}
+              </h3>
+              {[
+                { Icon: MapPin, title: t ? 'Address' : 'ঠিকানা', info: 'Lilypond Center, Suit No. A-13\n3 R.K Mission Road, Dhaka-1203' },
+                { Icon: Mail, title: t ? 'Email' : 'ইমেইল', info: 'idolbuildersbd@gmail.com' },
+                { Icon: Phone, title: t ? 'Phone' : 'ফোন', info: '+880 2-41054321' },
+              ].map(({ Icon, title, info }, i) => (
+                <div key={i} style={{ display: 'flex', gap: 16, marginBottom: i < 2 ? 20 : 0, paddingBottom: i < 2 ? 20 : 0, borderBottom: i < 2 ? '1px solid var(--gray)' : 'none' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 11, background: 'var(--blue-subtle)', border: '1px solid rgba(37,99,235,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon size={17} color="var(--blue)" />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 5, fontWeight: 600 }}>{title}</div>
+                    <div style={{ fontSize: '0.88rem', color: 'var(--navy)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>{info}</div>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center text-blue-100 text-sm md:text-base leading-relaxed max-w-4xl mx-auto">
-              <p>
-                {lang === 'en' 
-                  ? 'Additionally, the project includes offices & commercial spaces, raw bazaar, mosque, temple, church, graveyard, food court, car parking zone, school, college, madrasa, water purification & waste management systems with all smart city amenities.'
-                  : 'এছাড়াও একপ্লেক্সে থাকছে অফিস ও বাণিজ্যিক স্থান, কাঁচা বাজার, মসজিদ, মন্দির, গির্জা, কবরস্থান, ফুড কোর্ট, কার পার্কিং জোন, স্কুল, কলেজ, মাদ্রাসা, পানি পরিশোধন ও বর্জ্য নিষ্কাশন ব্যবস্থাসহ স্মার্ট সিটির সকল নাগরিক সুযোগ সুবিধা।'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Pricing Title */}
-        <div className="text-center mb-12 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
-          <div className="inline-block px-8 py-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 rounded-2xl shadow-lg">
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
-              {lang === 'en' ? 'Price Per Katha Plot' : 'কাঠা প্রতি প্লটের মূল্য'}
-            </h2>
-          </div>
-        </div>
-
-        {/* 5-Katha Pricing Table */}
-        <div className="mb-12 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
-          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
-            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
-              {lang === 'en' ? 'SECTOR-1' : 'সেক্টর-১'}
-            </div>
-            <div className="flex-1 overflow-x-auto">
-              <table className="pricing-table">
-                <thead>
-                  <tr>
-                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
-                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
-                    <th>{lang === 'en' ? '1 Year (12 inst.)' : '১ বছর ১২ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {fiveKathaPricing.map((row, i) => (
-                    <tr key={i}>
-                      <td className="font-semibold text-left">{row.location}</td>
-                      <td>{row.lumpsum}</td>
-                      <td>{row.y1}</td>
-                      <td>{row.y2}</td>
-                      <td>{row.y3}</td>
-                      <td>{row.y4}</td>
-                      <td>{row.y5}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* 7-Katha Pricing Table */}
-        <div className="mb-12 animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
-          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
-            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
-              {lang === 'en' ? 'SECTOR-2' : 'সেক্টর-২'}
-            </div>
-            <div className="flex-1 overflow-x-auto">
-              <table className="pricing-table">
-                <thead>
-                  <tr>
-                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
-                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
-                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '6 Year (72 inst.)' : '৬ বছর ৭২ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '7 Year (84 inst.)' : '৭ বছর ৮৪ কিস্তি'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sevenKathaPricing.map((row, i) => (
-                    <tr key={i}>
-                      <td className="font-semibold text-left">{row.location}</td>
-                      <td>{row.lumpsum}</td>
-                      <td>{row.y1}</td>
-                      <td>{row.y2}</td>
-                      <td>{row.y3}</td>
-                      <td>{row.y4}</td>
-                      <td>{row.y5}</td>
-                      <td>{row.y7}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* 3-Katha Pricing Table */}
-        <div className="mb-16 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
-          <div className="flex rounded-2xl overflow-hidden shadow-2xl">
-            <div className="pricing-section-label flex items-center justify-center min-w-[50px]">
-              {lang === 'en' ? 'SECTOR-3' : 'সেক্টর-৩'}
-            </div>
-            <div className="flex-1 overflow-x-auto">
-              <table className="pricing-table">
-                <thead>
-                  <tr>
-                    <th>{lang === 'en' ? 'Location' : 'অবস্থান'}</th>
-                    <th>{lang === 'en' ? 'Lump Sum' : 'একমুশলীন মূল্য'}</th>
-                    <th>{lang === 'en' ? '2 Year (24 inst.)' : '২ বছর ২৪ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '3 Year (36 inst.)' : '৩ বছর ৩৬ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '4 Year (48 inst.)' : '৪ বছর ৪৮ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '5 Year (60 inst.)' : '৫ বছর ৬০ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '6 Year (72 inst.)' : '৬ বছর ৭২ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '7 Year (84 inst.)' : '৭ বছর ৮৪ কিস্তি'}</th>
-                    <th>{lang === 'en' ? '8 Year (96 inst.)' : '৮ বছর ৯৬ কিস্তি'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {threeKathaPricing.map((row, i) => (
-                    <tr key={i}>
-                      <td className="font-semibold text-left">{row.location}</td>
-                      <td>{row.lumpsum}</td>
-                      <td>{row.y1}</td>
-                      <td>{row.y2}</td>
-                      <td>{row.y3}</td>
-                      <td>{row.y4}</td>
-                      <td>{row.y5}</td>
-                      <td>{row.y7}</td>
-                      <td>{row.y8}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Notes */}
-        <div className="text-center space-y-4 animate-fadeInUp" style={{ animationDelay: '0.7s' }}>
-          <div className="inline-block px-8 py-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 rounded-2xl shadow-lg mb-4">
-            <p className="text-lg md:text-xl font-bold text-gray-900">
-              {lang === 'en' ? 'Booking Money Per Katha: ৳30,000/- | Down Payment: 30% of Total Price' : 'কাঠা প্রতি বুকিং মানি ৩০,০০০/- | ডাউন পেমেন্ট মোট মূল্যের ৩০%'}
-            </p>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-              {lang === 'en' 
-                ? '40 feet road side plots will have an additional ৳1,00,000/- per katha. 60 feet road, park, playground side plots will have an additional ৳2,00,000/- per katha.'
-                : '৪০ ফুট রোড এর সাথে কাঠা প্রতি ১,০০,০০০/- টাকা এবং ৬০ ফুট রোড, পার্ক, খেলার মাঠের সাথে কাঠা প্রতি ২,০০,০০০/- টাকা বৃদ্ধি পাবে।'}
-            </p>
-          </div>
-        </div>
-
-        {/* Contact CTA */}
-        <div className="mt-16 liquid-glass p-12 rounded-3xl text-center animate-fadeInUp">
-          <div className="w-20 h-20 gradient-primary rounded-3xl flex items-center justify-center mx-auto mb-6 glow-pulse">
-            <Building2 className="w-10 h-10 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {lang === 'en' ? 'Commercial & Custom Projects' : 'বাণিজ্যিক ও কাস্টম প্রকল্প'}
-          </h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-            {lang === 'en' 
-              ? 'For commercial buildings, high-rises, and bespoke projects, we provide tailored pricing based on your specific requirements, scale, and specifications.'
-              : 'বাণিজ্যিক ভবন, উচ্চ-উত্থান এবং বিশেষ প্রকল্পের জন্য, আমরা আপনার নির্দিষ্ট প্রয়োজনীয়তা, স্কেল এবং স্পেসিফিকেশনের উপর ভিত্তি করে কাস্টমাইজড মূল্য প্রদান করি।'}
-          </p>
-          <button 
-            onClick={() => navClick('contact')}
-            className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse inline-flex items-center gap-2"
-          >
-            {t.pricing.contact}
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// =================== AboutPage ===================
-const AboutPage = ({ t, lang }) => (
-  <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-    <div className="max-w-7xl mx-auto">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.about.title}</h1>
-        <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto mb-8 rounded-full shimmer"></div>
-        <p className="text-xl text-gray-600 max-w-4xl mx-auto">{t.about.desc}</p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-8 mb-16">
-        {[
-          { title: t.about.vision, icon: Sparkles, desc: lang === 'en' ? 'To be the leading construction company in Bangladesh, setting new standards in quality, innovation, and sustainability.' : 'বাংলাদেশে শীর্ষস্থানীয় নির্মাণ কোম্পানি হওয়া, মান, উদ্ভাবন এবং টেকসই উন্নয়নে নতুন মান স্থাপন করা।' },
-          { title: t.about.mission, icon: Award, desc: lang === 'en' ? 'To deliver exceptional construction projects that exceed client expectations while maintaining the highest standards of safety and environmental responsibility.' : 'নিরাপত্তা এবং পরিবেশগত দায়বদ্ধতার সর্বোচ্চ মান বজায় রেখে ক্লায়েন্টদের প্রত্যাশা অতিক্রম করে এমন ব্যতিক্রমী নির্মাণ প্রকল্প সরবরাহ করা।' },
-          { title: t.about.values, icon: Heart, desc: lang === 'en' ? 'Integrity, Excellence, Innovation, Sustainability, and Client Satisfaction drive every decision we make.' : 'সততা, শ্রেষ্ঠত্ব, উদ্ভাবন, টেকসই উন্নয়ন এবং ক্লায়েন্ট সন্তুষ্টি আমাদের প্রতিটি সিদ্ধান্তকে চালিত করে।' }
-        ].map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <div key={i} className="liquid-glass p-8 rounded-3xl card-hover text-center">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 glow-pulse">
-                <Icon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{item.desc}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="liquid-glass p-12 rounded-3xl">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">{lang === 'en' ? 'Our History' : 'আমাদের ইতিহাস'}</h2>
-        <p className="text-gray-600 leading-relaxed mb-6">
-          {lang === 'en' 
-            ? 'Founded in 1985, Idol Builders Ltd has grown from a small construction firm to one of Bangladesh\'s most respected and innovative building companies. Over four decades, we have completed over 250 projects, ranging from residential complexes to commercial high-rises, each one a testament to our commitment to quality and excellence.'
-            : '১৯৮৫ সালে প্রতিষ্ঠিত, আইডল বিল্ডার্স লিমিটেড একটি ছোট নির্মাণ সংস্থা থেকে বাংলাদেশের সবচেয়ে সম্মানিত এবং উদ্ভাবনী নির্মাণ কোম্পানিগুলির একটিতে পরিণত হয়েছে।'}
-        </p>
-        <p className="text-gray-600 leading-relaxed">
-          {lang === 'en'
-            ? 'Today, we continue to push boundaries, incorporating smart technology, sustainable practices, and innovative design into every project we undertake.'
-            : 'আজ, আমরা সীমানা অতিক্রম করে চলেছি, আমাদের প্রতিটি প্রকল্পে স্মার্ট প্রযুক্তি, টেকসই অনুশীলন এবং উদ্ভাবনী ডিজাইন অন্তর্ভুক্ত করছি।'}
-        </p>
-      </div>
-    </div>
-  </section>
-);
-
-// =================== ProjectsPage ===================
-const ProjectsPage = ({ t, lang }) => {
-  const projects = [
-    { name: lang === 'en' ? 'Convention Center' : 'কনভেনশন সেন্টার', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/convention center idol.png' },
-    { name: lang === 'en' ? 'Central Park' : 'সেন্ট্রাল পার্ক', type: t.properties.types[3], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2024', img: '/images/idol central park.png' },
-    { name: lang === 'en' ? 'Central Hospital' : 'সেন্ট্রাল হাসপাতাল', type: t.properties.types[1], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2022', img: '/images/hospital.png' },
-    { name: lang === 'en' ? 'Central Mosque' : 'সেন্ট্রাল মসজিদ', type: t.properties.types[0], status: lang === 'en' ? 'Ongoing' : 'চলমান', year: '2023', img: '/images/mosque idol.png' }
-  ];
-
-  return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.properties.subtitle}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.properties.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {projects.map((project, i) => (
-            <div key={i} className="liquid-glass rounded-3xl overflow-hidden card-hover cursor-pointer">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={project.img}
-                  alt={project.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div className="absolute top-4 right-4 liquid-glass-dark px-4 py-2 rounded-xl">
-                  <span className="text-white font-bold text-sm">{project.status}</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{project.name}</h3>
-                <p className="text-purple-600 font-semibold mb-3">{project.type}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">{project.year}</span>
-                  <button className="text-purple-600 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">
-                    {lang === 'en' ? 'View Details' : 'বিস্তারিত দেখুন'}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// =================== ServicesPage ===================
-const ServicesPage = ({ t, lang }) => {
-  const services = [
-    { icon: Building2, title: t.services.construction, desc: lang === 'en' ? 'Complete construction management from planning to execution, ensuring timely delivery and quality control.' : 'পরিকল্পনা থেকে বাস্তবায়ন পর্যন্ত সম্পূর্ণ নির্মাণ ব্যবস্থাপনা।', color: 'from-purple-500 to-indigo-500' },
-    { icon: Sparkles, title: t.services.design, desc: lang === 'en' ? 'Innovative architectural design services that blend aesthetics with functionality and sustainability.' : 'উদ্ভাবনী স্থাপত্য ডিজাইন সেবা।', color: 'from-blue-500 to-cyan-500' },
-    { icon: Users, title: t.services.consulting, desc: lang === 'en' ? 'Expert project consulting to help you make informed decisions throughout your construction journey.' : 'বিশেষজ্ঞ প্রকল্প পরামর্শ।', color: 'from-pink-500 to-rose-500' },
-    { icon: Shield, title: t.services.facility, desc: lang === 'en' ? 'Comprehensive facility management services to maintain and optimize your property investment.' : 'ব্যাপক সুবিধা ব্যবস্থাপনা সেবা।', color: 'from-orange-500 to-amber-500' }
-  ];
-
-  return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.services.subtitle}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.services.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {services.map((service, i) => {
-            const Icon = service.icon;
-            return (
-              <div key={i} className="liquid-glass p-10 rounded-3xl card-hover">
-                <div className={`w-20 h-20 bg-gradient-to-br ${service.color} rounded-3xl flex items-center justify-center mb-6 glow-pulse`}>
-                  <Icon className="w-10 h-10 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
-                <p className="text-gray-600 leading-relaxed mb-6">{service.desc}</p>
-                <button className="text-purple-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
-                  {lang === 'en' ? 'Learn More' : 'আরও জানুন'}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// =================== ContactPage ===================
-const ContactPage = ({ t, lang }) => (
-  <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-    <div className="max-w-7xl mx-auto">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.contact.getInTouch}</h1>
-        <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-12">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">{lang === 'en' ? 'Send us a Message' : 'আমাদের একটি বার্তা পাঠান'}</h2>
-          <form className="space-y-6">
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">{t.contact.name}</label>
-              <input type="text" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.name} />
-            </div>
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">{t.contact.email}</label>
-              <input type="email" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.email} />
-            </div>
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">{t.contact.phone}</label>
-              <input type="tel" className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all" placeholder={t.contact.phone} />
-            </div>
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">{t.contact.message}</label>
-              <textarea rows={5} className="w-full px-6 py-4 liquid-glass rounded-xl border-2 border-transparent focus:border-purple-600 outline-none transition-all resize-none" placeholder={t.contact.message}></textarea>
-            </div>
-            <button className="w-full px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse flex items-center justify-center gap-2">
-              {t.contact.send}
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </form>
-        </div>
-
-        <div className="space-y-8">
-          <div className="liquid-glass p-8 rounded-3xl">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">{lang === 'en' ? 'Contact Information' : 'যোগাযোগের তথ্য'}</h3>
-            <div className="space-y-6">
+            <div className="card-blue-glow" style={{ padding: '32px 32px', borderRadius: 18 }}>
+              <h3 className="display" style={{ fontSize: '0.72rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--blue)', marginBottom: 20, fontWeight: 700 }}>
+                {t ? 'Office Hours' : 'অফিস সময়'}
+              </h3>
               {[
-                { icon: MapPin, title: lang === 'en' ? 'Address' : 'ঠিকানা', info: t.footer.address },
-                { icon: Mail, title: lang === 'en' ? 'Email' : 'ইমেইল', info: 'idolbuildersbd@gmail.com' },
-                { icon: Phone, title: lang === 'en' ? 'Phone' : 'ফোন', info: '+880 2-41054321' }
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 glow-pulse">
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
-                      <p className="text-gray-600">{item.info}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                { day: t ? 'Sunday – Thursday' : 'রবিবার – বৃহস্পতিবার', time: t ? '9:00 AM – 6:00 PM' : 'সকাল ৯:০০ – সন্ধ্যা ৬:০০', open: true },
+                { day: t ? 'Friday' : 'শুক্রবার', time: t ? 'Closed' : 'বন্ধ', open: false },
+                { day: t ? 'Saturday' : 'শনিবার', time: t ? '10:00 AM – 4:00 PM' : 'সকাল ১০:০০ – বিকাল ৪:০০', open: true },
+              ].map((h, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '11px 0', borderBottom: i < 2 ? '1px solid var(--gray)' : 'none' }}>
+                  <span style={{ fontSize: '0.86rem', color: 'var(--navy-3)' }}>{h.day}</span>
+                  <span style={{ fontSize: '0.86rem', color: h.open ? 'var(--blue)' : '#DC2626', fontWeight: 600 }}>{h.time}</span>
+                </div>
+              ))}
             </div>
-          </div>
 
-          <div className="liquid-glass p-8 rounded-3xl">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">{lang === 'en' ? 'Office Hours' : 'অফিস সময়'}</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-700 font-semibold">{lang === 'en' ? 'Sunday - Thursday' : 'রবিবার - বৃহস্পতিবার'}</span>
-                <span className="text-gray-600">{lang === 'en' ? '9:00 AM - 6:00 PM' : 'সকাল ৯:০০ - সন্ধ্যা ৬:০০'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-700 font-semibold">{lang === 'en' ? 'Friday' : 'শুক্রবার'}</span>
-                <span className="text-gray-600">{lang === 'en' ? 'Closed' : 'বন্ধ'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-700 font-semibold">{lang === 'en' ? 'Saturday' : 'শনিবার'}</span>
-                <span className="text-gray-600">{lang === 'en' ? '10:00 AM - 4:00 PM' : 'সকাল ১০:০০ - বিকাল ৪:০০'}</span>
+            {/* Map placeholder */}
+            <div style={{ height: 160, borderRadius: 18, overflow: 'hidden', position: 'relative', background: 'var(--gray)' }}>
+              <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=400&fit=crop" alt="Map" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }} />
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15,23,42,0.3)' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <MapPin size={28} color="var(--blue)" />
+                  <div className="display" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'white', marginTop: 6 }}>Dhaka, Bangladesh</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;}}`}</style>
+    </section>
+  );
+};
 
-// =================== GalleryPage ===================
-const GalleryPage = ({ t, lang }) => {
-  const images = [
-    { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop', title: 'Convention Center' },
-    { src: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop', title: 'Central Hospital' },
-    { src: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop', title: 'Central Park' },
-    { src: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop', title: 'Central Mosque' }
-  ];
+/* ─── PAGE: PRICING ─── */
+const PricingPage = ({ lang, navClick }) => {
+  const t = lang === 'en';
+  const [tab, setTab] = useState('5');
+
+  const amenities = t
+    ? ['Apartment Zone', 'Shopping Complex', 'Convention Center', 'Club House', 'Duplex Zone', 'Hospital', 'Super Shop', 'University', 'Central Car Parking', 'Old & Day Care', 'Playground', 'Amusement Park']
+    : ['এপার্টমেন্ট জোন', 'শপিং কমপ্লেক্স', 'কনভেনশন সেন্টার', 'ক্লাব হাউজ', 'ডুপ্লেক্স জোন', 'হাসপাতাল', 'সুপার শপ', 'বিশ্ববিদ্যালয়', 'সেন্ট্রাল কার পার্কিং', 'ওল্ড এ্যান্ড ডে কেয়ার', 'খেলার মাঠ', 'এমিউজমেন্ট পার্ক'];
+
+  const tables = {
+    '5': {
+      label: t ? '5 Katha Plots' : '৫ কাঠা প্লট',
+      headers: [t ? 'Plot Type' : 'প্লট প্রকার', t ? 'Lumpsum' : 'একসাথে', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
+      rows: [
+        [t ? 'North Facing' : 'উত্তরমুখী', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১৩,০০,০০০'],
+        [t ? 'South Facing' : 'দক্ষিণমুখী', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৪,০০,০০০'],
+        [t ? 'NW Corner' : 'উত্তর-পশ্চিম কর্ণার', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৩,৫০,০০০', '১৪,০০,০০০', '১৫,০০,০০০'],
+        [t ? 'SW Corner' : 'দক্ষিণ-পশ্চিম কর্ণার', '১৩,০০,০০০', '১৩,৫০,০০০', '১৪,০০,০০০', '১৪,৫০,০০০', '১৫,০০,০০০', '১৬,০০,০০০'],
+        [t ? 'Commercial' : 'বাণিজ্যিক', '১৪,০০,০০০', '১৪,৫০,০০০', '১৫,০০,০০০', '১৫,৫০,০০০', '১৬,০০,০০০', '১৭,০০,০০০'],
+        [t ? 'Restricted' : 'রেস্ট্রিক্টেড', '১৫,০০,০০০', '১৫,৫০,০০০', '১৬,০০,০০০', '১৬,৫০,০০০', '১৭,০০,০০০', '১৮,০০,০০০'],
+      ]
+    },
+    '7': {
+      label: t ? '7 Katha Plots' : '৭ কাঠা প্লট',
+      headers: [t ? 'Plot Type' : 'প্লট প্রকার', t ? 'Lumpsum' : 'একসাথে', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7'],
+      rows: [
+        [t ? 'North Facing' : 'উত্তরমুখী', '৮,৫০,০০০', '৯,০০,০০০', '৯,৫০,০০০', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০'],
+        [t ? 'South Facing' : 'দক্ষিণমুখী', '৯,০০,০০০', '৯,৫০,০০০', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১৩,০০,০০০'],
+        [t ? 'NW Corner' : 'উত্তর-পশ্চিম কর্ণার', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৪,০০,০০০'],
+        [t ? 'SW Corner' : 'দক্ষিণ-পশ্চিম কর্ণার', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৩,৫০,০০০', '১৪,০০,০০০', '১৫,০০,০০০'],
+        [t ? 'Commercial' : 'বাণিজ্যিক', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৩,৫০,০০০', '১৪,০০,০০০', '১৪,৫০,০০০', '১৫,০০,০০০', '১৬,০০,০০০'],
+      ]
+    },
+    '3': {
+      label: t ? '3 Katha Plots' : '৩ কাঠা প্লট',
+      headers: [t ? 'Plot Type' : 'প্লট প্রকার', t ? 'Lumpsum' : 'একসাথে', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7', 'Y8'],
+      rows: [
+        [t ? 'North Facing' : 'উত্তরমুখী', '৭,০০,০০০', '৭,৫০,০০০', '৯,০০,০০০', '৯,৫০,০০০', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০'],
+        [t ? 'South Facing' : 'দক্ষিণমুখী', '৭,৫০,০০০', '৯,০০,০০০', '৯,৫০,০০০', '১০,০০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১৩,০০,০০০'],
+        [t ? 'NW Corner' : 'উত্তর-পশ্চিম কর্ণার', '৯,৫০,০০০', '১০,৫০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১২,৫০,০০০', '১৪,৫০,০০০', '১৪,০০,০০০'],
+        [t ? 'SW Corner' : 'দক্ষিণ-পশ্চিম কর্ণার', '১০,০০,০০০', '১১,০০,০০০', '১১,৫০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৫,৫০,০০০', '১৪,০০,০০০', '১৫,৫০,০০০'],
+        [t ? 'Commercial' : 'বাণিজ্যিক', '১১,০০,০০০', '১২,০০,০০০', '১২,৫০,০০০', '১৩,০০,০০০', '১৩,৫০,০০০', '১৪,০০,০০০', '১৫,০০,০০০', '১৫,০০,০০০', '১৬,০০,০০০'],
+      ]
+    }
+  };
+
+  const current = tables[tab];
 
   return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-12 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-600 font-bold mb-3 tracking-wider uppercase text-xs">{t.gallery.subtitle}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">{t.gallery.title}</h1>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full shimmer"></div>
+    <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SectionHeader
+          tag={t ? 'Transparent Pricing' : 'স্বচ্ছ মূল্য নির্ধারণ'}
+          title={t ? 'Plot Pricing Plans' : 'প্লট মূল্য পরিকল্পনা'}
+          sub={t ? 'Flexible payment options for every plot size. First-come-first-served basis. Choose the plan that best fits your financial capacity.' : 'আগে আসলে আগে পাবেন এই নীতিতে প্লট বুকিং। প্রতিটি প্লট আকারের জন্য নমনীয় পেমেন্ট বিকল্প।'}
+        />
+
+        {/* Amenities */}
+        <div className="card-blue-glow" style={{ padding: '48px 40px', marginBottom: 40, borderRadius: 20 }}>
+          <h3 className="display" style={{ fontSize: '1.5rem', color: 'var(--navy)', textAlign: 'center', marginBottom: 8, fontWeight: 800 }}>
+            {t ? 'Idol Builders City — Amenities' : 'আইডল বিল্ডার্স সিটি — সুযোগ সুবিধা'}
+          </h3>
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.86rem', marginBottom: 32 }}>
+            {t ? 'All amenities available for Idol Green City residents' : 'আইডল গ্রীন সিটি নাগরিকদের জন্য সকল সুযোগ সুবিধা'}
+          </p>
+          <div className="hex-grid">
+            {amenities.map((a, i) => <div key={i} className="hex-item">{a}</div>)}
+          </div>
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem', marginTop: 28, lineHeight: 1.75 }}>
+            {t
+              ? 'Also includes: offices & commercial spaces, raw bazaar, mosque, temple, church, graveyard, food court, school, college, madrasa, water purification & waste management with full smart city amenities.'
+              : 'এছাড়াও রয়েছে অফিস, কাঁচা বাজার, মসজিদ, মন্দির, গির্জা, ফুড কোর্ট, স্কুল, কলেজ, মাদ্রাসা সহ স্মার্ট সিটির সকল সুবিধা।'}
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {images.map((img, i) => (
-            <div key={i} className="relative h-64 rounded-3xl overflow-hidden card-hover cursor-pointer group">
-              <img src={img.src} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <h3 className="text-white font-bold text-lg">{img.title}</h3>
-              </div>
-            </div>
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 0, marginBottom: 0, background: 'white', border: '1.5px solid var(--gray)', borderRadius: '12px 12px 0 0', overflow: 'hidden' }}>
+          {[['5', t ? '5 Katha' : '৫ কাঠা'], ['7', t ? '7 Katha' : '৭ কাঠা'], ['3', t ? '3 Katha' : '৩ কাঠা']].map(([key, label]) => (
+            <button key={key} onClick={() => setTab(key)} className="display" style={{
+              padding: '16px 32px',
+              background: tab === key ? 'var(--blue)' : 'transparent',
+              color: tab === key ? 'white' : 'var(--text-muted)',
+              border: 'none',
+              fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.25s',
+              flex: 1,
+            }}>
+              {label}
+            </button>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <button className="px-10 py-4 gradient-primary text-white rounded-2xl font-bold hover:shadow-2xl transition-all glow-pulse inline-flex items-center gap-2">
-            {t.gallery.viewAll}
-            <ArrowRight className="w-5 h-5" />
+        <div style={{ overflowX: 'auto', border: '1.5px solid var(--gray)', borderTop: 'none', borderRadius: '0 0 12px 12px', background: 'white' }}>
+          <table className="pricing-table" style={{ width: '100%', borderCollapse: 'collapse', minWidth: 600 }}>
+            <thead>
+              <tr>{current.headers.map((h, i) => <th key={i}>{h}</th>)}</tr>
+            </thead>
+            <tbody>
+              {current.rows.map((row, ri) => (
+                <tr key={ri}>
+                  {row.map((cell, ci) => (
+                    <td key={ci} className={ci === 1 ? 'highlight' : ''}>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div style={{ marginTop: 36, textAlign: 'center' }}>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginBottom: 24 }}>
+            {t
+              ? '* All prices are per Katha in BDT. Special discount available for lump-sum payment. Remaining amount to be paid within 75 days. Installment plans available (36, 48, 60 months). All transactions to be made in favour of Idol Builders Ltd via cash/cheque/pay-order.'
+              : '* সকল মূল্য কাঠা প্রতি বাংলাদেশি টাকায়। এককালীন মূল্য পরিশোধের ক্ষেত্রে বিশেষ ছাড় দেওয়া হবে। অবশিষ্ট টাকা ৭৫ দিনের মধ্যে পরিশোধ করতে হবে। কিস্তিতে প্লট ক্রয়ের ক্ষেত্রে প্লট মূলের অবশিষ্ট ৩৬, ৪৮, ৬০ তে মধ্যে পরিশোধ করতে পারবেন।'}
+          </p>
+          <button onClick={() => navClick('contact')} className="btn-primary">
+            {t ? 'Request Full Price List' : 'সম্পূর্ণ মূল্য তালিকা'} <ArrowRight size={16} />
           </button>
         </div>
       </div>
@@ -1519,4 +1980,67 @@ const GalleryPage = ({ t, lang }) => {
   );
 };
 
-export default IdolBuildersWebsite;
+/* ─── FLOATING CHAT ─── */
+const FloatingChat = ({ lang }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 999 }}>
+      {hovered && (
+        <div className="card-blue-glow" style={{ position: 'absolute', bottom: 68, right: 0, padding: '12px 20px', whiteSpace: 'nowrap', fontSize: '0.84rem', color: 'var(--navy)', borderRadius: 10, boxShadow: '0 8px 32px rgba(37,99,235,0.15)' }}>
+          {lang === 'en' ? '💬 Chat with us!' : '💬 আমাদের সাথে চ্যাট করুন!'}
+        </div>
+      )}
+      <button
+        className="pulse-blue"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{ width: 56, height: 56, background: 'linear-gradient(135deg, #2563EB, #3B82F6)', border: 'none', borderRadius: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 28px rgba(37,99,235,0.4)', transition: 'transform 0.2s' }}
+        onMouseDown={e => e.currentTarget.style.transform = 'scale(0.94)'}
+        onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}>
+        <MessageCircle size={22} color="white" />
+      </button>
+    </div>
+  );
+};
+
+/* ─── ROOT APP ─── */
+export default function IdolBuildersApp() {
+  const [lang, setLang] = useState('en');
+  const [currentPage, setCurrentPage] = useState('home');
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navClick = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'about':    return <AboutPage lang={lang} />;
+      case 'projects': return <ProjectsPage lang={lang} />;
+      case 'services': return <ServicesPage lang={lang} />;
+      case 'pricing':  return <PricingPage lang={lang} navClick={navClick} />;
+      case 'gallery':  return <GalleryPage lang={lang} />;
+      case 'contact':  return <ContactPage lang={lang} />;
+      default:         return <HomePage lang={lang} navClick={navClick} />;
+    }
+  };
+
+  return (
+    <>
+      <GlobalStyles />
+      <div style={{ minHeight: '100vh', background: 'var(--white)' }}>
+        <Nav lang={lang} setLang={setLang} currentPage={currentPage} navClick={navClick} isScrolled={isScrolled} />
+        <main>{renderPage()}</main>
+        <Footer lang={lang} navClick={navClick} />
+        <FloatingChat lang={lang} />
+      </div>
+    </>
+  );
+}
