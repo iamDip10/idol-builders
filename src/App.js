@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   MapPin, Phone, Mail, ArrowRight, Menu, X, Star, Facebook,
   Instagram, Linkedin, Youtube, Home, Zap, Shield, Award,
-  Users, Sparkles, TrendingUp, Clock, MessageCircle, Heart,
-  DollarSign, Building2, ChevronDown, ChevronRight, Play,
-  CheckCircle, Eye, Grid, List
+  Users, Sparkles, TrendingUp, Clock, MessageCircle, Building2, ChevronDown, ChevronRight, Play, Eye
 } from "lucide-react";
 
 /* ─── GLOBAL STYLES ─── */
@@ -1046,7 +1044,7 @@ const Hero = ({ lang, navClick }) => {
             { num: '25ft+', label: t ? 'Wide Roads' : 'প্রশস্ত রাস্তা' },
             { num: '100%', label: t ? 'Clear Title' : 'নিষ্কণ্টক দলিল' },
           ].map((s, i) => (
-            <div key={i} style={{ padding: '0 36px 0 0', marginRight: 0, borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: 36, marginRight: 36 }}>
+            <div key={i} style={{ padding: '0 36px 0 0', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: 36, marginRight: 36 }}>
               <div className="display" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#60A5FA', lineHeight: 1 }}>{s.num}</div>
               <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</div>
             </div>
@@ -1311,7 +1309,7 @@ const CEOSection = ({ lang }) => {
 /* ─── TESTIMONIALS ─── */
 const Testimonials = ({ lang }) => {
   const t = lang === 'en';
-  const [active, setActive] = useState(0);
+  // const [active, setActive] = useState(0);
   const testimonials = [
     { name: t ? 'Nur Mohammad' : 'নূর মোহাম্মদ', role: t ? 'Managing Director, Idol Builders Ltd' : 'ব্যবস্থাপনা পরিচালক, আইডল বিল্ডার্স লিঃ', rating: 5, text: t ? "We advance with your sincere trust and love. With sincerity, transparency and responsibility — we are committed to making your long-cherished dream a reality. Your satisfaction is our greatest success." : "আপনাদের প্রতি অগাধ বিশ্বাস ও ভালোবাসা নিয়ে আমরা এগিয়ে যাচ্ছি। সততা, স্বচ্ছতা ও দায়িত্বশীলতার মাধ্যমে আপনার দীর্ঘদিনের লালিত স্বপ্নকে বাস্তবে রূপ দিতে দৃঢ় প্রতিজ্ঞ।" },
     { name: t ? 'A Satisfied Plot Owner' : 'একজন সন্তুষ্ট গ্রাহক', role: t ? 'Plot Owner, Idol Green City' : 'প্লট মালিক, আইডল গ্রীন সিটি', rating: 5, text: t ? "Idol Green City has already become a trusted housing project for our customers. The clear title land, wide roads, RAJUK approval and modern amenities make it truly the best investment guarantee." : "আইডল গ্রীন সিটি আবাসন প্রকল্পটি ইতিমধ্যে গ্রাহকদের আস্থার পরিণত হয়েছে। নিষ্কণ্টক ভূমি, প্রশস্ত রাস্তা, রাজউক অনুমোদন ও আধুনিক সুবিধা এটিকে সত্যিকারের সেরা বিনিয়োগ করে তুলেছে।" },
@@ -1759,7 +1757,7 @@ const GalleryPage = ({ lang }) => {
 /* ─── PAGE: CONTACT ─── */
 const ContactPage = ({ lang }) => {
   const t = lang === 'en';
-  const [focused, setFocused] = useState(null);
+  // const [focused, setFocused] = useState(null);
 
   return (
     <section className="mesh-bg" style={{ padding: '120px 5%', minHeight: '100vh' }}>
