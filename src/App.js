@@ -2637,7 +2637,7 @@ const Footer = ({ lang, navClick }) => {
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {[
-                { Icon: MapPin, info: 'Lilypond Center, Suit A-13\n3 R.K Mission Road, Dhaka-1203' },
+                { Icon: MapPin, info: 'Lilypond Center, Level 18\n3 R.K Mission Road, Dhaka-1203' },
                 { Icon: Mail, info: 'idolbuildersbd@gmail.com' },
                 { Icon: Phone, info: '+880 2-41054321' },
               ].map(({ Icon, info }, i) => (
@@ -2968,7 +2968,7 @@ const ContactPage = ({ lang }) => {
                 {t ? 'Contact Information' : 'যোগাযোগের তথ্য'}
               </h3>
               {[
-                { Icon: MapPin, title: t ? 'Address' : 'ঠিকানা', info: 'Lilypond Center, Suit No. A-13\n3 R.K Mission Road, Dhaka-1203' },
+                { Icon: MapPin, title: t ? 'Address' : 'ঠিকানা', info: 'Lilypond Center, Level 18\n3 R.K Mission Road, Dhaka-1203' },
                 { Icon: Mail, title: t ? 'Email' : 'ইমেইল', info: 'idolbuildersbd@gmail.com' },
                 { Icon: Phone, title: t ? 'Phone' : 'ফোন', info: '+880 2-41054321' },
               ].map(({ Icon, title, info }, i) => (
