@@ -2557,8 +2557,16 @@ const Footer = ({ lang, navClick }) => {
           {/* Brand */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 10, background: 'linear-gradient(135deg, #2563EB, #3B82F6)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}>
-                <Building2 size={20} color="white" />
+              <div style={{ width: 42, height: 42, borderRadius: 10, background: 'linear-gradient(135deg, #c6d8ff, #e2ecfc)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}>
+                  <img
+              src="images/logo.png"
+              alt="Company Logo"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
               </div>
               <div>
                 <div className="display" style={{ fontSize: '1.1rem', color: 'white', fontWeight: 700 }}>
