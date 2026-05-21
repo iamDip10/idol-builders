@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   MapPin, Phone, Mail, ArrowRight, Menu, X, Star, Facebook,
   Instagram, Linkedin, Youtube, Home, Zap, Shield, Award,
-  Users, Sparkles, TrendingUp, Clock, MessageCircle, Building2, ChevronDown, ChevronRight, Play, Eye
+  Users, Sparkles, TrendingUp, Clock, MessageCircle, Building2, ChevronRight, Eye
 } from "lucide-react";
 
 /* ─── GLOBAL STYLES ─── */
@@ -947,121 +947,843 @@ const Ticker = ({ lang }) => {
 };
 
 /* ─── HERO ─── */
+// const Hero = ({ lang, navClick }) => {
+//   const t = lang === 'en';
+
+//   return (
+//     <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: '#0F172A' }}>
+//       {/* BG Image */}
+//       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+//         <img
+//           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop"
+//           alt=""
+//           className="hero-img"
+//           style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center center', opacity: 0.35 }}
+//         />
+//         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(110deg, rgba(15,23,42,0.97) 45%, rgba(15,23,42,0.6) 100%)' }}></div>
+//         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, transparent 55%)' }}></div>
+//       </div>
+
+//       {/* Grid overlay */}
+//       <div style={{
+//         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+//         backgroundImage: 'linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px)',
+//         backgroundSize: '72px 72px', pointerEvents: 'none'
+//       }}></div>
+
+//       {/* Glow orbs */}
+//       <div style={{ position: 'absolute', top: '20%', right: '8%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+//       <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 300, height: 300, background: 'radial-gradient(circle, rgba(221,245,232,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+
+//       <div style={{ position: 'relative', zIndex: 10, padding: '110px 5% 80px', maxWidth: 1320, margin: '0 auto', width: '100%' }}>
+//         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
+
+//           {/* Left content */}
+//           <div>
+//             <div className="fade-up" style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 }}>
+//               <span className="tag" style={{ background: 'rgba(37,99,235,0.2)', borderColor: 'rgba(37,99,235,0.4)', color: '#93C5FD' }}>The Best Investment Guarantee</span>
+//               <span style={{ width: 36, height: 1, background: 'rgba(255,255,255,0.2)' }}></span>
+//               <span style={{ fontSize: '0.72rem', letterSpacing: '0.14em', color: '#93C5FD', textTransform: 'uppercase' }}>
+//                 {t ? "RAJUK Megacity NOC Approved" : 'রাজউক মেগাসিটি NOC প্রাপ্ত'}
+//               </span>
+//             </div>
+
+//             <h1 className="display fade-up-2" style={{ fontSize: 'clamp(2.8rem, 7vw, 5.2rem)', lineHeight: 1.08, fontWeight: 800, color: 'white', marginBottom: 28 }}>
+//               {t ? <>Your Dream<br /><span className="blue-text">Idol Green</span><br />City Awaits</> : <>আপনার স্বপ্নের<br /><span className="blue-text">আইডল গ্রীন</span><br />সিটি</>}
+//             </h1>
+
+//             <p className="fade-up-3" style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: 40, maxWidth: 500 }}>
+//               {t
+//                 ? 'Idol Builders Ltd is committed to ensuring safe, beautiful, and modern housing for everyone. We advance on the path shown by Almighty Allah — with sincerity, transparency and responsibility.'
+//                 : 'সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের মূল অঙ্গীকার। সততা, স্বচ্ছতা ও দায়িত্বশীলতার মাধ্যমে আমরা এগিয়ে যাচ্ছি।'}
+//             </p>
+
+//             <div className="fade-up-4" style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+//               <button onClick={() => navClick('projects')} className="btn-primary">
+//                 {t ? 'Explore Projects' : 'প্রকল্প দেখুন'} <ArrowRight size={16} />
+//               </button>
+//               <button onClick={() => navClick('contact')} className="btn-outline" style={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}>
+//                 <Play size={14} /> {t ? 'Book Consultation' : 'পরামর্শ করুন'}
+//               </button>
+//             </div>
+//           </div>
+
+//           {/* Right: Floating stat cards */}
+//           <div className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', paddingLeft: 24 }}>
+//             {[
+//               { num: '3,5,10,20', label: t ? 'Plot Sizes (Katha)' : 'প্লটের আকার (কাঠা)', icon: Building2, color: '#2563EB' },
+//               { num: '25-60ft', label: t ? 'Wide Roads in Project' : 'প্রকল্পে প্রশস্ত রাস্তা', icon: Home, color: '#059669' },
+//               { num: 'RAJUK', label: t ? 'NOC & DAPP Approved' : 'NOC ও ড্যাপ অনুমোদিত', icon: Shield, color: '#7C3AED' },
+//               { num: 'CCTV', label: t ? 'Full Security System' : 'সার্বক্ষণিক নিরাপত্তা', icon: Award, color: '#D97706' },
+//             ].map((s, i) => (
+//               <div key={i}
+//                 className={`glass-card-dark float${i > 0 ? `-${i}` : ''}`}
+//                 style={{
+//                   display: 'flex', alignItems: 'center', gap: 18,
+//                   padding: '18px 24px', borderRadius: 14,
+//                   transform: i % 2 === 1 ? 'translateX(32px)' : 'none',
+//                   animationDelay: `${i * 0.8}s`
+//                 }}>
+//                 <div style={{ width: 44, height: 44, borderRadius: 10, background: `${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+//                   <s.icon size={20} color={s.color} />
+//                 </div>
+//                 <div>
+//                   <div className="display stat-number" style={{ fontSize: '1.7rem', fontWeight: 800, color: 'white', lineHeight: 1 }}>{s.num}</div>
+//                   <div style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.5)', marginTop: 3 }}>{s.label}</div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Mobile stats row */}
+//         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginTop: 60, borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40 }}>
+//           {[
+//             { num: '3-20', label: t ? 'Katha Plots' : 'কাঠা প্লট' },
+//             { num: 'NOC', label: t ? 'RAJUK Approved' : 'রাজউক অনুমোদিত' },
+//             { num: '25ft+', label: t ? 'Wide Roads' : 'প্রশস্ত রাস্তা' },
+//             { num: '100%', label: t ? 'Clear Title' : 'নিষ্কণ্টক দলিল' },
+//           ].map((s, i) => (
+//             <div key={i} style={{ padding: '0 36px 0 0', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: 36, marginRight: 36 }}>
+//               <div className="display" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#60A5FA', lineHeight: 1 }}>{s.num}</div>
+//               <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Scroll cue */}
+//       <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+//         <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(37,99,235,0.5), transparent)' }}></div>
+//         <ChevronDown size={16} color="rgba(255,255,255,0.3)" />
+//       </div>
+
+//       <style>{`@media(max-width:900px){section>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;}}`}</style>
+//     </section>
+//   );
+// };
+
+
 const Hero = ({ lang, navClick }) => {
-  const t = lang === 'en';
+  const t = lang === "en";
+
+  const slides = [
+    {
+      image: "images/mosque idol.png",
+      title: "Idol Grand Mosque",
+      subtitle: "Spiritual Landmark",
+    },
+    {
+      image: "images/convention.png",
+      title: "Convention Center",
+      subtitle: "Modern Event Infrastructure",
+    },
+    {
+      image: "images/hitech.png",
+      title: "Hi-Tech Smart Zone",
+      subtitle: "Future Ready Ecosystem",
+    },
+    {
+      image: "images/hospital.png",
+      title: "Advanced Medical Hub",
+      subtitle: "24/7 Healthcare Facilities",
+    },
+    {
+      image: "images/idol central park.png",
+      title: "Idol Central Park",
+      subtitle: "Green Living Experience",
+    },
+  ];
+
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActive((prev) => (prev + 1) % slides.length);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
   return (
-    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: '#0F172A' }}>
-      {/* BG Image */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-        <img
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop"
-          alt=""
-          className="hero-img"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center center', opacity: 0.35 }}
-        />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(110deg, rgba(15,23,42,0.97) 45%, rgba(15,23,42,0.6) 100%)' }}></div>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, transparent 55%)' }}></div>
+    <section className="future-hero">
+      {/* BACKGROUND SLIDER */}
+      <div className="hero-bg">
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            className={`bg-slide ${active === i ? "active" : ""}`}
+          >
+            <img src={slide.image} alt="" />
+          </div>
+        ))}
+
+        <div className="hero-overlay" />
+        <div className="hero-overlay-2" />
+        <div className="hero-noise" />
       </div>
 
-      {/* Grid overlay */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: 'linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px)',
-        backgroundSize: '72px 72px', pointerEvents: 'none'
-      }}></div>
+      {/* GRID */}
+      <div className="hero-grid-overlay" />
 
-      {/* Glow orbs */}
-      <div style={{ position: 'absolute', top: '20%', right: '8%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
-      <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 300, height: 300, background: 'radial-gradient(circle, rgba(221,245,232,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+      {/* GLOW */}
+      <div className="hero-glow hero-glow-1" />
+      <div className="hero-glow hero-glow-2" />
 
-      <div style={{ position: 'relative', zIndex: 10, padding: '110px 5% 80px', maxWidth: 1320, margin: '0 auto', width: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
-
-          {/* Left content */}
-          <div>
-            <div className="fade-up" style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 }}>
-              <span className="tag" style={{ background: 'rgba(37,99,235,0.2)', borderColor: 'rgba(37,99,235,0.4)', color: '#93C5FD' }}>The Best Investment Guarantee</span>
-              <span style={{ width: 36, height: 1, background: 'rgba(255,255,255,0.2)' }}></span>
-              <span style={{ fontSize: '0.72rem', letterSpacing: '0.14em', color: '#93C5FD', textTransform: 'uppercase' }}>
-                {t ? "RAJUK Megacity NOC Approved" : 'রাজউক মেগাসিটি NOC প্রাপ্ত'}
-              </span>
+      {/* MAIN CONTENT */}
+      <div className="hero-container">
+        <div className="hero-layout">
+          {/* LEFT */}
+          <div className="hero-content">
+            <div className="hero-tag">
+              <span className="live-dot" />
+              {t
+                ? "Future Smart Community"
+                : "ভবিষ্যৎ স্মার্ট কমিউনিটি"}
             </div>
 
-            <h1 className="display fade-up-2" style={{ fontSize: 'clamp(2.8rem, 7vw, 5.2rem)', lineHeight: 1.08, fontWeight: 800, color: 'white', marginBottom: 28 }}>
-              {t ? <>Your Dream<br /><span className="blue-text">Idol Green</span><br />City Awaits</> : <>আপনার স্বপ্নের<br /><span className="blue-text">আইডল গ্রীন</span><br />সিটি</>}
+            <h1 className="hero-title">
+              {t ? (
+                <>
+                  Build Your
+                  <br />
+                  <span>Future Lifestyle</span>
+                  <br />
+                  With Confidence
+                </>
+              ) : (
+                <>
+                  গড়ুন আপনার
+                  <br />
+                  <span>ভবিষ্যতের</span>
+                  <br />
+                  আধুনিক আবাসন
+                </>
+              )}
             </h1>
 
-            <p className="fade-up-3" style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: 40, maxWidth: 500 }}>
+            <p className="hero-desc">
               {t
-                ? 'Idol Builders Ltd is committed to ensuring safe, beautiful, and modern housing for everyone. We advance on the path shown by Almighty Allah — with sincerity, transparency and responsibility.'
-                : 'সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের মূল অঙ্গীকার। সততা, স্বচ্ছতা ও দায়িত্বশীলতার মাধ্যমে আমরা এগিয়ে যাচ্ছি।'}
+                ? "Idol Builders creates futuristic residential ecosystems blending premium infrastructure, smart planning, green living and secure investment opportunities."
+                : "আইডল বিল্ডার্স আধুনিক অবকাঠামো, স্মার্ট পরিকল্পনা, নিরাপদ বিনিয়োগ এবং সবুজ পরিবেশের সমন্বয়ে ভবিষ্যতের আবাসন তৈরি করে।"}
             </p>
 
-            <div className="fade-up-4" style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-              <button onClick={() => navClick('projects')} className="btn-primary">
-                {t ? 'Explore Projects' : 'প্রকল্প দেখুন'} <ArrowRight size={16} />
+            <div className="hero-buttons">
+              <button
+                className="btn-primary"
+                onClick={() => navClick("projects")}
+              >
+                {t ? "Explore Projects" : "প্রকল্প দেখুন"}
               </button>
-              <button onClick={() => navClick('contact')} className="btn-outline" style={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}>
-                <Play size={14} /> {t ? 'Book Consultation' : 'পরামর্শ করুন'}
+
+              <button
+                className="btn-secondary"
+                onClick={() => navClick("contact")}
+              >
+                {t ? "Book Consultation" : "যোগাযোগ করুন"}
               </button>
+            </div>
+
+            {/* BOTTOM STATS */}
+            <div className="hero-stats">
+              {[
+                { num: "3-20", label: "Katha Plots" },
+                { num: "25-60ft", label: "Wide Roads" },
+                { num: "RAJUK", label: "Approved" },
+              ].map((s, i) => (
+                <div key={i} className="stat-card">
+                  <h3>{s.num}</h3>
+                  <p>{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right: Floating stat cards */}
-          <div className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', paddingLeft: 24 }}>
-            {[
-              { num: '3,5,10,20', label: t ? 'Plot Sizes (Katha)' : 'প্লটের আকার (কাঠা)', icon: Building2, color: '#2563EB' },
-              { num: '25-60ft', label: t ? 'Wide Roads in Project' : 'প্রকল্পে প্রশস্ত রাস্তা', icon: Home, color: '#059669' },
-              { num: 'RAJUK', label: t ? 'NOC & DAPP Approved' : 'NOC ও ড্যাপ অনুমোদিত', icon: Shield, color: '#7C3AED' },
-              { num: 'CCTV', label: t ? 'Full Security System' : 'সার্বক্ষণিক নিরাপত্তা', icon: Award, color: '#D97706' },
-            ].map((s, i) => (
-              <div key={i}
-                className={`glass-card-dark float${i > 0 ? `-${i}` : ''}`}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 18,
-                  padding: '18px 24px', borderRadius: 14,
-                  transform: i % 2 === 1 ? 'translateX(32px)' : 'none',
-                  animationDelay: `${i * 0.8}s`
-                }}>
-                <div style={{ width: 44, height: 44, borderRadius: 10, background: `${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <s.icon size={20} color={s.color} />
+          {/* RIGHT */}
+          <div className="hero-visual">
+            {/* MAIN GLASS PANEL */}
+            <div className="visual-panel">
+              <div className="visual-image">
+                <img src={slides[active].image} alt="" />
+              </div>
+
+              {/* TOP HUD */}
+              <div className="hud-top">
+                <div className="hud-pill">
+                  <span />
+                  LIVE PROJECT
                 </div>
-                <div>
-                  <div className="display stat-number" style={{ fontSize: '1.7rem', fontWeight: 800, color: 'white', lineHeight: 1 }}>{s.num}</div>
-                  <div style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.5)', marginTop: 3 }}>{s.label}</div>
+
+                <div className="hud-pill blue">
+                  1985 — 2026
                 </div>
               </div>
-            ))}
+
+              {/* BOTTOM */}
+              <div className="visual-bottom">
+                <div>
+                  <h2>{slides[active].title}</h2>
+                  <p>{slides[active].subtitle}</p>
+                </div>
+
+                <div className="slider-dots">
+                  {slides.map((_, i) => (
+                    <button
+                      key={i}
+                      className={active === i ? "active" : ""}
+                      onClick={() => setActive(i)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* SCAN */}
+              <div className="scan-line" />
+            </div>
+
+            {/* FLOATING CARDS */}
+            <div className="floating-card card-1">
+              <h4>Smart Security</h4>
+              <p>CCTV + Gated Access</p>
+            </div>
+
+            <div className="floating-card card-2">
+              <h4>Green Living</h4>
+              <p>Central Eco Park</p>
+            </div>
+
+            <div className="floating-card card-3">
+              <h4>Premium Roads</h4>
+              <p>25ft - 60ft Wide</p>
+            </div>
           </div>
         </div>
-
-        {/* Mobile stats row */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginTop: 60, borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40 }}>
-          {[
-            { num: '3-20', label: t ? 'Katha Plots' : 'কাঠা প্লট' },
-            { num: 'NOC', label: t ? 'RAJUK Approved' : 'রাজউক অনুমোদিত' },
-            { num: '25ft+', label: t ? 'Wide Roads' : 'প্রশস্ত রাস্তা' },
-            { num: '100%', label: t ? 'Clear Title' : 'নিষ্কণ্টক দলিল' },
-          ].map((s, i) => (
-            <div key={i} style={{ padding: '0 36px 0 0', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: 36, marginRight: 36 }}>
-              <div className="display" style={{ fontSize: '2.2rem', fontWeight: 800, color: '#60A5FA', lineHeight: 1 }}>{s.num}</div>
-              <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
 
-      {/* Scroll cue */}
-      <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(37,99,235,0.5), transparent)' }}></div>
-        <ChevronDown size={16} color="rgba(255,255,255,0.3)" />
+      {/* SCROLL */}
+      <div className="scroll-indicator">
+        <div className="scroll-line" />
       </div>
 
-      <style>{`@media(max-width:900px){section>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;}}`}</style>
+      <style>{`
+        .future-hero{
+          position:relative;
+          min-height:100vh;
+          overflow:hidden;
+          background:#040816;
+          display:flex;
+          align-items:center;
+        }
+
+        .hero-bg{
+          position:absolute;
+          inset:0;
+        }
+
+        .bg-slide{
+          position:absolute;
+          inset:0;
+          opacity:0;
+          transition:opacity 1.8s ease;
+        }
+
+        .bg-slide.active{
+          opacity:1;
+        }
+
+        .bg-slide img{
+          width:100%;
+          height:100%;
+          object-fit:cover;
+          transform:scale(1.08);
+          animation:zoom 9s linear infinite;
+          filter:brightness(.4) saturate(1.1);
+        }
+
+        .hero-overlay{
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(
+              110deg,
+              rgba(4,8,22,.96) 35%,
+              rgba(4,8,22,.55) 100%
+            );
+        }
+
+        .hero-overlay-2{
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(
+              to top,
+              rgba(4,8,22,.98),
+              transparent 45%
+            );
+        }
+
+        .hero-noise{
+          position:absolute;
+          inset:0;
+          opacity:.05;
+          background-image:
+            radial-gradient(circle at 20% 20%,white 1px,transparent 1px);
+          background-size:4px 4px;
+        }
+
+        .hero-grid-overlay{
+          position:absolute;
+          inset:0;
+          background-image:
+            linear-gradient(rgba(59,130,246,.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59,130,246,.06) 1px, transparent 1px);
+          background-size:70px 70px;
+          mask-image:
+            radial-gradient(circle at center, black 40%, transparent 95%);
+        }
+
+        .hero-glow{
+          position:absolute;
+          border-radius:50%;
+          filter:blur(120px);
+        }
+
+        .hero-glow-1{
+          width:500px;
+          height:500px;
+          background:rgba(37,99,235,.18);
+          top:-10%;
+          right:-5%;
+        }
+
+        .hero-glow-2{
+          width:350px;
+          height:350px;
+          background:rgba(124,58,237,.12);
+          bottom:-10%;
+          left:-5%;
+        }
+
+        .hero-container{
+          position:relative;
+          z-index:5;
+          width:100%;
+          max-width:1450px;
+          margin:auto;
+          padding:120px 5% 90px;
+        }
+
+        .hero-layout{
+          display:grid;
+          grid-template-columns:1.05fr .95fr;
+          gap:70px;
+          align-items:center;
+        }
+
+        .hero-tag{
+          display:inline-flex;
+          align-items:center;
+          gap:10px;
+          padding:10px 18px;
+          border-radius:999px;
+          background:rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.08);
+          color:#93C5FD;
+          backdrop-filter:blur(14px);
+          margin-bottom:30px;
+          font-size:.78rem;
+          letter-spacing:.14em;
+          text-transform:uppercase;
+        }
+
+        .live-dot{
+          width:8px;
+          height:8px;
+          border-radius:50%;
+          background:#3B82F6;
+          box-shadow:0 0 12px #3B82F6;
+          animation:pulse 1.8s infinite;
+        }
+
+        .hero-title{
+          font-size:clamp(3.2rem,8vw,6.6rem);
+          line-height:.95;
+          color:white;
+          font-weight:800;
+          margin-bottom:28px;
+        }
+
+        .hero-title span{
+          background:linear-gradient(135deg,#60A5FA,#A78BFA);
+          -webkit-background-clip:text;
+          -webkit-text-fill-color:transparent;
+        }
+
+        .hero-desc{
+          max-width:650px;
+          color:rgba(255,255,255,.62);
+          line-height:1.9;
+          font-size:1.05rem;
+          margin-bottom:40px;
+        }
+
+        .hero-buttons{
+          display:flex;
+          gap:16px;
+          flex-wrap:wrap;
+        }
+
+        .btn-primary{
+          padding:16px 28px;
+          border:none;
+          border-radius:16px;
+          background:linear-gradient(135deg,#2563EB,#3B82F6);
+          color:white;
+          font-weight:600;
+          cursor:pointer;
+          box-shadow:0 10px 40px rgba(37,99,235,.35);
+        }
+
+        .btn-secondary{
+          padding:16px 28px;
+          border-radius:16px;
+          border:1px solid rgba(255,255,255,.12);
+          background:rgba(255,255,255,.05);
+          color:white;
+          backdrop-filter:blur(14px);
+          cursor:pointer;
+        }
+
+        .hero-stats{
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:16px;
+          margin-top:55px;
+        }
+
+        .stat-card{
+          padding:22px;
+          border-radius:22px;
+          background:rgba(255,255,255,.04);
+          border:1px solid rgba(255,255,255,.08);
+          backdrop-filter:blur(18px);
+        }
+
+        .stat-card h3{
+          color:#60A5FA;
+          font-size:2rem;
+          margin-bottom:8px;
+        }
+
+        .stat-card p{
+          color:rgba(255,255,255,.5);
+          font-size:.78rem;
+          letter-spacing:.12em;
+          text-transform:uppercase;
+        }
+
+        .hero-visual{
+          position:relative;
+          height:700px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+
+        .visual-panel{
+          position:relative;
+          width:100%;
+          height:100%;
+          border-radius:34px;
+          overflow:hidden;
+          background:rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.08);
+          backdrop-filter:blur(22px);
+          box-shadow:
+            0 40px 120px rgba(0,0,0,.45),
+            inset 0 1px 0 rgba(255,255,255,.08);
+        }
+
+        .visual-image{
+          position:absolute;
+          inset:0;
+        }
+
+        .visual-image img{
+          width:100%;
+          height:100%;
+          object-fit:cover;
+        }
+
+        .visual-panel::before{
+          content:"";
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(to top,
+            rgba(4,8,22,.96),
+            transparent 60%);
+          z-index:1;
+        }
+
+        .hud-top{
+          position:absolute;
+          top:24px;
+          left:24px;
+          right:24px;
+          display:flex;
+          justify-content:space-between;
+          z-index:5;
+        }
+
+        .hud-pill{
+          padding:10px 16px;
+          border-radius:999px;
+          background:rgba(255,255,255,.06);
+          border:1px solid rgba(255,255,255,.08);
+          color:white;
+          font-size:.72rem;
+          display:flex;
+          align-items:center;
+          gap:10px;
+          backdrop-filter:blur(14px);
+        }
+
+        .hud-pill span{
+          width:8px;
+          height:8px;
+          border-radius:50%;
+          background:#00ff9d;
+          box-shadow:0 0 10px #00ff9d;
+        }
+
+        .hud-pill.blue{
+          color:#93C5FD;
+          background:rgba(37,99,235,.14);
+        }
+
+        .visual-bottom{
+          position:absolute;
+          left:28px;
+          right:28px;
+          bottom:28px;
+          z-index:5;
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-end;
+          gap:20px;
+        }
+
+        .visual-bottom h2{
+          color:white;
+          font-size:2rem;
+          margin-bottom:6px;
+        }
+
+        .visual-bottom p{
+          color:rgba(255,255,255,.58);
+        }
+
+        .slider-dots{
+          display:flex;
+          gap:10px;
+        }
+
+        .slider-dots button{
+          width:12px;
+          height:12px;
+          border:none;
+          border-radius:999px;
+          background:rgba(255,255,255,.25);
+          cursor:pointer;
+          transition:.4s;
+        }
+
+        .slider-dots button.active{
+          width:38px;
+          background:#3B82F6;
+        }
+
+        .scan-line{
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(
+              to bottom,
+              transparent,
+              rgba(59,130,246,.18),
+              transparent
+            );
+          animation:scan 6s linear infinite;
+          z-index:3;
+        }
+
+        .floating-card{
+          position:absolute;
+          padding:18px 22px;
+          border-radius:20px;
+          background:rgba(255,255,255,.06);
+          border:1px solid rgba(255,255,255,.08);
+          backdrop-filter:blur(16px);
+          box-shadow:0 20px 50px rgba(0,0,0,.25);
+        }
+
+        .floating-card h4{
+          color:white;
+          margin-bottom:5px;
+          font-size:.95rem;
+        }
+
+        .floating-card p{
+          color:rgba(255,255,255,.5);
+          font-size:.8rem;
+        }
+
+        .card-1{
+          top:8%;
+          left:-40px;
+          animation:float 5s ease-in-out infinite;
+        }
+
+        .card-2{
+          bottom:16%;
+          left:-30px;
+          animation:float 6s ease-in-out infinite;
+        }
+
+        .card-3{
+          top:18%;
+          right:-35px;
+          animation:float 4.5s ease-in-out infinite;
+        }
+
+        .scroll-indicator{
+          position:absolute;
+          left:50%;
+          bottom:28px;
+          transform:translateX(-50%);
+          z-index:10;
+        }
+
+        .scroll-line{
+          width:1px;
+          height:55px;
+          background:
+            linear-gradient(to bottom,#3B82F6,transparent);
+        }
+
+        @keyframes zoom{
+          0%{
+            transform:scale(1.05);
+          }
+          100%{
+            transform:scale(1.12);
+          }
+        }
+
+        @keyframes pulse{
+          0%,100%{
+            opacity:1;
+            transform:scale(1);
+          }
+          50%{
+            opacity:.4;
+            transform:scale(1.5);
+          }
+        }
+
+        @keyframes float{
+          0%,100%{
+            transform:translateY(0px);
+          }
+          50%{
+            transform:translateY(-12px);
+          }
+        }
+
+        @keyframes scan{
+          0%{
+            transform:translateY(-100%);
+          }
+          100%{
+            transform:translateY(200%);
+          }
+        }
+
+        @media(max-width:1200px){
+          .hero-layout{
+            grid-template-columns:1fr;
+          }
+
+          .hero-visual{
+            height:580px;
+          }
+
+          .floating-card{
+            display:none;
+          }
+        }
+
+        @media(max-width:768px){
+          .future-hero{
+            min-height:auto;
+          }
+
+          .hero-container{
+            padding:110px 5% 70px;
+          }
+
+          .hero-visual{
+            height:400px;
+          }
+
+          .hero-title{
+            line-height:1.02;
+          }
+
+          .hero-stats{
+            grid-template-columns:1fr;
+          }
+
+          .visual-bottom{
+            flex-direction:column;
+            align-items:flex-start;
+          }
+
+          .visual-bottom h2{
+            font-size:1.5rem;
+          }
+
+          .hud-top{
+            flex-direction:column;
+            gap:10px;
+            align-items:flex-start;
+          }
+        }
+
+        @media(max-width:520px){
+          .hero-visual{
+            height:320px;
+          }
+
+          .btn-primary,
+          .btn-secondary{
+            width:100%;
+          }
+
+          .hero-title{
+            font-size:2.8rem;
+          }
+
+          .hero-desc{
+            font-size:.95rem;
+          }
+        }
+      `}</style>
     </section>
   );
 };
+
 
 /* ─── SECTION HEADER ─── */
 const SectionHeader = ({ tag, title, sub, centered = true, light = false }) => (
@@ -1076,69 +1798,502 @@ const SectionHeader = ({ tag, title, sub, centered = true, light = false }) => (
 );
 
 /* ─── ABOUT ─── */
+// const AboutSection = ({ lang }) => {
+//   const t = lang === 'en';
+//   const features = [
+//     { icon: Award, title: t ? 'Clear Title Land' : 'নিষ্কণ্টক ভূমি', desc: t ? 'Dispute-free, clear-title plots at affordable prices.' : 'সাশ্রয়ী মূল্যে নিষ্কণ্টক প্লট।' },
+//     { icon: Shield, title: t ? 'RAJUK NOC Approved' : 'রাজউক NOC প্রাপ্ত', desc: t ? 'Fully RAJUK Megacity Master Plan approved.' : 'রাজউক মেগাসিটি মাস্টার প্ল্যানের আওতাভুক্ত।' },
+//     { icon: Zap, title: t ? 'All Modern Utilities' : 'সকল আধুনিক সুবিধা', desc: t ? 'Water, gas, electricity, internet and more.' : 'পানি, গ্যাস, বিদ্যুৎ, ইন্টারনেট সহ সকল সুবিধা।' },
+//     { icon: TrendingUp, title: t ? 'Best Investment Value' : 'সর্বোচ্চ বিনিয়োগ মূল্য', desc: t ? 'Proven appreciation and the best investment guarantee.' : 'প্রমাণিত মূল্য বৃদ্ধি ও সর্বোত্তম বিনিয়োগ।' },
+//   ];
+
+//   return (
+//     <section className="mesh-bg" style={{ padding: '120px 5%' }}>
+//       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+
+//         {/* Left */}
+//         <div>
+//           <SectionHeader
+//             tag={t ? 'About Us' : 'আমাদের সম্পর্কে'}
+//             title={t ? <>Ensuring Safe & <span className="blue-text">Modern Housing</span> for All</> : <>সবার জন্য <span className="blue-text">নিরাপদ ও আধুনিক</span> আবাসন</>}
+//             sub={t ? "Idol Builders Ltd advances with sincere trust and love for you — making your long-cherished dream a reality through Idol Green City, a modern, eco-friendly, and safe housing project." : "পরম করুণাময় আল্লাহর অপার রহমত ও কৃপায়, আপনাদের প্রতি অগাধ বিশ্বাস ও ভালোবাসা নিয়ে আমরা 'আইডল বিল্ডার্স লিমিটেড'-এর পথচলাকে এগিয়ে নিয়ে যাচ্ছি।"}
+//             centered={false}
+//           />
+
+//           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 36 }}>
+//             {features.map(({ icon: Icon, title, desc }, i) => (
+//               <div key={i} className="card-blue-glow" style={{ padding: '22px 20px' }}>
+//                 <div style={{ width: 40, height: 40, borderRadius: 9, background: 'var(--blue-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+//                   <Icon size={18} color="var(--blue)" />
+//                 </div>
+//                 <div className="display" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 5 }}>{title}</div>
+//                 <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{desc}</div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <button className="btn-primary">
+//             {t ? 'Learn About Idol Green City' : 'আইডল গ্রীন সিটি সম্পর্কে জানুন'} <ArrowRight size={16} />
+//           </button>
+//         </div>
+
+//         {/* Right: image collage */}
+//         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '240px 240px', gap: 12 }}>
+//           {[
+//             'images/psetu.png',
+//             'images/stadium.png',
+//             'images/hitech.png',
+//             'images/nimtoli.png',
+//           ].map((src, i) => (
+//             <div key={i} style={{ overflow: 'hidden', position: 'relative', borderRadius: 14 }}>
+//               <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease', display: 'block' }}
+//                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.07)'}
+//                 onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+//               />
+//               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.4) 0%, transparent 60%)', borderRadius: 14 }}></div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+
+//       <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;gap:48px!important;}}`}</style>
+//     </section>
+//   );
+// };
+
+
 const AboutSection = ({ lang }) => {
-  const t = lang === 'en';
+  const t = lang === "en";
+
+  const [activeImage, setActiveImage] = useState(null);
+
+  const images = [
+    "images/psetu.png",
+    "images/stadium.png",
+    "images/hitech.png",
+    "images/nimtoli.png",
+  ];
+
+  useEffect(() => {
+    if (activeImage !== null) {
+      const timer = setTimeout(() => {
+        setActiveImage(null);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [activeImage]);
+
   const features = [
-    { icon: Award, title: t ? 'Clear Title Land' : 'নিষ্কণ্টক ভূমি', desc: t ? 'Dispute-free, clear-title plots at affordable prices.' : 'সাশ্রয়ী মূল্যে নিষ্কণ্টক প্লট।' },
-    { icon: Shield, title: t ? 'RAJUK NOC Approved' : 'রাজউক NOC প্রাপ্ত', desc: t ? 'Fully RAJUK Megacity Master Plan approved.' : 'রাজউক মেগাসিটি মাস্টার প্ল্যানের আওতাভুক্ত।' },
-    { icon: Zap, title: t ? 'All Modern Utilities' : 'সকল আধুনিক সুবিধা', desc: t ? 'Water, gas, electricity, internet and more.' : 'পানি, গ্যাস, বিদ্যুৎ, ইন্টারনেট সহ সকল সুবিধা।' },
-    { icon: TrendingUp, title: t ? 'Best Investment Value' : 'সর্বোচ্চ বিনিয়োগ মূল্য', desc: t ? 'Proven appreciation and the best investment guarantee.' : 'প্রমাণিত মূল্য বৃদ্ধি ও সর্বোত্তম বিনিয়োগ।' },
+    {
+      icon: Award,
+      title: t ? "Clear Title Land" : "নিষ্কণ্টক ভূমি",
+      desc: t
+        ? "Dispute-free, clear-title plots at affordable prices."
+        : "সাশ্রয়ী মূল্যে নিষ্কণ্টক প্লট।",
+    },
+    {
+      icon: Shield,
+      title: t ? "RAJUK NOC Approved" : "রাজউক NOC প্রাপ্ত",
+      desc: t
+        ? "Fully RAJUK Megacity Master Plan approved."
+        : "রাজউক মেগাসিটি মাস্টার প্ল্যানের আওতাভুক্ত।",
+    },
+    {
+      icon: Zap,
+      title: t ? "All Modern Utilities" : "সকল আধুনিক সুবিধা",
+      desc: t
+        ? "Water, gas, electricity, internet and more."
+        : "পানি, গ্যাস, বিদ্যুৎ, ইন্টারনেট সহ সকল সুবিধা।",
+    },
+    {
+      icon: TrendingUp,
+      title: t ? "Best Investment Value" : "সর্বোচ্চ বিনিয়োগ মূল্য",
+      desc: t
+        ? "Proven appreciation and the best investment guarantee."
+        : "প্রমাণিত মূল্য বৃদ্ধি ও সর্বোত্তম বিনিয়োগ।",
+    },
   ];
 
   return (
-    <section className="mesh-bg" style={{ padding: '120px 5%' }}>
-      <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+    <>
+      <section
+        className="about-modern"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          padding: "120px 5%",
+        }}
+      >
+        {/* BG GRID */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `
+              linear-gradient(rgba(37,99,235,.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(37,99,235,.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+            pointerEvents: "none",
+          }}
+        />
 
-        {/* Left */}
-        <div>
-          <SectionHeader
-            tag={t ? 'About Us' : 'আমাদের সম্পর্কে'}
-            title={t ? <>Ensuring Safe & <span className="blue-text">Modern Housing</span> for All</> : <>সবার জন্য <span className="blue-text">নিরাপদ ও আধুনিক</span> আবাসন</>}
-            sub={t ? "Idol Builders Ltd advances with sincere trust and love for you — making your long-cherished dream a reality through Idol Green City, a modern, eco-friendly, and safe housing project." : "পরম করুণাময় আল্লাহর অপার রহমত ও কৃপায়, আপনাদের প্রতি অগাধ বিশ্বাস ও ভালোবাসা নিয়ে আমরা 'আইডল বিল্ডার্স লিমিটেড'-এর পথচলাকে এগিয়ে নিয়ে যাচ্ছি।"}
-            centered={false}
-          />
+        <div
+          className="about-grid"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: 1320,
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "1.05fr .95fr",
+            gap: 80,
+            alignItems: "center",
+          }}
+        >
+          {/* LEFT */}
+          <div>
+            <SectionHeader
+              tag={t ? "About Us" : "আমাদের সম্পর্কে"}
+              title={
+                t ? (
+                  <>
+                    Ensuring Safe &
+                    <span className="blue-text">
+                      {" "}
+                      Modern Housing
+                    </span>{" "}
+                    for All
+                  </>
+                ) : (
+                  <>
+                    সবার জন্য
+                    <span className="blue-text">
+                      {" "}
+                      নিরাপদ ও আধুনিক
+                    </span>{" "}
+                    আবাসন
+                  </>
+                )
+              }
+              sub={
+                t
+                  ? "Idol Builders Ltd advances with sincere trust and love for you — making your long-cherished dream a reality through Idol Green City."
+                  : "আইডল বিল্ডার্স লিমিটেড আপনাদের ভালোবাসা ও আস্থার সাথে আধুনিক আবাসন নিশ্চিত করতে কাজ করে যাচ্ছে।"
+              }
+              centered={false}
+            />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 36 }}>
-            {features.map(({ icon: Icon, title, desc }, i) => (
-              <div key={i} className="card-blue-glow" style={{ padding: '22px 20px' }}>
-                <div style={{ width: 40, height: 40, borderRadius: 9, background: 'var(--blue-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                  <Icon size={18} color="var(--blue)" />
+            {/* MOBILE IMAGE ROW */}
+            <div className="mobile-image-row">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  className="mobile-circle"
+                  onClick={() => setActiveImage(src)}
+                >
+                  <img src={src} alt="" />
+                </button>
+              ))}
+            </div>
+
+            {/* FEATURES */}
+            <div className="feature-grid">
+              {features.map(({ icon: Icon, title, desc }, i) => (
+                <div
+                  key={i}
+                  className="feature-card"
+                >
+                  <div className="feature-icon">
+                    <Icon size={18} color="#2563EB" />
+                  </div>
+
+                  <div
+                    className="display"
+                    style={{
+                      fontSize: ".92rem",
+                      fontWeight: 700,
+                      color: "var(--navy)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    {title}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: ".8rem",
+                      color: "var(--text-muted)",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {desc}
+                  </div>
                 </div>
-                <div className="display" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 5 }}>{title}</div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{desc}</div>
+              ))}
+            </div>
+
+            <button className="btn-primary">
+              {t
+                ? "Learn About Idol Green City"
+                : "আইডল গ্রীন সিটি সম্পর্কে জানুন"}
+              <ArrowRight size={16} />
+            </button>
+          </div>
+
+          {/* RIGHT DESKTOP IMAGES */}
+          <div className="desktop-gallery">
+            {images.map((src, i) => (
+              <div
+                key={i}
+                className={`gallery-item g${i + 1}`}
+              >
+                <img src={src} alt="" />
               </div>
             ))}
           </div>
-
-          <button className="btn-primary">
-            {t ? 'Learn About Idol Green City' : 'আইডল গ্রীন সিটি সম্পর্কে জানুন'} <ArrowRight size={16} />
-          </button>
         </div>
 
-        {/* Right: image collage */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '240px 240px', gap: 12 }}>
-          {[
-            'images/psetu.png',
-            'images/stadium.png',
-            'images/hitech.png',
-            'images/nimtoli.png',
-          ].map((src, i) => (
-            <div key={i} style={{ overflow: 'hidden', position: 'relative', borderRadius: 14 }}>
-              <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease', display: 'block' }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.07)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.4) 0%, transparent 60%)', borderRadius: 14 }}></div>
+        {/* FULL SCREEN POPUP */}
+        {activeImage && (
+          <div
+            className="image-popup"
+            onClick={() => setActiveImage(null)}
+          >
+            {/* BLUR BG */}
+            <div className="popup-blur" />
+
+            {/* IMAGE */}
+            <div className="popup-content">
+              <img src={activeImage} alt="" />
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        )}
 
-      <style>{`@media(max-width:900px){section.mesh-bg>div>div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr!important;gap:48px!important;}}`}</style>
-    </section>
+        <style>{`
+          .feature-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            margin-top:38px;
+            margin-bottom:36px;
+          }
+
+          .feature-card{
+            padding:22px;
+            border-radius:24px;
+            background:rgba(255,255,255,.7);
+            border:1px solid rgba(255,255,255,.7);
+            backdrop-filter:blur(20px);
+            box-shadow:0 12px 40px rgba(15,23,42,.06);
+            transition:.4s ease;
+          }
+
+          .feature-card:hover{
+            transform:translateY(-6px);
+            box-shadow:0 20px 50px rgba(37,99,235,.12);
+          }
+
+          .feature-icon{
+            width:42px;
+            height:42px;
+            border-radius:12px;
+            background:#EFF6FF;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:14px;
+          }
+
+          /* DESKTOP GALLERY */
+
+          .desktop-gallery{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            height:620px;
+          }
+
+          .gallery-item{
+            position:relative;
+            overflow:hidden;
+            border-radius:30px;
+            box-shadow:0 25px 60px rgba(15,23,42,.08);
+          }
+
+          .gallery-item img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform .8s ease;
+          }
+
+          .gallery-item:hover img{
+            transform:scale(1.08);
+          }
+
+          .g1{
+            height:250px;
+            margin-top:80px;
+          }
+
+          .g2{
+            height:340px;
+          }
+
+          .g3{
+            height:340px;
+            margin-top:-70px;
+          }
+
+          .g4{
+            height:250px;
+          }
+
+          /* MOBILE IMAGE ROW */
+
+          .mobile-image-row{
+            display:none;
+          }
+
+          /* POPUP */
+
+          .image-popup{
+            position:fixed;
+            inset:0;
+            z-index:9999;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            animation:popupFade .35s ease;
+          }
+
+          .popup-blur{
+            position:absolute;
+            inset:0;
+            background:rgba(15,23,42,.45);
+            backdrop-filter:blur(18px);
+          }
+
+          .popup-content{
+            position:relative;
+            width:82vw;
+            max-width:420px;
+            aspect-ratio:1/1;
+
+            border-radius:34px;
+            overflow:hidden;
+
+            transform:scale(.8);
+            animation:popupScale .45s ease forwards;
+
+            box-shadow:
+              0 30px 100px rgba(0,0,0,.45);
+          }
+
+          .popup-content img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+          }
+
+          @keyframes popupFade{
+            from{
+              opacity:0;
+            }
+            to{
+              opacity:1;
+            }
+          }
+
+          @keyframes popupScale{
+            from{
+              transform:scale(.8);
+              opacity:0;
+            }
+            to{
+              transform:scale(1);
+              opacity:1;
+            }
+          }
+
+          /* RESPONSIVE */
+
+          @media(max-width:900px){
+
+            .about-modern{
+              padding:90px 5% !important;
+            }
+
+            .about-grid{
+              grid-template-columns:1fr !important;
+              gap:50px !important;
+            }
+
+            .desktop-gallery{
+              display:none;
+            }
+
+            .mobile-image-row{
+              display:flex;
+              justify-content:flex-start;
+              gap:14px;
+              flex-wrap:wrap;
+              margin-top:26px;
+              margin-bottom:10px;
+            }
+
+            .mobile-circle{
+              width:78px;
+              height:78px;
+              border-radius:50%;
+              overflow:hidden;
+              border:none;
+              padding:0;
+              background:none;
+              cursor:pointer;
+
+              box-shadow:
+                0 10px 25px rgba(15,23,42,.1);
+
+              transition:.4s ease;
+            }
+
+            .mobile-circle:active{
+              transform:scale(.94);
+            }
+
+            .mobile-circle img{
+              width:100%;
+              height:100%;
+              object-fit:cover;
+            }
+
+            .feature-grid{
+              grid-template-columns:1fr !important;
+            }
+
+          }
+
+          @media(max-width:520px){
+
+            .popup-content{
+              width:88vw;
+              border-radius:28px;
+            }
+
+            .mobile-circle{
+              width:72px;
+              height:72px;
+            }
+
+          }
+        `}</style>
+      </section>
+    </>
   );
 };
-
 /* ─── DIVISIONS ─── */
 const DivisionsSection = ({ lang }) => {
   const t = lang === 'en';
@@ -1416,8 +2571,8 @@ const Footer = ({ lang, navClick }) => {
               {t ? "Your dream home is our commitment. Ensuring safe, beautiful and modern housing for all — through Idol Green City, Bangladesh's best investment guarantee." : "আপনার স্বপ্নের আবাসন আমাদের অঙ্গীকার। সবার জন্য সুন্দর, নিরাপদ ও আধুনিক আবাসন নিশ্চিত করাই আমাদের লক্ষ্য।"}
             </p>
             <div style={{ display: 'flex', gap: 10 }}>
-              {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                <a key={i} href="https://www.facebook.com" style={{
+              {[{"icon": Facebook, "url": "https://www.facebook.com/Idol.Builders.Ltd"}, {"icon":Instagram, "url": "#"}, {"icon":Linkedin, "url": "#"}, {"icon":Youtube, "url":"#"}].map(({icon: Icon, url}, i) => (
+                <a key={i} href={url} style={{
                   width: 38, height: 38, borderRadius: 8,
                   background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
